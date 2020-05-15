@@ -16,26 +16,26 @@ Route::get('/', function () {
 });
 
 Route::get('/login/', function () {
-    return 'login';
+    return view('login');
 });
 
 Route::get('/create_account/', function () {
-    return 'create_account';
+    return view('create_account');
 });
 
 Route::get('/home/', function () {
-    return 'home';
+    return view('home');
 });
 
 Route::get('/input_data/', function () {
-    return 'input_data';
+    return view('input_data');
 });
 
 Route::get('/view_data/', function () {
-    return 'view_data';
+    return view('view_data');
 });
 
 Route::get('/search_buki/', function () {
-    return 'search_buki';
+    return view('search_buki');
 });
 
