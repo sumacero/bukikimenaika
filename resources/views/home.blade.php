@@ -7,5 +7,6 @@
 </head>
 <body>
     <h1>ホーム</h1>
+    {{Form::button('Hit Me')}} 
 </body>
 </html>
