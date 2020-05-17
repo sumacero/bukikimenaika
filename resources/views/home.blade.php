@@ -7,6 +7,8 @@
 </head>
 <body>
     <h1>ホーム</h1>
-    {{Form::button('Hit Me')}} 
+    {{Form::button('データ入力',['onclick' => 'location.href="./input_data"'])}}
+    {{Form::button('データ参照',['onclick' => 'location.href="./view_data"'])}}
+    {{Form::button('オススメブキ検索',['onclick' => 'location.href="./search_buki"'])}}
 </body>
 </html>
