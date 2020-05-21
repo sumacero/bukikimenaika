@@ -13,4 +13,13 @@ class Buki extends Model
     public function input_datas(){
         return $this->hasMany('App\Input_data');
     }
+
+    //idで昇順
+    protected static function boot(){
+        parent::boot();
+        static::addGlobalScope('buki_id',function(Builder $builder){
+            $builder->orderBy('buki_id','asc');
+        });
+    }
+
 }

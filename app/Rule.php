@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\builder;
 
 class Rule extends Model
 {
@@ -12,5 +13,13 @@ class Rule extends Model
     //hasMany設定
     public function input_datas(){
         return $this->hasMany('App\Input_data');
+    }
+
+    //idで昇順
+    protected static function boot(){
+        parent::boot();
+        static::addGlobalScope('rule_id',function(Builder $builder){
+            $builder->orderBy('rule_id','asc');
+        });
     }
 }

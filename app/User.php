@@ -13,4 +13,12 @@ class User extends Model
     public function input_datas(){
         return $this->hasMany('App\Input_data');
     }
+
+    //idで昇順
+    protected static function boot(){
+        parent::boot();
+        static::addGlobalScope('user_id',function(Builder $builder){
+            $builder->orderBy('user_id','asc');
+        });
+    }
 }
