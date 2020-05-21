@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Buki;
 use Illuminate\Http\Request;
 
 class MainController extends Controller
@@ -19,7 +20,8 @@ class MainController extends Controller
         return view('input_data');
     }
     public function view_data(){
-        return view('view_data');
+        $items = Buki::all();
+        return view('view_data', ['items'=>$items]);
     }
     public function search_buki(){
         return view('search_buki');
