@@ -15,7 +15,7 @@ class CreateBukisTable extends Migration
     {
         Schema::create('bukis', function (Blueprint $table) {
             $table->increments('buki_id');
-            $table->string('stage_name',50)->unique();
+            $table->string('buki_name',50)->unique();
         });
     }
 
