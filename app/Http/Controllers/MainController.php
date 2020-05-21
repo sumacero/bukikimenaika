@@ -1,8 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Buki;
+use App\Rule;
+use App\Stage;
+use App\User;
+use App\Input_data;
 use Illuminate\Http\Request;
 
 class MainController extends Controller
@@ -20,7 +23,7 @@ class MainController extends Controller
         return view('input_data');
     }
     public function view_data(){
-        $items = Buki::all();
+        $items = Input_data::all();
         return view('view_data', ['items'=>$items]);
     }
     public function search_buki(){
