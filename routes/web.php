@@ -23,6 +23,8 @@ Route::get('home','MainController@home');
 
 Route::get('input_data','MainController@input_data');
 
+Route::post('input_data','MainController@input_data_complete');
+
 Route::get('view_data','MainController@view_data');
 
 Route::get('search_buki','MainController@search_buki');

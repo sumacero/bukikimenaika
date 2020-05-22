@@ -21,7 +21,9 @@ class Input_datasTableSeeder extends Seeder
             'stage1_id' => '1',
             'stage2_id' => '2',
             'buki_id' => '1',
-            'xp' => '2450.8'
+            'xp' => '2450.8',
+            'created_at' => now(),
+            'updated_at' => now()
         ];
         DB::table('input_datas')->insert($param);
     }

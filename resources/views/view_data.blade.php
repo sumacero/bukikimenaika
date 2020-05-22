@@ -22,6 +22,8 @@
     <th>ブキID</th>
     <th>ブキ名</th>
     <th>ＸＰ</th>
+    <th>作成日時</th>
+    <th>更新日時</th>
     </tr>
     @foreach($items as $item)
         <tr>
@@ -38,6 +40,8 @@
             <td>{{$item->buki_id}}</td>
             <td>{{$item->buki->buki_name}}</td>
             <td>{{$item->xp}}</td>
+            <td>{{$item->created_at}}</td>
+            <td>{{$item->updated_at}}</td>
         </tr>
     @endforeach
     </table>

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\builder;
 
 class Buki extends Model
 {
+
     //primaryKeyの設定
     protected $primaryKey = "buki_id";
 

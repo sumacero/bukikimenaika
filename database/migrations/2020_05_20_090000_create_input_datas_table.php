@@ -26,6 +26,7 @@ class CreateInputDatasTable extends Migration
             $table->foreign('stage1_id')->references('stage_id')->on('stages'); // 外部キー参照
             $table->foreign('stage2_id')->references('stage_id')->on('stages'); // 外部キー参照
             $table->foreign('buki_id')->references('buki_id')->on('bukis'); // 外部キー参照
+            $table->timestamps(); // タイムスタンプ列を追加
         });
     }
 
