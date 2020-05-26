@@ -2,8 +2,9 @@
 
 @section('title', 'ブキキメナイカ')
 
+@section('h1', 'データ入力')
+
 @section('content')
-<h1>データ入力</h1>
     <form action="/input_data" method="post">
     @csrf
     @error('rule_id')

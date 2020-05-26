@@ -1,6 +1,8 @@
 @extends('layouts.common_layout')
 
 @section('title', 'ブキキメナイカ')
+@section('h1', 'データ参照')
+@section('content')
 <table>
     <tr>
     <th>データID</th>
@@ -39,6 +41,5 @@
         </tr>
     @endforeach
     </table>
-@section('content')
 @endsection
 

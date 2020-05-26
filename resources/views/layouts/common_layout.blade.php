@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 </head>
 <body>
-    <h1>@yield('title')</h1>
+    <h1>@yield('h1')</h1>
     <h2>メニュー</h2>
     <ul>
         <li>{{Form::button('データ入力',['onclick' => 'location.href="./input_data"'])}}</li>
