@@ -29,3 +29,5 @@ Route::get('view_data','MainController@view_data');
 
 Route::get('search_buki','MainController@search_buki');
 
+Route::post('search_buki','MainController@analysis_buki');
+
