@@ -10,8 +10,7 @@
     <h1>@yield('h1')</h1>
     <h2>メニュー</h2>
     <ul>
-        <li>{{Form::button('データ入力',['onclick' => 'location.href="./input_data"'])}}</li>
-        <li>{{Form::button('データ参照',['onclick' => 'location.href="./view_data"'])}}</li>
+        <li>{{Form::button('データ編集',['onclick' => 'location.href="./edit_data"'])}}</li>
         <li>{{Form::button('オススメブキ検索',['onclick' => 'location.href="./search_buki"'])}}</li>
     </ul>
     <hr size="1">
