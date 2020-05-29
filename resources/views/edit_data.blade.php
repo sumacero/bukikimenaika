@@ -89,8 +89,14 @@
     @endforeach
     </table>
     <div id="app">
-        <example-component></example-component>
+        <message></message>
     </div>
+
+    
+    
+@endsection
+
+@section('vue')
 @endsection
 
 
