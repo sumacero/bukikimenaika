@@ -22,7 +22,7 @@
     <div class="footer">
     copyright 2020 suto.
     </div>
-    @yield('vue')
     <script src=" {{ mix('js/app.js') }} "></script>
+    @yield('vue')
 </body>
 </html>

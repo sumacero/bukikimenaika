@@ -91,12 +91,23 @@
     <div id="app">
         <message></message>
     </div>
+    <div id="app2">@{{ msg }}</div>
 
     
     
 @endsection
 
 @section('vue')
+<script>
+
+new Vue({
+    el: '#app2',
+    data: {
+        msg: 'vueのメッセージです'
+    }
+});
+
+</script>
 @endsection
 
 
