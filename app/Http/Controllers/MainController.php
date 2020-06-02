@@ -23,11 +23,11 @@ class MainController extends Controller
     }
     
     public function edit_data(){
-        $input_datas = Input_data::all();
-        $rules = Rule::all();
-        $stages = Stage::all();
-        $bukis = Buki::all();
-        return view('edit_data',['input_datas'=>$input_datas, 'rules'=>$rules,'stages'=>$stages,'bukis'=>$bukis]);
+        $input_datas = Input_data::with('user','rule','stage1','stage2','buki')->get();
+        $rules = Rule::get();
+        $stages = Stage::get();
+        $bukis = Buki::get();
+        return view('edit_data',compact('input_datas', 'rules','stages','bukis'));
     }
     public function insert_data(Request $request){
         $rules = [

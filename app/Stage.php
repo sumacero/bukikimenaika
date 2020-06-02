@@ -15,11 +15,11 @@ class Stage extends Model
         return $this->hasMany('App\Input_data');
     }
 
-        //idで昇順
-        protected static function boot(){
-            parent::boot();
-            static::addGlobalScope('stage_id',function(Builder $builder){
-                $builder->orderBy('stage_id','asc');
-            });
-        }
+    //idで昇順
+    protected static function boot(){
+        parent::boot();
+        static::addGlobalScope('stage_id',function(Builder $builder){
+            $builder->orderBy('stage_id','asc');
+        });
+    }
 }

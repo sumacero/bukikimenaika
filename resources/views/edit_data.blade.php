@@ -71,6 +71,7 @@
     <th>ＸＰ</th>
     <th></th>
     <th></th>
+    <th>user_name</th>
     </tr>
     @foreach($input_datas as $input_data)
         <tr>
@@ -85,13 +86,13 @@
             <td>{{$input_data->xp}}</td>
 			<td><button type="button" class="editBtn btn btn-info">編集</button></td>
 			<td><button type="button" class="deleteBtn btn btn-info">削除</button></td>
+            <td>{{$input_data->user->user_name}}</td>
         </tr>
     @endforeach
     </table>
-    <div id="app">
-        <message></message>
-    </div>
-    <div id="app2">@{{ msg }}</div>
+    <div id="app"><message v-bind:input_datas="{{ ($input_datas) }}"></message></div>
+    <div id="app1">@{{ msg }}</div>
+    
 
     
     
@@ -99,14 +100,12 @@
 
 @section('vue')
 <script>
-
 new Vue({
-    el: '#app2',
+    el: '#app1',
     data: {
         msg: 'vueのメッセージです'
     }
 });
-
 </script>
 @endsection
 
