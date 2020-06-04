@@ -58,44 +58,11 @@
     <br>
     <input type="submit" value="データ追加">
     </form>
-    <table>
-    <tr>
-    <th>ルールID</th>
-    <th>ルール名</th>
-    <th>ステージ1ID</th>
-    <th>ステージ1名</th>
-    <th>ステージ2ID</th>
-    <th>ステージ2名</th>
-    <th>ブキID</th>
-    <th>ブキ名</th>
-    <th>ＸＰ</th>
-    <th></th>
-    <th></th>
-    <th>user_name</th>
-    </tr>
-    @foreach($input_datas as $input_data)
-        <tr>
-            <td>{{$input_data->rule_id}}</td>
-            <td>{{$input_data->rule->rule_name}}</td>
-            <td>{{$input_data->stage1_id}}</td>
-            <td>{{$input_data->stage1->stage_name}}</td>
-            <td>{{$input_data->stage2_id}}</td>
-            <td>{{$input_data->stage2->stage_name}}</td>
-            <td>{{$input_data->buki_id}}</td>
-            <td>{{$input_data->buki->buki_name}}</td>
-            <td>{{$input_data->xp}}</td>
-			<td><button type="button" class="editBtn btn btn-info">編集</button></td>
-			<td><button type="button" class="deleteBtn btn btn-info">削除</button></td>
-            <td>{{$input_data->user->user_name}}</td>
-        </tr>
-    @endforeach
-    </table>
-    <div id="app"><message v-bind:input_datas="{{ ($input_datas) }}"></message></div>
+    <div id="app">
+    <edit-table v-bind:input_datas="{{ ($input_datas) }}"></edit-table>
+    </div>
     <div id="app1">@{{ msg }}</div>
-    
-
-    
-    
+    <div id="app2">@{{ msg }}</div>
 @endsection
 
 @section('vue')
@@ -103,7 +70,13 @@
 new Vue({
     el: '#app1',
     data: {
-        msg: 'vueのメッセージです'
+        msg: 'vue1のメッセージです'
+    }
+});
+new Vue({
+    el: '#app2',
+    data: {
+        msg: 'vue2のメッセージです'
     }
 });
 </script>

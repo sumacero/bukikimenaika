@@ -20,7 +20,8 @@ window.Vue = require('vue');
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
-Vue.component('message', require('./components/MessageComponent.vue').default);
+Vue.component('edit-table', require('./components/EditTableComponent.vue').default);
+Vue.component('edit-record', require('./components/EditRecordComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
