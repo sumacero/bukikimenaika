@@ -59,7 +59,8 @@
     <input type="submit" value="データ追加">
     </form>
     <div id="app">
-    <edit-table v-bind:input_datas="{{ ($input_datas) }}"></edit-table>
+    <edit-table v-bind:input_datas="{{ $input_datas }}" v-bind:rules="{{ $rules }}" v-bind:stages="{{ $stages }}" v-bind:bukis="{{ $bukis }}">
+    </edit-table>
     </div>
     <div id="app1">@{{ msg }}</div>
     <div id="app2">@{{ msg }}</div>
