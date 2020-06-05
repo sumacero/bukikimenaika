@@ -1946,7 +1946,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["rules", "stages", "bukis", "input_data"],
   methods: {
@@ -1994,13 +1993,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["input_datas", "rules", "stages", "bukis"],
   data: function data() {
     return {
       showEditRecord: false,
-      input_data_id: 0
+      input_data: null
     };
   },
   methods: {
@@ -38320,8 +38318,7 @@ var render = function() {
         _c("br")
       ]),
       _vm._v(" "),
-      _c("button", { on: { click: _vm.cancelEvent } }, [_vm._v("キャンセル")]),
-      _vm._v("\n        " + _vm._s(_vm.input_data) + "\n    ")
+      _c("button", { on: { click: _vm.cancelEvent } }, [_vm._v("キャンセル")])
     ])
   ])
 }
@@ -38412,8 +38409,7 @@ var render = function() {
             return _vm.switchEditRow()
           }
         }
-      }),
-      _vm._v("\n    " + _vm._s(_vm.input_data) + "\n")
+      })
     ],
     1
   )

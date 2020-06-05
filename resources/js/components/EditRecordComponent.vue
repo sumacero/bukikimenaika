@@ -31,7 +31,6 @@
                 <br>
             </form>
             <button v-on:click="cancelEvent">キャンセル</button>
-            {{ input_data }}
         </div>
         
     </div>

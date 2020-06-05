@@ -22,7 +22,6 @@
         </table>
         <edit-record v-show="showEditRecord" v-on:from-child="switchEditRow()" v-bind:rules="rules" v-bind:stages="stages" v-bind:bukis="bukis" v-bind:input_data="input_data">
         </edit-record>
-        {{ input_data }}
     </div>
 </template>
 
@@ -32,7 +31,7 @@
         data () {
             return {
                 showEditRecord: false,
-                input_data_id: 0
+                input_data: null
             }
         },
         methods: {
