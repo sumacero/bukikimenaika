@@ -16,11 +16,11 @@
                 <td>{{ input_data.stage2.stage_name }}</td>
                 <td>{{ input_data.buki.buki_name }}</td>
                 <td>{{ input_data.xp }}</td>
-                <td><button type="button" class="editBtn btn btn-info" @click.prevent="switchEditRow(input_data)">編集</button></td>
+                <td><button type="button" class="editBtn btn btn-info" @click.prevent="switchEditRecord(input_data)">編集</button></td>
                 <td><button type="button" class="deleteBtn btn btn-info">削除</button></td>
             </tr>
         </table>
-        <edit-record v-show="showEditRecord" v-on:from-child="switchEditRow()" v-bind:rules="rules" v-bind:stages="stages" v-bind:bukis="bukis" v-bind:input_data="input_data">
+        <edit-record v-show="showEditRecord" v-on:click-edit-btn="switchEditRecord()" v-bind:rules="rules" v-bind:stages="stages" v-bind:bukis="bukis" v-bind:input_data="input_data">
         </edit-record>
     </div>
 </template>
@@ -35,7 +35,7 @@
             }
         },
         methods: {
-             switchEditRow: function(input_data) {
+             switchEditRecord: function(input_data) {
                 this.showEditRecord = !this.showEditRecord
                 this.input_data = input_data
              }

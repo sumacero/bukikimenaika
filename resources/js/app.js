@@ -20,6 +20,7 @@ window.Vue = require('vue');
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+Vue.component('insert-record', require('./components/InsertRecordComponent.vue').default);
 Vue.component('edit-table', require('./components/EditTableComponent.vue').default);
 Vue.component('edit-record', require('./components/EditRecordComponent.vue').default);
 
@@ -29,6 +30,8 @@ Vue.component('edit-record', require('./components/EditRecordComponent.vue').def
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+ /*
 const app = new Vue({
     el: '#app',
 });
+*/

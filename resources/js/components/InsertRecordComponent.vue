@@ -1,36 +1,37 @@
 <template> 
     <div id="overlay">
         <div id="content">
-            <form action="/update_data" method="post">
+            <form action="/insert_data" method="post">
                 <label for="rule_id">ルール</label>
                 <select name="rule_id">
                 <option value="" disabled selected>選択してください</option>
-                <option v-for="rule, key in rules">{{ rule.rule_name }}</option>
+                <option v-for="rule, key in rules" v-bind:value=rule.rule_id >{{ rule.rule_name }}</option>
                 </select>
                 <br>
                 <label for="stage1_id">ステージ1</label>
                 <select name="stage1_id">
                 <option value="" disabled selected>選択してください</option>
-                <option v-for="stage, key in stages">{{ stage.stage_name }}</option>
+                <option v-for="stage, key in stages" v-bind:value=stage.stage_id >{{ stage.stage_name }}</option>
                 </select>
                 <br>
                 <label for="stage2_id">ステージ2</label>
                 <select name="stage2_id">
                 <option value="" disabled selected>選択してください</option>
-                <option v-for="stage, key in stages">{{ stage.stage_name }}</option>
+                <option v-for="stage, key in stages" v-bind:value=stage.stage_id >{{ stage.stage_name }}</option>
                 </select>
                 <br>
                 <label for="buki_id">ブキ</label>
                 <select name="buki_id">
                 <option value="" disabled selected>選択してください</option>
-                <option v-for="buki, key in bukis">{{ buki.buki_name }}</option>
+                <option v-for="buki, key in bukis" v-bind:value=buki.buki_id >{{ buki.buki_name }}</option>
                 </select>
                 <br>
                 <label for="xp">ウデマエポイント</label>
                 <input type="text" name="xp" value="">
                 <br>
             </form>
-            <button v-on:click="cancelEditEvent">キャンセル</button>
+            <button v-on:click="insertEvent">データ追加</button>
+            <button v-on:click="cancelInsertEvent">キャンセル</button>
         </div>
         
     </div>
@@ -38,10 +39,13 @@
 
 <script>
     export default {
-        props:["rules", "stages", "bukis", "input_data"],
+        props:["rules", "stages", "bukis"],
         methods :{
-            cancelEditEvent: function(){
-                this.$emit('click-edit-btn')
+            cancelInsertEvent: function(){
+                this.$emit('click-cancel-insert-btn')
+            },
+            insertEvent: function(){
+                this.$emit('click-insert-btn')
             }
         }
     }
