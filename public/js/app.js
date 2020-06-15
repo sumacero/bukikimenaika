@@ -2093,13 +2093,29 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      rule_id: null,
+      stage1_id: null,
+      stage2_id: null,
+      buki_id: null,
+      xp: null
+    };
+  },
   props: ["rules", "stages", "bukis"],
   methods: {
     cancelInsertEvent: function cancelInsertEvent() {
       this.$emit('click-cancel-insert-btn');
     },
     insertEvent: function insertEvent() {
-      this.$emit('click-insert-btn');
+      alert(this.rule_id + ", " + this.stage1_id + ", " + this.stage2_id + ", " + this.buki_id + ", " + this.xp);
+      this.$emit('click-insert-btn', {
+        rule_id: this.rule_id,
+        stage1_id: this.stage1_id,
+        stage2_id: this.stage2_id,
+        buki_id: this.buki_id,
+        xp: this.xp
+      });
     }
   }
 });
@@ -38631,97 +38647,235 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { attrs: { id: "overlay" } }, [
     _c("div", { attrs: { id: "content" } }, [
-      _c("form", { attrs: { action: "/insert_data", method: "post" } }, [
-        _c("label", { attrs: { for: "rule_id" } }, [_vm._v("ルール")]),
-        _vm._v(" "),
-        _c(
-          "select",
-          { attrs: { name: "rule_id" } },
-          [
-            _c("option", { attrs: { value: "", disabled: "", selected: "" } }, [
-              _vm._v("選択してください")
-            ]),
-            _vm._v(" "),
-            _vm._l(_vm.rules, function(rule, key) {
-              return _c("option", { domProps: { value: rule.rule_id } }, [
-                _vm._v(_vm._s(rule.rule_name))
-              ])
-            })
-          ],
-          2
-        ),
-        _vm._v(" "),
-        _c("br"),
-        _vm._v(" "),
-        _c("label", { attrs: { for: "stage1_id" } }, [_vm._v("ステージ1")]),
-        _vm._v(" "),
-        _c(
-          "select",
-          { attrs: { name: "stage1_id" } },
-          [
-            _c("option", { attrs: { value: "", disabled: "", selected: "" } }, [
-              _vm._v("選択してください")
-            ]),
-            _vm._v(" "),
-            _vm._l(_vm.stages, function(stage, key) {
-              return _c("option", { domProps: { value: stage.stage_id } }, [
-                _vm._v(_vm._s(stage.stage_name))
-              ])
-            })
-          ],
-          2
-        ),
-        _vm._v(" "),
-        _c("br"),
-        _vm._v(" "),
-        _c("label", { attrs: { for: "stage2_id" } }, [_vm._v("ステージ2")]),
-        _vm._v(" "),
-        _c(
-          "select",
-          { attrs: { name: "stage2_id" } },
-          [
-            _c("option", { attrs: { value: "", disabled: "", selected: "" } }, [
-              _vm._v("選択してください")
-            ]),
-            _vm._v(" "),
-            _vm._l(_vm.stages, function(stage, key) {
-              return _c("option", { domProps: { value: stage.stage_id } }, [
-                _vm._v(_vm._s(stage.stage_name))
-              ])
-            })
-          ],
-          2
-        ),
-        _vm._v(" "),
-        _c("br"),
-        _vm._v(" "),
-        _c("label", { attrs: { for: "buki_id" } }, [_vm._v("ブキ")]),
-        _vm._v(" "),
-        _c(
-          "select",
-          { attrs: { name: "buki_id" } },
-          [
-            _c("option", { attrs: { value: "", disabled: "", selected: "" } }, [
-              _vm._v("選択してください")
-            ]),
-            _vm._v(" "),
-            _vm._l(_vm.bukis, function(buki, key) {
-              return _c("option", { domProps: { value: buki.buki_id } }, [
-                _vm._v(_vm._s(buki.buki_name))
-              ])
-            })
-          ],
-          2
-        ),
-        _vm._v(" "),
-        _c("br"),
-        _vm._v(" "),
-        _c("label", { attrs: { for: "xp" } }, [_vm._v("ウデマエポイント")]),
-        _vm._v(" "),
-        _c("input", { attrs: { type: "text", name: "xp", value: "" } }),
-        _vm._v(" "),
-        _c("br")
-      ]),
+      _c(
+        "form",
+        {
+          attrs: { name: "insert-form", action: "/insert_data", method: "post" }
+        },
+        [
+          _c("label", { attrs: { for: "rule_id" } }, [_vm._v("ルール")]),
+          _vm._v(" "),
+          _c(
+            "select",
+            {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model.rule_id",
+                  value: _vm.rule_id,
+                  expression: "rule_id",
+                  modifiers: { rule_id: true }
+                }
+              ],
+              attrs: { name: "rule_id" },
+              on: {
+                change: function($event) {
+                  var $$selectedVal = Array.prototype.filter
+                    .call($event.target.options, function(o) {
+                      return o.selected
+                    })
+                    .map(function(o) {
+                      var val = "_value" in o ? o._value : o.value
+                      return val
+                    })
+                  _vm.rule_id = $event.target.multiple
+                    ? $$selectedVal
+                    : $$selectedVal[0]
+                }
+              }
+            },
+            [
+              _c(
+                "option",
+                { attrs: { value: "", disabled: "", selected: "" } },
+                [_vm._v("選択してください")]
+              ),
+              _vm._v(" "),
+              _vm._l(_vm.rules, function(rule, key) {
+                return _c("option", { domProps: { value: rule.rule_id } }, [
+                  _vm._v(_vm._s(rule.rule_name))
+                ])
+              })
+            ],
+            2
+          ),
+          _vm._v(" "),
+          _c("br"),
+          _vm._v(" "),
+          _c("label", { attrs: { for: "stage1_id" } }, [_vm._v("ステージ1")]),
+          _vm._v(" "),
+          _c(
+            "select",
+            {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model.stage1_id",
+                  value: _vm.stage1_id,
+                  expression: "stage1_id",
+                  modifiers: { stage1_id: true }
+                }
+              ],
+              attrs: { name: "stage1_id" },
+              on: {
+                change: function($event) {
+                  var $$selectedVal = Array.prototype.filter
+                    .call($event.target.options, function(o) {
+                      return o.selected
+                    })
+                    .map(function(o) {
+                      var val = "_value" in o ? o._value : o.value
+                      return val
+                    })
+                  _vm.stage1_id = $event.target.multiple
+                    ? $$selectedVal
+                    : $$selectedVal[0]
+                }
+              }
+            },
+            [
+              _c(
+                "option",
+                { attrs: { value: "", disabled: "", selected: "" } },
+                [_vm._v("選択してください")]
+              ),
+              _vm._v(" "),
+              _vm._l(_vm.stages, function(stage, key) {
+                return _c("option", { domProps: { value: stage.stage_id } }, [
+                  _vm._v(_vm._s(stage.stage_name))
+                ])
+              })
+            ],
+            2
+          ),
+          _vm._v(" "),
+          _c("br"),
+          _vm._v(" "),
+          _c("label", { attrs: { for: "stage2_id" } }, [_vm._v("ステージ2")]),
+          _vm._v(" "),
+          _c(
+            "select",
+            {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model.stage2_id",
+                  value: _vm.stage2_id,
+                  expression: "stage2_id",
+                  modifiers: { stage2_id: true }
+                }
+              ],
+              attrs: { name: "stage2_id" },
+              on: {
+                change: function($event) {
+                  var $$selectedVal = Array.prototype.filter
+                    .call($event.target.options, function(o) {
+                      return o.selected
+                    })
+                    .map(function(o) {
+                      var val = "_value" in o ? o._value : o.value
+                      return val
+                    })
+                  _vm.stage2_id = $event.target.multiple
+                    ? $$selectedVal
+                    : $$selectedVal[0]
+                }
+              }
+            },
+            [
+              _c(
+                "option",
+                { attrs: { value: "", disabled: "", selected: "" } },
+                [_vm._v("選択してください")]
+              ),
+              _vm._v(" "),
+              _vm._l(_vm.stages, function(stage, key) {
+                return _c("option", { domProps: { value: stage.stage_id } }, [
+                  _vm._v(_vm._s(stage.stage_name))
+                ])
+              })
+            ],
+            2
+          ),
+          _vm._v(" "),
+          _c("br"),
+          _vm._v(" "),
+          _c("label", { attrs: { for: "buki_id" } }, [_vm._v("ブキ")]),
+          _vm._v(" "),
+          _c(
+            "select",
+            {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model.buki_id",
+                  value: _vm.buki_id,
+                  expression: "buki_id",
+                  modifiers: { buki_id: true }
+                }
+              ],
+              attrs: { name: "buki_id" },
+              on: {
+                change: function($event) {
+                  var $$selectedVal = Array.prototype.filter
+                    .call($event.target.options, function(o) {
+                      return o.selected
+                    })
+                    .map(function(o) {
+                      var val = "_value" in o ? o._value : o.value
+                      return val
+                    })
+                  _vm.buki_id = $event.target.multiple
+                    ? $$selectedVal
+                    : $$selectedVal[0]
+                }
+              }
+            },
+            [
+              _c(
+                "option",
+                { attrs: { value: "", disabled: "", selected: "" } },
+                [_vm._v("選択してください")]
+              ),
+              _vm._v(" "),
+              _vm._l(_vm.bukis, function(buki, key) {
+                return _c("option", { domProps: { value: buki.buki_id } }, [
+                  _vm._v(_vm._s(buki.buki_name))
+                ])
+              })
+            ],
+            2
+          ),
+          _vm._v(" "),
+          _c("br"),
+          _vm._v(" "),
+          _c("label", { attrs: { for: "xp" } }, [_vm._v("ウデマエポイント")]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model.xp",
+                value: _vm.xp,
+                expression: "xp",
+                modifiers: { xp: true }
+              }
+            ],
+            attrs: { type: "text", name: "xp", value: "" },
+            domProps: { value: _vm.xp },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.xp = $event.target.value
+              }
+            }
+          }),
+          _vm._v(" "),
+          _c("br")
+        ]
+      ),
       _vm._v(" "),
       _c("button", { on: { click: _vm.insertEvent } }, [_vm._v("データ追加")]),
       _vm._v(" "),
