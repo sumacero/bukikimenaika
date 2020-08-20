@@ -29,6 +29,7 @@ class MainController extends Controller
         $bukis = Buki::get();
         return view('edit_data',compact('input_datas', 'rules','stages','bukis'));
     }
+    
     public function insert_data(Request $request){
         $rules = [
             'rule_id' => 'required',
@@ -66,6 +67,7 @@ class MainController extends Controller
         $input_data->save();
         return redirect('/edit_data');  
     }
+    
 
     public function update_data(Request $request){
         $rules = [
@@ -135,8 +137,7 @@ class MainController extends Controller
         if($validator->fails()){
             return redirect('/search_buki')->withErrors($validator)->withInput();
         }
-        $rules = Rule::all();
-        $stages = Stage::all();
+
         $items = Input_data::where(function($items) use ($request) {
             $items->where('user_id','1')
                   ->where('rule_id',$request->rule_id);

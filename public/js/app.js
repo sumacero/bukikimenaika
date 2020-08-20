@@ -1942,12 +1942,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ["rules", "stages", "bukis", "input_data"],
+  props: ["rules", "stages", "bukis", "editData"],
+  data: function data() {
+    return {
+      ruleSelected: this.editData.rule_id,
+      stage1Selected: this.editData.stage1_id,
+      stage2Selected: this.editData.stage2_id,
+      bukiSelected: this.editData.buki_id,
+      xpInput: this.editData.xp
+    };
+  },
   methods: {
     cancelEditEvent: function cancelEditEvent() {
       this.$emit('click-edit-btn');
@@ -1994,17 +1999,48 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ["input_datas", "rules", "stages", "bukis"],
+  //props:["input_datas", "rules", "stages", "bukis"],
+  props: {
+    input_datas: {
+      type: Array,
+      required: true
+    },
+    rules: {
+      type: Array,
+      required: true
+    },
+    stages: {
+      type: Array,
+      required: true
+    },
+    bukis: {
+      type: Array,
+      required: true
+    }
+  },
   data: function data() {
     return {
       showEditRecord: false,
-      input_data: null
+      tableData: this.input_datas,
+      editData: null
     };
   },
   methods: {
     switchEditRecord: function switchEditRecord(input_data) {
       this.showEditRecord = !this.showEditRecord;
-      this.input_data = input_data;
+      this.editData = input_data;
+    },
+    deleteRecord: function deleteRecord(key) {
+      this.tableData = this.tableData.filter(function (data) {
+        return data.input_data_id !== key;
+      });
+      var postData = {
+        'delete_key': key
+      };
+      axios.post('/api/delete_record/', postData).then(function (res) {
+        // テストのため返り値をコンソールに表示
+        console.log(res.data); // this.$set(this.testObject, 'value', 'test2-Value')
+      });
     }
   }
 });
@@ -2108,7 +2144,6 @@ __webpack_require__.r(__webpack_exports__);
       this.$emit('click-cancel-insert-btn');
     },
     insertEvent: function insertEvent() {
-      alert(this.rule_id + ", " + this.stage1_id + ", " + this.stage2_id + ", " + this.buki_id + ", " + this.xp);
       this.$emit('click-insert-btn', {
         rule_id: this.rule_id,
         stage1_id: this.stage1_id,
@@ -38366,17 +38401,40 @@ var render = function() {
         _vm._v(" "),
         _c(
           "select",
-          { attrs: { name: "rule_id" } },
-          [
-            _c("option", { attrs: { value: "", disabled: "", selected: "" } }, [
-              _vm._v("選択してください")
-            ]),
-            _vm._v(" "),
-            _vm._l(_vm.rules, function(rule, key) {
-              return _c("option", [_vm._v(_vm._s(rule.rule_name))])
-            })
-          ],
-          2
+          {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.ruleSelected,
+                expression: "ruleSelected"
+              }
+            ],
+            attrs: { name: "rule_id" },
+            on: {
+              change: function($event) {
+                var $$selectedVal = Array.prototype.filter
+                  .call($event.target.options, function(o) {
+                    return o.selected
+                  })
+                  .map(function(o) {
+                    var val = "_value" in o ? o._value : o.value
+                    return val
+                  })
+                _vm.ruleSelected = $event.target.multiple
+                  ? $$selectedVal
+                  : $$selectedVal[0]
+              }
+            }
+          },
+          _vm._l(_vm.rules, function(rule) {
+            return _c(
+              "option",
+              { key: rule.id, domProps: { value: rule.rule_id } },
+              [_vm._v(_vm._s(rule.rule_name))]
+            )
+          }),
+          0
         ),
         _vm._v(" "),
         _c("br"),
@@ -38385,17 +38443,40 @@ var render = function() {
         _vm._v(" "),
         _c(
           "select",
-          { attrs: { name: "stage1_id" } },
-          [
-            _c("option", { attrs: { value: "", disabled: "", selected: "" } }, [
-              _vm._v("選択してください")
-            ]),
-            _vm._v(" "),
-            _vm._l(_vm.stages, function(stage, key) {
-              return _c("option", [_vm._v(_vm._s(stage.stage_name))])
-            })
-          ],
-          2
+          {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.stage1Selected,
+                expression: "stage1Selected"
+              }
+            ],
+            attrs: { name: "stage1_id" },
+            on: {
+              change: function($event) {
+                var $$selectedVal = Array.prototype.filter
+                  .call($event.target.options, function(o) {
+                    return o.selected
+                  })
+                  .map(function(o) {
+                    var val = "_value" in o ? o._value : o.value
+                    return val
+                  })
+                _vm.stage1Selected = $event.target.multiple
+                  ? $$selectedVal
+                  : $$selectedVal[0]
+              }
+            }
+          },
+          _vm._l(_vm.stages, function(stage) {
+            return _c(
+              "option",
+              { key: stage.id, domProps: { value: stage.stage_id } },
+              [_vm._v(_vm._s(stage.stage_name))]
+            )
+          }),
+          0
         ),
         _vm._v(" "),
         _c("br"),
@@ -38404,17 +38485,40 @@ var render = function() {
         _vm._v(" "),
         _c(
           "select",
-          { attrs: { name: "stage2_id" } },
-          [
-            _c("option", { attrs: { value: "", disabled: "", selected: "" } }, [
-              _vm._v("選択してください")
-            ]),
-            _vm._v(" "),
-            _vm._l(_vm.stages, function(stage, key) {
-              return _c("option", [_vm._v(_vm._s(stage.stage_name))])
-            })
-          ],
-          2
+          {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.stage2Selected,
+                expression: "stage2Selected"
+              }
+            ],
+            attrs: { name: "stage2_id" },
+            on: {
+              change: function($event) {
+                var $$selectedVal = Array.prototype.filter
+                  .call($event.target.options, function(o) {
+                    return o.selected
+                  })
+                  .map(function(o) {
+                    var val = "_value" in o ? o._value : o.value
+                    return val
+                  })
+                _vm.stage2Selected = $event.target.multiple
+                  ? $$selectedVal
+                  : $$selectedVal[0]
+              }
+            }
+          },
+          _vm._l(_vm.stages, function(stage) {
+            return _c(
+              "option",
+              { key: stage.id, domProps: { value: stage.stage_id } },
+              [_vm._v(_vm._s(stage.stage_name))]
+            )
+          }),
+          0
         ),
         _vm._v(" "),
         _c("br"),
@@ -38423,24 +38527,66 @@ var render = function() {
         _vm._v(" "),
         _c(
           "select",
-          { attrs: { name: "buki_id" } },
-          [
-            _c("option", { attrs: { value: "", disabled: "", selected: "" } }, [
-              _vm._v("選択してください")
-            ]),
-            _vm._v(" "),
-            _vm._l(_vm.bukis, function(buki, key) {
-              return _c("option", [_vm._v(_vm._s(buki.buki_name))])
-            })
-          ],
-          2
+          {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.bukiSelected,
+                expression: "bukiSelected"
+              }
+            ],
+            attrs: { name: "buki_id" },
+            on: {
+              change: function($event) {
+                var $$selectedVal = Array.prototype.filter
+                  .call($event.target.options, function(o) {
+                    return o.selected
+                  })
+                  .map(function(o) {
+                    var val = "_value" in o ? o._value : o.value
+                    return val
+                  })
+                _vm.bukiSelected = $event.target.multiple
+                  ? $$selectedVal
+                  : $$selectedVal[0]
+              }
+            }
+          },
+          _vm._l(_vm.bukis, function(buki) {
+            return _c(
+              "option",
+              { key: buki.id, domProps: { value: buki.buki_id } },
+              [_vm._v(_vm._s(buki.buki_name))]
+            )
+          }),
+          0
         ),
         _vm._v(" "),
         _c("br"),
         _vm._v(" "),
         _c("label", { attrs: { for: "xp" } }, [_vm._v("ウデマエポイント")]),
         _vm._v(" "),
-        _c("input", { attrs: { type: "text", name: "xp", value: "" } }),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.xpInput,
+              expression: "xpInput"
+            }
+          ],
+          attrs: { type: "text", name: "xp", value: "" },
+          domProps: { value: _vm.xpInput },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.xpInput = $event.target.value
+            }
+          }
+        }),
         _vm._v(" "),
         _c("br")
       ]),
@@ -38482,8 +38628,8 @@ var render = function() {
         [
           _vm._m(0),
           _vm._v(" "),
-          _vm._l(_vm.input_datas, function(input_data, key) {
-            return _c("tr", [
+          _vm._l(_vm.tableData, function(input_data) {
+            return _c("tr", { key: input_data.input_data_id }, [
               _c("td", [_vm._v(_vm._s(input_data.rule.rule_name))]),
               _vm._v(" "),
               _c("td", [_vm._v(_vm._s(input_data.stage1.stage_name))]),
@@ -38511,34 +38657,43 @@ var render = function() {
                 )
               ]),
               _vm._v(" "),
-              _vm._m(1, true)
+              _c("td", [
+                _c(
+                  "button",
+                  {
+                    staticClass: "deleteBtn btn btn-info",
+                    attrs: { type: "button" },
+                    on: {
+                      click: function($event) {
+                        $event.preventDefault()
+                        return _vm.deleteRecord(input_data.input_data_id)
+                      }
+                    }
+                  },
+                  [_vm._v("削除")]
+                )
+              ])
             ])
           })
         ],
         2
       ),
       _vm._v(" "),
-      _c("edit-record", {
-        directives: [
-          {
-            name: "show",
-            rawName: "v-show",
-            value: _vm.showEditRecord,
-            expression: "showEditRecord"
-          }
-        ],
-        attrs: {
-          rules: _vm.rules,
-          stages: _vm.stages,
-          bukis: _vm.bukis,
-          input_data: _vm.input_data
-        },
-        on: {
-          "click-edit-btn": function($event) {
-            return _vm.switchEditRecord()
-          }
-        }
-      })
+      _vm.showEditRecord
+        ? _c("edit-record", {
+            attrs: {
+              rules: _vm.rules,
+              stages: _vm.stages,
+              bukis: _vm.bukis,
+              editData: _vm.editData
+            },
+            on: {
+              "click-edit-btn": function($event) {
+                return _vm.switchEditRecord()
+              }
+            }
+          })
+        : _vm._e()
     ],
     1
   )
@@ -38562,18 +38717,6 @@ var staticRenderFns = [
       _c("th"),
       _vm._v(" "),
       _c("th")
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("td", [
-      _c(
-        "button",
-        { staticClass: "deleteBtn btn btn-info", attrs: { type: "button" } },
-        [_vm._v("削除")]
-      )
     ])
   }
 ]
@@ -38661,10 +38804,9 @@ var render = function() {
               directives: [
                 {
                   name: "model",
-                  rawName: "v-model.rule_id",
+                  rawName: "v-model",
                   value: _vm.rule_id,
-                  expression: "rule_id",
-                  modifiers: { rule_id: true }
+                  expression: "rule_id"
                 }
               ],
               attrs: { name: "rule_id" },
@@ -38691,10 +38833,12 @@ var render = function() {
                 [_vm._v("選択してください")]
               ),
               _vm._v(" "),
-              _vm._l(_vm.rules, function(rule, key) {
-                return _c("option", { domProps: { value: rule.rule_id } }, [
-                  _vm._v(_vm._s(rule.rule_name))
-                ])
+              _vm._l(_vm.rules, function(rule) {
+                return _c(
+                  "option",
+                  { key: rule.id, domProps: { value: rule.rule_id } },
+                  [_vm._v(_vm._s(rule.rule_name))]
+                )
               })
             ],
             2
@@ -38710,10 +38854,9 @@ var render = function() {
               directives: [
                 {
                   name: "model",
-                  rawName: "v-model.stage1_id",
+                  rawName: "v-model",
                   value: _vm.stage1_id,
-                  expression: "stage1_id",
-                  modifiers: { stage1_id: true }
+                  expression: "stage1_id"
                 }
               ],
               attrs: { name: "stage1_id" },
@@ -38740,10 +38883,12 @@ var render = function() {
                 [_vm._v("選択してください")]
               ),
               _vm._v(" "),
-              _vm._l(_vm.stages, function(stage, key) {
-                return _c("option", { domProps: { value: stage.stage_id } }, [
-                  _vm._v(_vm._s(stage.stage_name))
-                ])
+              _vm._l(_vm.stages, function(stage) {
+                return _c(
+                  "option",
+                  { key: stage.id, domProps: { value: stage.stage_id } },
+                  [_vm._v(_vm._s(stage.stage_name))]
+                )
               })
             ],
             2
@@ -38759,10 +38904,9 @@ var render = function() {
               directives: [
                 {
                   name: "model",
-                  rawName: "v-model.stage2_id",
+                  rawName: "v-model",
                   value: _vm.stage2_id,
-                  expression: "stage2_id",
-                  modifiers: { stage2_id: true }
+                  expression: "stage2_id"
                 }
               ],
               attrs: { name: "stage2_id" },
@@ -38789,10 +38933,12 @@ var render = function() {
                 [_vm._v("選択してください")]
               ),
               _vm._v(" "),
-              _vm._l(_vm.stages, function(stage, key) {
-                return _c("option", { domProps: { value: stage.stage_id } }, [
-                  _vm._v(_vm._s(stage.stage_name))
-                ])
+              _vm._l(_vm.stages, function(stage) {
+                return _c(
+                  "option",
+                  { key: stage.id, domProps: { value: stage.stage_id } },
+                  [_vm._v(_vm._s(stage.stage_name))]
+                )
               })
             ],
             2
@@ -38808,10 +38954,9 @@ var render = function() {
               directives: [
                 {
                   name: "model",
-                  rawName: "v-model.buki_id",
+                  rawName: "v-model",
                   value: _vm.buki_id,
-                  expression: "buki_id",
-                  modifiers: { buki_id: true }
+                  expression: "buki_id"
                 }
               ],
               attrs: { name: "buki_id" },
@@ -38838,10 +38983,12 @@ var render = function() {
                 [_vm._v("選択してください")]
               ),
               _vm._v(" "),
-              _vm._l(_vm.bukis, function(buki, key) {
-                return _c("option", { domProps: { value: buki.buki_id } }, [
-                  _vm._v(_vm._s(buki.buki_name))
-                ])
+              _vm._l(_vm.bukis, function(buki) {
+                return _c(
+                  "option",
+                  { key: buki.id, domProps: { value: buki.buki_id } },
+                  [_vm._v(_vm._s(buki.buki_name))]
+                )
               })
             ],
             2
@@ -38855,10 +39002,9 @@ var render = function() {
             directives: [
               {
                 name: "model",
-                rawName: "v-model.xp",
+                rawName: "v-model",
                 value: _vm.xp,
-                expression: "xp",
-                modifiers: { xp: true }
+                expression: "xp"
               }
             ],
             attrs: { type: "text", name: "xp", value: "" },

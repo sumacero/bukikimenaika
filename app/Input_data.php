@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Input_data extends Model
 {
+    //primaryKeyの設定
+    protected $primaryKey = "input_data_id";
+
     public function rule(){
         return $this->belongsTo('App\Rule','rule_id');
     }

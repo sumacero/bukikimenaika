@@ -3,31 +3,31 @@
         <div id="content">
             <form name="insert-form" action="/insert_data" method="post">
                 <label for="rule_id">ルール</label>
-                <select v-model.rule_id="rule_id" name="rule_id">
+                <select v-model="rule_id" name="rule_id">
                 <option value="" disabled selected>選択してください</option>
-                <option v-for="rule, key in rules" v-bind:value=rule.rule_id >{{ rule.rule_name }}</option>
+                <option v-for="rule in rules" :key="rule.id" v-bind:value=rule.rule_id >{{ rule.rule_name }}</option>
                 </select>
                 <br>
                 <label for="stage1_id">ステージ1</label>
-                <select v-model.stage1_id="stage1_id" name="stage1_id">
+                <select v-model="stage1_id" name="stage1_id">
                 <option value="" disabled selected>選択してください</option>
-                <option v-for="stage, key in stages" v-bind:value=stage.stage_id >{{ stage.stage_name }}</option>
+                <option v-for="stage in stages" :key="stage.id" v-bind:value=stage.stage_id >{{ stage.stage_name }}</option>
                 </select>
                 <br>
                 <label for="stage2_id">ステージ2</label>
-                <select v-model.stage2_id="stage2_id" name="stage2_id">
+                <select v-model="stage2_id" name="stage2_id">
                 <option value="" disabled selected>選択してください</option>
-                <option v-for="stage, key in stages" v-bind:value=stage.stage_id >{{ stage.stage_name }}</option>
+                <option v-for="stage in stages" :key="stage.id" v-bind:value=stage.stage_id >{{ stage.stage_name }}</option>
                 </select>
                 <br>
                 <label for="buki_id">ブキ</label>
-                <select v-model.buki_id="buki_id" name="buki_id">
+                <select v-model="buki_id" name="buki_id">
                 <option value="" disabled selected>選択してください</option>
-                <option v-for="buki, key in bukis" v-bind:value=buki.buki_id >{{ buki.buki_name }}</option>
+                <option v-for="buki in bukis" :key="buki.id" v-bind:value=buki.buki_id >{{ buki.buki_name }}</option>
                 </select>
                 <br>
                 <label for="xp">ウデマエポイント</label>
-                <input v-model.xp="xp" type="text" name="xp" value="">
+                <input v-model="xp" type="text" name="xp" value="">
                 <br>
             </form>
             <button v-on:click="insertEvent">データ追加</button>
@@ -53,10 +53,11 @@
             cancelInsertEvent: function(){
                 this.$emit('click-cancel-insert-btn')
             },
+            
             insertEvent: function(){
-                alert(this.rule_id + ", " + this.stage1_id + ", " + this.stage2_id + ", " + this.buki_id + ", " + this.xp);
                 this.$emit('click-insert-btn',{rule_id: this.rule_id, stage1_id:this.stage1_id, stage2_id:this.stage2_id, buki_id:this.buki_id,xp:this.xp})
             }
+            
         }
     }
 </script>

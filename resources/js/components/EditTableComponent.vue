@@ -10,35 +10,65 @@
                 <th></th>
                 <th></th>
             </tr>
-            <tr v-for="input_data, key in input_datas">
+            <tr v-for="input_data in tableData" :key="input_data.input_data_id">
                 <td>{{ input_data.rule.rule_name }}</td>
                 <td>{{ input_data.stage1.stage_name }}</td>
                 <td>{{ input_data.stage2.stage_name }}</td>
                 <td>{{ input_data.buki.buki_name }}</td>
                 <td>{{ input_data.xp }}</td>
                 <td><button type="button" class="editBtn btn btn-info" @click.prevent="switchEditRecord(input_data)">編集</button></td>
-                <td><button type="button" class="deleteBtn btn btn-info">削除</button></td>
+                <td><button type="button" class="deleteBtn btn btn-info" @click.prevent="deleteRecord(input_data.input_data_id)">削除</button></td>
             </tr>
         </table>
-        <edit-record v-show="showEditRecord" v-on:click-edit-btn="switchEditRecord()" v-bind:rules="rules" v-bind:stages="stages" v-bind:bukis="bukis" v-bind:input_data="input_data">
+        <edit-record v-if="showEditRecord" v-on:click-edit-btn="switchEditRecord()" v-bind:rules="rules" v-bind:stages="stages" v-bind:bukis="bukis" v-bind:editData="editData">
         </edit-record>
     </div>
 </template>
 
 <script>
     export default {
-        props:["input_datas", "rules", "stages", "bukis"],
-        data () {
-            return {
+        //props:["input_datas", "rules", "stages", "bukis"],
+        props:{
+            input_datas:{
+                type:Array,
+                required: true,
+            },
+            rules:{
+                type:Array,
+                required: true,
+            },
+            stages:{
+                type:Array,
+                required: true,
+            },
+            bukis:{
+                type:Array,
+                required: true,
+            }
+        },
+        data: function(){
+            return{
                 showEditRecord: false,
-                input_data: null
+                tableData: this.input_datas,
+                editData: null
             }
         },
         methods: {
              switchEditRecord: function(input_data) {
-                this.showEditRecord = !this.showEditRecord
-                this.input_data = input_data
-             }
+                this.showEditRecord = !this.showEditRecord;
+                this.editData = input_data;
+             },
+            deleteRecord: function(key) {
+                this.tableData = this.tableData.filter(data => data.input_data_id !== key);
+                var postData = {
+                    'delete_key':key
+                }
+                axios.post('/api/delete_record/', postData).then(res => {
+                    // テストのため返り値をコンソールに表示
+                    console.log(res.data);
+                    // this.$set(this.testObject, 'value', 'test2-Value')
+                });
+             },
         }
     }
 </script>
