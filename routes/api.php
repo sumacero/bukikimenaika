@@ -23,9 +23,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 */
 Route::group(['middleware' => 'api'],function(){
-    Route::post('/insert_data',function(){
-        $input_data = new input_data;    
-        
+    Route::post('/insert_record',function(){
+        $input_data = new input_data;
         $input_data->user_id = 1;
         $input_data->rule_id = request('rule_id');
         $input_data->stage1_id = request('stage1_id');
@@ -33,8 +32,8 @@ Route::group(['middleware' => 'api'],function(){
         $input_data->buki_id = request('buki_id');
         $input_data->xp = request('xp');
         $input_data->save();
-
-        //return redirect('/edit_data');  
+        $inserted_id = $input_data->input_data_id;
+        $input_data = Input_data::with('user','rule','stage1','stage2','buki')->get()->find($inserted_id);
         return ['input_data' => $input_data];
     });
 

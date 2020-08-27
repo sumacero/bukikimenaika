@@ -8,27 +8,22 @@
     <div id="app1">
         <button v-on:click="switchInsertRecord()">データの追加</button>
         <button v-on:click="saveData()">編集内容を保存</button>
-        <insert-record v-show="showInsertRecord" v-on:click-insert-btn="insertRecord($event)" v-on:click-cancel-insert-btn="switchInsertRecord()" v-bind:rules="{{ $rules }}" v-bind:stages="{{ $stages }}" v-bind:bukis="{{ $bukis }}">
+        <insert-record v-if="showInsertRecord" v-on:click-cancel-insert-btn="switchInsertRecord" v-on:click-insert-btn="insertRecord" v-bind:rules="{{ $rules }}" v-bind:stages="{{ $stages }}" v-bind:bukis="{{ $bukis }}">
         </insert-record>
-        <edit-table v-bind:input_datas="{{ $input_datas }}" v-bind:rules="{{ $rules }}" v-bind:stages="{{ $stages }}" v-bind:bukis="{{ $bukis }}">
-        </edit-table>
+        <edit-table v-bind:input_datas="{{ $input_datas }}" v-bind:rules="{{ $rules }}" v-bind:stages="{{ $stages }}" v-bind:bukis="{{ $bukis }}" v-bind:insert_record_data="insert_record_data">
+        </edit-table> 
     </div>
 @endsection
 
 @section('vue')
 <script>
 Vue.config.devtools = true;
+
 new Vue({
     el: '#app1',
     data: {
         showInsertRecord: false,
-        'user_id': null,
-        'rule_id': null,
-        'stage1_id': null,
-        'stage2_id': null,
-        'buki_id': null,
-        'xp': null,
-        'updateData': null,
+        insert_record_data: null,
     },
     mounted: function(){
     },
@@ -36,9 +31,8 @@ new Vue({
         switchInsertRecord: function() {
             this.showInsertRecord = !this.showInsertRecord;
         },
-        insertRecord: function(insertRecord){
-       //     console.log(this.input_datas);
-         //   console.log(this.test);
+        insertRecord: function(insertRecordData){
+            this.insert_record_data = insertRecordData;
         },
         /*
         submitInsertRecord: function(insertRecord){

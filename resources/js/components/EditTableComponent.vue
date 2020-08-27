@@ -44,13 +44,16 @@
             bukis:{
                 type:Array,
                 required: true,
-            }
+            },
+            insert_record_data:{
+                type:Object,
+            },
         },
         data: function(){
             return{
                 showEditRecord: false,
                 tableData: this.input_datas,
-                editData: null
+                editData: null,
             }
         },
         methods: {
@@ -60,7 +63,7 @@
              },
             deleteRecord: function(key) {
                 this.tableData = this.tableData.filter(data => data.input_data_id !== key);
-                var postData = {
+                let postData = {
                     'delete_key':key
                 }
                 axios.post('/api/delete_record/', postData).then(res => {
@@ -69,6 +72,14 @@
                     // this.$set(this.testObject, 'value', 'test2-Value')
                 });
              },
+        },
+        watch:{
+            insert_record_data:{
+                handler: function () {
+                    this.tableData.push(this.insert_record_data);
+                },
+                deep: true
+            }
         }
     }
 </script>
