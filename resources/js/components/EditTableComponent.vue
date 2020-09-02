@@ -20,14 +20,13 @@
                 <td><button type="button" class="deleteBtn btn btn-info" @click.prevent="deleteRecord(input_data.input_data_id)">削除</button></td>
             </tr>
         </table>
-        <edit-record v-if="showEditRecord" v-on:click-edit-btn="switchEditRecord()" v-bind:rules="rules" v-bind:stages="stages" v-bind:bukis="bukis" v-bind:editData="editData">
-        </edit-record>
+        <edit-record v-if="showEditRecord" v-on:click-update-btn="updateRecord" v-on:click-cancel-edit-btn="switchEditRecord" v-bind:rules="rules" v-bind:stages="stages" v-bind:bukis="bukis" v-bind:editData="editData">
+        </edit-record> 
     </div>
 </template>
 
 <script>
     export default {
-        //props:["input_datas", "rules", "stages", "bukis"],
         props:{
             input_datas:{
                 type:Array,
@@ -61,17 +60,29 @@
                 this.showEditRecord = !this.showEditRecord;
                 this.editData = input_data;
              },
-            deleteRecord: function(key) {
-                this.tableData = this.tableData.filter(data => data.input_data_id !== key);
+            deleteRecord: function(input_data_id) {
                 let postData = {
-                    'delete_key':key
+                    'input_data_id':input_data_id
                 }
-                axios.post('/api/delete_record/', postData).then(res => {
-                    // テストのため返り値をコンソールに表示
-                    console.log(res.data);
-                    // this.$set(this.testObject, 'value', 'test2-Value')
-                });
-             },
+                const func = async ()=>{
+                    try{
+                        let res = await axios.post('delete_record', postData);
+                        this.tableData = this.tableData.filter(data => data.input_data_id !== input_data_id);
+                    }
+                    catch (error){
+                        console.log(error.response.data);
+                        alert("サーバーエラーが発生しました。");
+                    }
+                }
+                func();
+            },
+            updateRecord: function(updateRecordData){
+                for(let i = 0; i<this.tableData.length; i++){
+                    if(this.tableData[i].input_data_id === updateRecordData.input_data_id){
+                        this.tableData.splice(i, 1, updateRecordData); // i番目から１つ削除し、データを追加
+                    }       
+                }
+            },
         },
         watch:{
             insert_record_data:{

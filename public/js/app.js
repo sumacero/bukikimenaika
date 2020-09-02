@@ -1920,6 +1920,20 @@ module.exports = {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -1958,16 +1972,141 @@ __webpack_require__.r(__webpack_exports__);
   props: ["rules", "stages", "bukis", "editData"],
   data: function data() {
     return {
-      ruleSelected: this.editData.rule_id,
-      stage1Selected: this.editData.stage1_id,
-      stage2Selected: this.editData.stage2_id,
-      bukiSelected: this.editData.buki_id,
-      xpInput: this.editData.xp
+      input_data_id: this.editData.input_data_id,
+      rule_id: this.editData.rule_id,
+      stage1_id: this.editData.stage1_id,
+      stage2_id: this.editData.stage2_id,
+      buki_id: this.editData.buki_id,
+      xp: this.editData.xp,
+      errors: {
+        rule: [],
+        stage1: [],
+        stage2: [],
+        buki: [],
+        xp: []
+      },
+      error: false
     };
   },
   methods: {
     cancelEditEvent: function cancelEditEvent() {
-      this.$emit('click-edit-btn');
+      this.$emit('click-cancel-edit-btn');
+    },
+    updateRecord: function updateRecord() {
+      var _this = this;
+
+      this.validator();
+
+      if (!this.error) {
+        var postData = {
+          'input_data_id': this.input_data_id,
+          'rule_id': this.rule_id,
+          'stage1_id': this.stage1_id,
+          'stage2_id': this.stage2_id,
+          'buki_id': this.buki_id,
+          'xp': this.xp
+        };
+
+        var func = /*#__PURE__*/function () {
+          var _ref = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+            var res;
+            return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+              while (1) {
+                switch (_context.prev = _context.next) {
+                  case 0:
+                    _context.prev = 0;
+                    _context.next = 3;
+                    return axios.post('update_record', postData);
+
+                  case 3:
+                    res = _context.sent;
+
+                    _this.$emit('click-update-btn', res.data.input_data);
+
+                    _this.$emit('click-cancel-edit-btn');
+
+                    _context.next = 13;
+                    break;
+
+                  case 8:
+                    _context.prev = 8;
+                    _context.t0 = _context["catch"](0);
+
+                    _this.$emit('click-cancel-edit-btn');
+
+                    console.log(_context.t0.response.data);
+                    alert("サーバーエラーが発生しました。");
+
+                  case 13:
+                  case "end":
+                    return _context.stop();
+                }
+              }
+            }, _callee, null, [[0, 8]]);
+          }));
+
+          return function func() {
+            return _ref.apply(this, arguments);
+          };
+        }();
+
+        func();
+      }
+    },
+    validator: function validator() {
+      var rule = [];
+      var stage1 = [];
+      var stage2 = [];
+      var buki = [];
+      var xp = [];
+      var message = '';
+      this.error = false;
+
+      if (!this.rule_id) {
+        message = 'ルールを選択してください。';
+        rule.push(message);
+        this.error = true;
+      }
+
+      if (!this.stage1_id) {
+        message = 'ステージ1を選択してください。';
+        stage1.push(message);
+        this.error = true;
+      }
+
+      if (!this.stage2_id) {
+        message = 'ステージ2を選択してください。';
+        stage2.push(message);
+        this.error = true;
+      }
+
+      if (this.stage1_id === this.stage2_id && this.stage1_id) {
+        message = 'ステージ1とステージ2が重複しています。';
+        stage2.push(message);
+        this.error = true;
+      }
+
+      if (!this.buki_id) {
+        message = 'ブキを選択してください。';
+        buki.push(message);
+        this.error = true;
+      }
+
+      if (!this.xp) {
+        message = 'ウデマエを入力してください。';
+        buki.push(message);
+        this.error = true;
+      } else if (!(this.xp >= 1000 && this.xp <= 4000)) {
+        message = 'xpは1000～4000の半角数字で入力してください。';
+        xp.push(message);
+        this.error = true;
+      }
+
+      this.errors.rule = rule;
+      this.errors.stage1 = stage1;
+      this.errors.stage2 = stage2;
+      this.errors.buki = buki;
+      this.errors.xp = xp;
     }
   }
 });
@@ -1983,6 +2122,14 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 //
 //
 //
@@ -2011,7 +2158,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  //props:["input_datas", "rules", "stages", "bukis"],
   props: {
     input_datas: {
       type: Array,
@@ -2045,17 +2191,59 @@ __webpack_require__.r(__webpack_exports__);
       this.showEditRecord = !this.showEditRecord;
       this.editData = input_data;
     },
-    deleteRecord: function deleteRecord(key) {
-      this.tableData = this.tableData.filter(function (data) {
-        return data.input_data_id !== key;
-      });
+    deleteRecord: function deleteRecord(input_data_id) {
+      var _this = this;
+
       var postData = {
-        'delete_key': key
+        'input_data_id': input_data_id
       };
-      axios.post('/api/delete_record/', postData).then(function (res) {
-        // テストのため返り値をコンソールに表示
-        console.log(res.data); // this.$set(this.testObject, 'value', 'test2-Value')
-      });
+
+      var func = /*#__PURE__*/function () {
+        var _ref = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+          var res;
+          return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+            while (1) {
+              switch (_context.prev = _context.next) {
+                case 0:
+                  _context.prev = 0;
+                  _context.next = 3;
+                  return axios.post('delete_record', postData);
+
+                case 3:
+                  res = _context.sent;
+                  _this.tableData = _this.tableData.filter(function (data) {
+                    return data.input_data_id !== input_data_id;
+                  });
+                  _context.next = 11;
+                  break;
+
+                case 7:
+                  _context.prev = 7;
+                  _context.t0 = _context["catch"](0);
+                  console.log(_context.t0.response.data);
+                  alert("サーバーエラーが発生しました。");
+
+                case 11:
+                case "end":
+                  return _context.stop();
+              }
+            }
+          }, _callee, null, [[0, 7]]);
+        }));
+
+        return function func() {
+          return _ref.apply(this, arguments);
+        };
+      }();
+
+      func();
+    },
+    updateRecord: function updateRecord(updateRecordData) {
+      for (var i = 0; i < this.tableData.length; i++) {
+        if (this.tableData[i].input_data_id === updateRecordData.input_data_id) {
+          this.tableData.splice(i, 1, updateRecordData); // i番目から１つ削除し、データを追加
+        }
+      }
     }
   },
   watch: {
@@ -2208,22 +2396,38 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               while (1) {
                 switch (_context.prev = _context.next) {
                   case 0:
-                    _context.next = 2;
-                    return axios.post('/api/insert_record/', postData);
+                    _context.prev = 0;
+                    _context.next = 3;
+                    return axios.post('insert_record', postData);
 
-                  case 2:
+                  case 3:
                     res = _context.sent;
 
                     _this.$emit('click-insert-btn', res.data.input_data);
 
                     _this.$emit('click-cancel-insert-btn');
 
-                  case 5:
+                    _context.next = 13;
+                    break;
+
+                  case 8:
+                    _context.prev = 8;
+                    _context.t0 = _context["catch"](0);
+
+                    _this.$emit('click-cancel-insert-btn');
+
+                    console.log(_context.t0.response.data);
+                    alert("サーバーエラーが発生しました。");
+
+                  case 13:
+                    ;
+
+                  case 14:
                   case "end":
                     return _context.stop();
                 }
               }
-            }, _callee);
+            }, _callee, null, [[0, 8]]);
           }));
 
           return function func() {
@@ -2288,18 +2492,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.errors.stage2 = stage2;
       this.errors.buki = buki;
       this.errors.xp = xp;
-    }
-  },
-  computed: {
-    insertRecordData: function insertRecordData() {
-      var insertRecordData = {
-        rule_id: this.rule_id,
-        stage1_id: this.stage1_id,
-        stage2_id: this.stage2_id,
-        buki_id: this.buki_id,
-        xp: this.xp
-      };
-      return insertRecordData;
     }
   }
 });
@@ -39285,200 +39477,237 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { attrs: { id: "overlay" } }, [
     _c("div", { attrs: { id: "content" } }, [
-      _c("form", { attrs: { action: "/update_data", method: "post" } }, [
-        _c("label", { attrs: { for: "rule_id" } }, [_vm._v("ルール")]),
-        _vm._v(" "),
-        _c(
-          "select",
-          {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.ruleSelected,
-                expression: "ruleSelected"
-              }
-            ],
-            attrs: { name: "rule_id" },
-            on: {
-              change: function($event) {
-                var $$selectedVal = Array.prototype.filter
-                  .call($event.target.options, function(o) {
-                    return o.selected
-                  })
-                  .map(function(o) {
-                    var val = "_value" in o ? o._value : o.value
-                    return val
-                  })
-                _vm.ruleSelected = $event.target.multiple
-                  ? $$selectedVal
-                  : $$selectedVal[0]
-              }
-            }
-          },
-          _vm._l(_vm.rules, function(rule) {
-            return _c(
-              "option",
-              { key: rule.id, domProps: { value: rule.rule_id } },
-              [_vm._v(_vm._s(rule.rule_name))]
-            )
-          }),
-          0
-        ),
-        _vm._v(" "),
-        _c("br"),
-        _vm._v(" "),
-        _c("label", { attrs: { for: "stage1_id" } }, [_vm._v("ステージ1")]),
-        _vm._v(" "),
-        _c(
-          "select",
-          {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.stage1Selected,
-                expression: "stage1Selected"
-              }
-            ],
-            attrs: { name: "stage1_id" },
-            on: {
-              change: function($event) {
-                var $$selectedVal = Array.prototype.filter
-                  .call($event.target.options, function(o) {
-                    return o.selected
-                  })
-                  .map(function(o) {
-                    var val = "_value" in o ? o._value : o.value
-                    return val
-                  })
-                _vm.stage1Selected = $event.target.multiple
-                  ? $$selectedVal
-                  : $$selectedVal[0]
-              }
-            }
-          },
-          _vm._l(_vm.stages, function(stage) {
-            return _c(
-              "option",
-              { key: stage.id, domProps: { value: stage.stage_id } },
-              [_vm._v(_vm._s(stage.stage_name))]
-            )
-          }),
-          0
-        ),
-        _vm._v(" "),
-        _c("br"),
-        _vm._v(" "),
-        _c("label", { attrs: { for: "stage2_id" } }, [_vm._v("ステージ2")]),
-        _vm._v(" "),
-        _c(
-          "select",
-          {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.stage2Selected,
-                expression: "stage2Selected"
-              }
-            ],
-            attrs: { name: "stage2_id" },
-            on: {
-              change: function($event) {
-                var $$selectedVal = Array.prototype.filter
-                  .call($event.target.options, function(o) {
-                    return o.selected
-                  })
-                  .map(function(o) {
-                    var val = "_value" in o ? o._value : o.value
-                    return val
-                  })
-                _vm.stage2Selected = $event.target.multiple
-                  ? $$selectedVal
-                  : $$selectedVal[0]
-              }
-            }
-          },
-          _vm._l(_vm.stages, function(stage) {
-            return _c(
-              "option",
-              { key: stage.id, domProps: { value: stage.stage_id } },
-              [_vm._v(_vm._s(stage.stage_name))]
-            )
-          }),
-          0
-        ),
-        _vm._v(" "),
-        _c("br"),
-        _vm._v(" "),
-        _c("label", { attrs: { for: "buki_id" } }, [_vm._v("ブキ")]),
-        _vm._v(" "),
-        _c(
-          "select",
-          {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.bukiSelected,
-                expression: "bukiSelected"
-              }
-            ],
-            attrs: { name: "buki_id" },
-            on: {
-              change: function($event) {
-                var $$selectedVal = Array.prototype.filter
-                  .call($event.target.options, function(o) {
-                    return o.selected
-                  })
-                  .map(function(o) {
-                    var val = "_value" in o ? o._value : o.value
-                    return val
-                  })
-                _vm.bukiSelected = $event.target.multiple
-                  ? $$selectedVal
-                  : $$selectedVal[0]
-              }
-            }
-          },
-          _vm._l(_vm.bukis, function(buki) {
-            return _c(
-              "option",
-              { key: buki.id, domProps: { value: buki.buki_id } },
-              [_vm._v(_vm._s(buki.buki_name))]
-            )
-          }),
-          0
-        ),
-        _vm._v(" "),
-        _c("br"),
-        _vm._v(" "),
-        _c("label", { attrs: { for: "xp" } }, [_vm._v("ウデマエポイント")]),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
+      _c(
+        "form",
+        { attrs: { name: "update-record-form" } },
+        [
+          _vm._m(0),
+          _vm._v(" "),
+          _c(
+            "select",
             {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.xpInput,
-              expression: "xpInput"
-            }
-          ],
-          attrs: { type: "text", name: "xp", value: "" },
-          domProps: { value: _vm.xpInput },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.rule_id,
+                  expression: "rule_id"
+                }
+              ],
+              attrs: { name: "rule_id" },
+              on: {
+                change: function($event) {
+                  var $$selectedVal = Array.prototype.filter
+                    .call($event.target.options, function(o) {
+                      return o.selected
+                    })
+                    .map(function(o) {
+                      var val = "_value" in o ? o._value : o.value
+                      return val
+                    })
+                  _vm.rule_id = $event.target.multiple
+                    ? $$selectedVal
+                    : $$selectedVal[0]
+                }
               }
-              _vm.xpInput = $event.target.value
+            },
+            _vm._l(_vm.rules, function(rule) {
+              return _c(
+                "option",
+                { key: rule.id, domProps: { value: rule.rule_id } },
+                [_vm._v(_vm._s(rule.rule_name))]
+              )
+            }),
+            0
+          ),
+          _vm._v(" "),
+          _vm._l(_vm.errors.rule, function(error) {
+            return _c("p", { key: error.rule, staticClass: "errors" }, [
+              _vm._v(_vm._s(error))
+            ])
+          }),
+          _vm._v(" "),
+          _c("br"),
+          _vm._v(" "),
+          _vm._m(1),
+          _vm._v(" "),
+          _c(
+            "select",
+            {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.stage1_id,
+                  expression: "stage1_id"
+                }
+              ],
+              attrs: { name: "stage1_id" },
+              on: {
+                change: function($event) {
+                  var $$selectedVal = Array.prototype.filter
+                    .call($event.target.options, function(o) {
+                      return o.selected
+                    })
+                    .map(function(o) {
+                      var val = "_value" in o ? o._value : o.value
+                      return val
+                    })
+                  _vm.stage1_id = $event.target.multiple
+                    ? $$selectedVal
+                    : $$selectedVal[0]
+                }
+              }
+            },
+            _vm._l(_vm.stages, function(stage) {
+              return _c(
+                "option",
+                { key: stage.id, domProps: { value: stage.stage_id } },
+                [_vm._v(_vm._s(stage.stage_name))]
+              )
+            }),
+            0
+          ),
+          _vm._v(" "),
+          _vm._l(_vm.errors.stage1, function(error) {
+            return _c("p", { key: error.stage1, staticClass: "errors" }, [
+              _vm._v(_vm._s(error))
+            ])
+          }),
+          _vm._v(" "),
+          _c("br"),
+          _vm._v(" "),
+          _vm._m(2),
+          _vm._v(" "),
+          _c(
+            "select",
+            {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.stage2_id,
+                  expression: "stage2_id"
+                }
+              ],
+              attrs: { name: "stage2_id" },
+              on: {
+                change: function($event) {
+                  var $$selectedVal = Array.prototype.filter
+                    .call($event.target.options, function(o) {
+                      return o.selected
+                    })
+                    .map(function(o) {
+                      var val = "_value" in o ? o._value : o.value
+                      return val
+                    })
+                  _vm.stage2_id = $event.target.multiple
+                    ? $$selectedVal
+                    : $$selectedVal[0]
+                }
+              }
+            },
+            _vm._l(_vm.stages, function(stage) {
+              return _c(
+                "option",
+                { key: stage.id, domProps: { value: stage.stage_id } },
+                [_vm._v(_vm._s(stage.stage_name))]
+              )
+            }),
+            0
+          ),
+          _vm._v(" "),
+          _vm._l(_vm.errors.stage2, function(error) {
+            return _c("p", { key: error.stage2, staticClass: "errors" }, [
+              _vm._v(_vm._s(error))
+            ])
+          }),
+          _vm._v(" "),
+          _c("br"),
+          _vm._v(" "),
+          _vm._m(3),
+          _vm._v(" "),
+          _c(
+            "select",
+            {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.buki_id,
+                  expression: "buki_id"
+                }
+              ],
+              attrs: { name: "buki_id" },
+              on: {
+                change: function($event) {
+                  var $$selectedVal = Array.prototype.filter
+                    .call($event.target.options, function(o) {
+                      return o.selected
+                    })
+                    .map(function(o) {
+                      var val = "_value" in o ? o._value : o.value
+                      return val
+                    })
+                  _vm.buki_id = $event.target.multiple
+                    ? $$selectedVal
+                    : $$selectedVal[0]
+                }
+              }
+            },
+            _vm._l(_vm.bukis, function(buki) {
+              return _c(
+                "option",
+                { key: buki.id, domProps: { value: buki.buki_id } },
+                [_vm._v(_vm._s(buki.buki_name))]
+              )
+            }),
+            0
+          ),
+          _vm._v(" "),
+          _vm._l(_vm.errors.buki, function(error) {
+            return _c("p", { key: error.buki, staticClass: "errors" }, [
+              _vm._v(_vm._s(error))
+            ])
+          }),
+          _vm._v(" "),
+          _c("br"),
+          _vm._v(" "),
+          _vm._m(4),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.xp,
+                expression: "xp"
+              }
+            ],
+            attrs: { type: "text", name: "xp", value: "" },
+            domProps: { value: _vm.xp },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.xp = $event.target.value
+              }
             }
-          }
-        }),
-        _vm._v(" "),
-        _c("br")
-      ]),
+          }),
+          _vm._v(" "),
+          _vm._l(_vm.errors.xp, function(error) {
+            return _c("p", { key: error.xp, staticClass: "errors" }, [
+              _vm._v(_vm._s(error))
+            ])
+          }),
+          _vm._v(" "),
+          _c("br")
+        ],
+        2
+      ),
+      _vm._v(" "),
+      _c("button", { on: { click: _vm.updateRecord } }, [_vm._v("変更")]),
       _vm._v(" "),
       _c("button", { on: { click: _vm.cancelEditEvent } }, [
         _vm._v("キャンセル")
@@ -39486,7 +39715,53 @@ var render = function() {
     ])
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", { attrs: { for: "rule_id" } }, [
+      _vm._v("ルール"),
+      _c("span", { staticClass: "badge" }, [_vm._v("必須")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", { attrs: { for: "stage1_id" } }, [
+      _vm._v("ステージ1"),
+      _c("span", { staticClass: "badge" }, [_vm._v("必須")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", { attrs: { for: "stage2_id" } }, [
+      _vm._v("ステージ2"),
+      _c("span", { staticClass: "badge" }, [_vm._v("必須")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", { attrs: { for: "buki_id" } }, [
+      _vm._v("ブキ"),
+      _c("span", { staticClass: "badge" }, [_vm._v("必須")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", { attrs: { for: "xp" } }, [
+      _vm._v("ウデマエポイント"),
+      _c("span", { staticClass: "badge" }, [_vm._v("必須")])
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -39577,9 +39852,8 @@ var render = function() {
               editData: _vm.editData
             },
             on: {
-              "click-edit-btn": function($event) {
-                return _vm.switchEditRecord()
-              }
+              "click-update-btn": _vm.updateRecord,
+              "click-cancel-edit-btn": _vm.switchEditRecord
             }
           })
         : _vm._e()
@@ -39681,9 +39955,7 @@ var render = function() {
     _c("div", { attrs: { id: "content" } }, [
       _c(
         "form",
-        {
-          attrs: { name: "insert-form", action: "/insert_data", method: "post" }
-        },
+        { attrs: { name: "insert-form" } },
         [
           _vm._m(0),
           _vm._v(" "),

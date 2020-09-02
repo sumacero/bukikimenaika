@@ -1,7 +1,7 @@
 <template> 
     <div id="overlay">
         <div id="content">
-            <form name="insert-form" action="/insert_data" method="post">
+            <form name="insert-form">
                 <label for="rule_id">ルール<span class="badge">必須</span></label>
                 <select v-model="rule_id" name="rule_id">
                 <option value="" disabled selected>選択してください</option>
@@ -78,9 +78,16 @@
                         'xp':this.xp
                     }
                     const func = async ()=>{
-                        let res = await axios.post('/api/insert_record/', postData);
-                        this.$emit('click-insert-btn', res.data.input_data);
-                        this.$emit('click-cancel-insert-btn');
+                        try{
+                            let res = await axios.post('insert_record', postData)
+                            this.$emit('click-insert-btn', res.data.input_data);
+                            this.$emit('click-cancel-insert-btn');
+                        }
+                        catch (error){
+                            this.$emit('click-cancel-insert-btn');
+                            console.log(error.response.data);
+                            alert("サーバーエラーが発生しました。");
+                        };
                     }
                     func();
                 }
@@ -135,18 +142,6 @@
                 this.errors.xp = xp;
             },
         },
-        computed:{
-            insertRecordData(){
-                let insertRecordData={
-                    rule_id:this.rule_id,
-                    stage1_id:this.stage1_id,
-                    stage2_id:this.stage2_id,
-                    buki_id:this.buki_id,
-                    xp:this.xp,
-                };
-                return insertRecordData;
-            }
-        }
     }
 </script>
 

@@ -7,7 +7,6 @@
 @section('content')
     <div id="app1">
         <button v-on:click="switchInsertRecord()">データの追加</button>
-        <button v-on:click="saveData()">編集内容を保存</button>
         <insert-record v-if="showInsertRecord" v-on:click-cancel-insert-btn="switchInsertRecord" v-on:click-insert-btn="insertRecord" v-bind:rules="{{ $rules }}" v-bind:stages="{{ $stages }}" v-bind:bukis="{{ $bukis }}">
         </insert-record>
         <edit-table v-bind:input_datas="{{ $input_datas }}" v-bind:rules="{{ $rules }}" v-bind:stages="{{ $stages }}" v-bind:bukis="{{ $bukis }}" v-bind:insert_record_data="insert_record_data">
