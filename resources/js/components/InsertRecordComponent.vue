@@ -44,6 +44,8 @@
 
 <script>
     export default {
+        props:["rules", "stages", "bukis"],
+
         data () {
             return {
                 rule_id: null,
@@ -61,7 +63,6 @@
                 error:false
             }
         },
-        props:["rules", "stages", "bukis"],
         methods :{
             cancelInsertEvent: function(){
                 this.$emit('click-cancel-insert-btn')

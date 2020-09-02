@@ -10,7 +10,7 @@
                 <th></th>
                 <th></th>
             </tr>
-            <tr v-for="input_data in tableData" :key="input_data.input_data_id">
+            <tr v-for="input_data in input_datas" :key="input_data.input_data_id">
                 <td>{{ input_data.rule.rule_name }}</td>
                 <td>{{ input_data.stage1.stage_name }}</td>
                 <td>{{ input_data.stage2.stage_name }}</td>
@@ -27,31 +27,10 @@
 
 <script>
     export default {
-        props:{
-            input_datas:{
-                type:Array,
-                required: true,
-            },
-            rules:{
-                type:Array,
-                required: true,
-            },
-            stages:{
-                type:Array,
-                required: true,
-            },
-            bukis:{
-                type:Array,
-                required: true,
-            },
-            insert_record_data:{
-                type:Object,
-            },
-        },
+        props:["input_datas", "rules", "stages", "bukis", "insert_record_data"],
         data: function(){
             return{
                 showEditRecord: false,
-                tableData: this.input_datas,
                 editData: null,
             }
         },
@@ -60,14 +39,14 @@
                 this.showEditRecord = !this.showEditRecord;
                 this.editData = input_data;
              },
-            deleteRecord: function(input_data_id) {
+            deleteRecord: function(delete_input_data_id) {
                 let postData = {
-                    'input_data_id':input_data_id
+                    'input_data_id':delete_input_data_id
                 }
                 const func = async ()=>{
                     try{
                         let res = await axios.post('delete_record', postData);
-                        this.tableData = this.tableData.filter(data => data.input_data_id !== input_data_id);
+                        this.$emit('click-delete-btn', res.data.input_data_id);
                     }
                     catch (error){
                         console.log(error.response.data);
@@ -77,17 +56,13 @@
                 func();
             },
             updateRecord: function(updateRecordData){
-                for(let i = 0; i<this.tableData.length; i++){
-                    if(this.tableData[i].input_data_id === updateRecordData.input_data_id){
-                        this.tableData.splice(i, 1, updateRecordData); // i番目から１つ削除し、データを追加
-                    }       
-                }
+                this.$emit('click-update-btn', updateRecordData);
             },
         },
         watch:{
             insert_record_data:{
                 handler: function () {
-                    this.tableData.push(this.insert_record_data);
+                    this.input_datas.push(this.insert_record_data);
                 },
                 deep: true
             }

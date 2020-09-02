@@ -2158,31 +2158,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: {
-    input_datas: {
-      type: Array,
-      required: true
-    },
-    rules: {
-      type: Array,
-      required: true
-    },
-    stages: {
-      type: Array,
-      required: true
-    },
-    bukis: {
-      type: Array,
-      required: true
-    },
-    insert_record_data: {
-      type: Object
-    }
-  },
+  props: ["input_datas", "rules", "stages", "bukis", "insert_record_data"],
   data: function data() {
     return {
       showEditRecord: false,
-      tableData: this.input_datas,
       editData: null
     };
   },
@@ -2191,11 +2170,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.showEditRecord = !this.showEditRecord;
       this.editData = input_data;
     },
-    deleteRecord: function deleteRecord(input_data_id) {
+    deleteRecord: function deleteRecord(delete_input_data_id) {
       var _this = this;
 
       var postData = {
-        'input_data_id': input_data_id
+        'input_data_id': delete_input_data_id
       };
 
       var func = /*#__PURE__*/function () {
@@ -2211,9 +2190,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                 case 3:
                   res = _context.sent;
-                  _this.tableData = _this.tableData.filter(function (data) {
-                    return data.input_data_id !== input_data_id;
-                  });
+
+                  _this.$emit('click-delete-btn', res.data.input_data_id);
+
                   _context.next = 11;
                   break;
 
@@ -2239,17 +2218,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       func();
     },
     updateRecord: function updateRecord(updateRecordData) {
-      for (var i = 0; i < this.tableData.length; i++) {
-        if (this.tableData[i].input_data_id === updateRecordData.input_data_id) {
-          this.tableData.splice(i, 1, updateRecordData); // i番目から１つ削除し、データを追加
-        }
-      }
+      this.$emit('click-update-btn', updateRecordData);
     }
   },
   watch: {
     insert_record_data: {
       handler: function handler() {
-        this.tableData.push(this.insert_record_data);
+        this.input_datas.push(this.insert_record_data);
       },
       deep: true
     }
@@ -2353,6 +2328,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: ["rules", "stages", "bukis"],
   data: function data() {
     return {
       rule_id: null,
@@ -2370,7 +2346,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       error: false
     };
   },
-  props: ["rules", "stages", "bukis"],
   methods: {
     cancelInsertEvent: function cancelInsertEvent() {
       this.$emit('click-cancel-insert-btn');
@@ -39792,7 +39767,7 @@ var render = function() {
         [
           _vm._m(0),
           _vm._v(" "),
-          _vm._l(_vm.tableData, function(input_data) {
+          _vm._l(_vm.input_datas, function(input_data) {
             return _c("tr", { key: input_data.input_data_id }, [
               _c("td", [_vm._v(_vm._s(input_data.rule.rule_name))]),
               _vm._v(" "),

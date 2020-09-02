@@ -15,6 +15,14 @@ use App\Input_data;
 
 class AjaxController extends Controller
 {
+    public function getData(){
+        $input_datas = Input_data::with('user','rule','stage1','stage2','buki')->get();
+        $rules = Rule::get();
+        $stages = Stage::get();
+        $bukis = Buki::get();
+        //return view('edit_data',compact('input_datas', 'rules','stages','bukis'));
+        return ['db_data' => compact('input_datas', 'rules','stages','bukis')];
+    }
     public function insertRecord(InsertInputDataRequest $request){
         $input_data = new input_data;
         $input_data->user_id = 1;

@@ -23,11 +23,7 @@ class MainController extends Controller
     }
     
     public function edit_data(){
-        $input_datas = Input_data::with('user','rule','stage1','stage2','buki')->get();
-        $rules = Rule::get();
-        $stages = Stage::get();
-        $bukis = Buki::get();
-        return view('edit_data',compact('input_datas', 'rules','stages','bukis'));
+        return view('edit_data');
     }
     
     public function search_buki(){

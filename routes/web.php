@@ -21,14 +21,11 @@ Route::get('create_account','MainController@create_account');
 
 Route::get('home','MainController@home');
 
-Route::get('edit_data','MainController@edit_data');
-
 Route::get('search_buki','MainController@search_buki');
-
 Route::post('search_buki','MainController@analysis_buki');
 
+Route::get('edit_data','MainController@edit_data');
+Route::get('get_data','AjaxController@getData');
 Route::post('insert_record','AjaxController@insertRecord');
-
 Route::post('delete_record','AjaxController@deleteRecord');
-
 Route::post('update_record','AjaxController@updateRecord');
