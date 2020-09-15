@@ -81,6 +81,7 @@
                     const func = async ()=>{
                         try{
                             let res = await axios.post('insert_record', postData)
+                            console.log("追加しました")
                             this.$emit('click-insert-btn', res.data.input_data);
                             this.$emit('click-cancel-insert-btn');
                         }

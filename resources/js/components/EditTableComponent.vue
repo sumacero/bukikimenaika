@@ -1,27 +1,31 @@
 <template> 
     <div>
-        <table class="table table-striped table-bordered">
-            <tr>
-                <th>ルール</th>
-                <th>ステージ1</th>
-                <th>ステージ2</th>
-                <th>ブキ</th>
-                <th>XP</th>
-                <th></th>
-                <th></th>
-            </tr>
-            <tr v-for="input_data in input_datas" :key="input_data.input_data_id">
-                <td>{{ input_data.rule.rule_name }}</td>
-                <td>{{ input_data.stage1.stage_name }}</td>
-                <td>{{ input_data.stage2.stage_name }}</td>
-                <td>{{ input_data.buki.buki_name }}</td>
-                <td>{{ input_data.xp }}</td>
-                <td><button type="button" class="editBtn btn btn-info" @click.prevent="switchEditRecord(input_data)">編集</button></td>
-                <td><button type="button" class="deleteBtn btn btn-info" @click.prevent="deleteRecord(input_data.input_data_id)">削除</button></td>
-            </tr>
+        <table class="table table-striped table-sm">
+            <thead class="thead-ligth">
+                <tr>
+                    <th>ルール</th>
+                    <th>ステージ1</th>
+                    <th>ステージ2</th>
+                    <th>ブキ</th>
+                    <th>XP</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="input_data in input_datas" :key="input_data.input_data_id">
+                    <td>{{ input_data.rule.rule_name }}</td>
+                    <td>{{ input_data.stage1.stage_name }}</td>
+                    <td>{{ input_data.stage2.stage_name }}</td>
+                    <td>{{ input_data.buki.buki_name }}</td>
+                    <td>{{ input_data.xp }}</td>
+                    <td><button type="button" class="editBtn btn btn-info" @click.prevent="switchEditRecord(input_data)">編集</button></td>
+                    <td><button type="button" class="deleteBtn btn btn-info" @click.prevent="deleteRecord(input_data.input_data_id)">削除</button></td>
+                </tr>
+            </tbody>
         </table>
         <edit-record v-if="showEditRecord" v-on:click-update-btn="updateRecord" v-on:click-cancel-edit-btn="switchEditRecord" v-bind:rules="rules" v-bind:stages="stages" v-bind:bukis="bukis" v-bind:editData="editData">
-        </edit-record> 
+        </edit-record>
     </div>
 </template>
 
@@ -59,13 +63,5 @@
                 this.$emit('click-update-btn', updateRecordData);
             },
         },
-        watch:{
-            insert_record_data:{
-                handler: function () {
-                    this.input_datas.push(this.insert_record_data);
-                },
-                deep: true
-            }
-        }
     }
 </script>

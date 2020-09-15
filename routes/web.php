@@ -25,7 +25,9 @@ Route::get('search_buki','MainController@search_buki');
 Route::post('search_buki','MainController@analysis_buki');
 
 Route::get('edit_data','MainController@edit_data');
-Route::get('get_data','AjaxController@getData');
+Route::get('get_parent_tables','AjaxController@getParentTables');
+Route::get('get_input_datas','AjaxController@getInputDatas');
 Route::post('insert_record','AjaxController@insertRecord');
 Route::post('delete_record','AjaxController@deleteRecord');
 Route::post('update_record','AjaxController@updateRecord');
+Route::get('get_stage_info','AjaxController@getStageInfo');

@@ -23,6 +23,7 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 Vue.component('insert-record', require('./components/InsertRecordComponent.vue').default);
 Vue.component('edit-table', require('./components/EditTableComponent.vue').default);
 Vue.component('edit-record', require('./components/EditRecordComponent.vue').default);
+Vue.component('pagination', require('./components/PaginationComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

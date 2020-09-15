@@ -15,13 +15,30 @@ use App\Input_data;
 
 class AjaxController extends Controller
 {
-    public function getData(){
-        $input_datas = Input_data::with('user','rule','stage1','stage2','buki')->get();
+    public function getParentTables(Request $request){
         $rules = Rule::get();
         $stages = Stage::get();
         $bukis = Buki::get();
-        //return view('edit_data',compact('input_datas', 'rules','stages','bukis'));
-        return ['db_data' => compact('input_datas', 'rules','stages','bukis')];
+        return ['db_data' => compact('rules','stages','bukis')];
+    }
+    public function getInputDatas(Request $request){
+        $input_datas = Input_data::with('user','rule','stage1','stage2','buki')->paginate(10);
+        return ['db_data' => $input_datas];
+    }
+    public function getStageInfo(Request $request){
+        $url = "https://spla2.yuu26.com/gachi";
+        $ch = crul_init($url);
+        $options = array(CURLOPT_RETURNTRANSFER => 1,
+                 CURLOPT_TIMEOUT => 3 //タイムアウトするまでの時間
+                );
+        curl_setopt_array($ch,$option);
+
+        $json_data = curl_exec($ch);
+        //$json = json_decode($json_data,true);
+        //$array = json_decode($json);
+        //$array = array_slice($json, -10);
+        //$json = json_encode($array);
+        return ['stage_info' => $json_data];
     }
     public function insertRecord(InsertInputDataRequest $request){
         $input_data = new input_data;
