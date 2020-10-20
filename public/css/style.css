@@ -26,6 +26,10 @@ hr{
 
 */
 
+.filter-option {
+    font-size: 8px;
+}
+
 .badge {
     font-size: 10px;
     font-weight: bold;

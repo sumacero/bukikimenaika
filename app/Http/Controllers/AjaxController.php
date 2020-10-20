@@ -22,7 +22,22 @@ class AjaxController extends Controller
         return ['db_data' => compact('rules','stages','bukis')];
     }
     public function getInputDatas(Request $request){
-        $input_datas = Input_data::with('user','rule','stage1','stage2','buki')->paginate(10);
+        $rulesCheckbox = request('rules_checkbox');
+        $stagesCheckbox = request('stages_checkbox');
+        $bukisCheckbox = request('bukis_checkbox');
+        //絞り込み実行前(初期画面)
+        if($rulesCheckbox=="" && $stagesCheckbox=="" && $bukisCheckbox=="" ){
+            $input_datas = Input_data::with('user','rule','stage1','stage2','buki')->paginate(10);
+        //絞り込み実行時
+        }else{
+            $input_datas = Input_data::with('user','rule','stage1','stage2','buki')
+            ->whereIn('rule_id', $rulesCheckbox)->whereIn('buki_id', $bukisCheckbox)
+            ->whereIn('stage1_id', $stagesCheckbox);
+            $input_datas = Input_data::with('user','rule','stage1','stage2','buki')
+            ->whereIn('rule_id', $rulesCheckbox)->whereIn('buki_id', $bukisCheckbox)
+            ->whereIn('stage2_id', $stagesCheckbox)->union($input_datas)->paginate(10);
+        }
+        //$input_datas = Input_data::with('user','rule','stage1','stage2','buki')->whereIn('rule_id', [1,2,3])->paginate(3);
         return ['db_data' => $input_datas];
     }
     public function getStageInfo(Request $request){

@@ -9,9 +9,12 @@
         <button v-on:click="switchInsertRecord()">データの追加</button>
         <insert-record v-if="showInsertRecord" v-on:click-cancel-insert-btn="switchInsertRecord" v-on:click-insert-btn="insertRecord" v-bind:rules="rules" v-bind:stages="stages" v-bind:bukis="bukis">
         </insert-record>
+        <search-menu v-bind:rules="rules" v-bind:stages="stages" v-bind:bukis="bukis" v-bind:filter-options="filterOptions" v-on:click-filter-btn="filterRecord">
+        </search-menu>
+        <div>@{{ paginationData.total }}件</div>
         <edit-table v-bind:input_datas="input_datas" v-bind:rules="rules" v-bind:stages="stages" v-bind:bukis="bukis" v-on:click-update-btn="updateRecord" v-on:click-delete-btn="deleteRecord">
         </edit-table>
-        <pagination v-bind:pagination_data="paginationData" v-on:click-page-number="movePage"></pagination>
+        <pagination v-bind:pagination-data="paginationData" v-on:click-page-number="movePage"></pagination>
     </div>
 @endsection
 
@@ -39,10 +42,18 @@ new Vue({
             prev_page_url: null,
             to: null,
             total: null,
+        },
+        filterOptions:{
+            rules_checkbox:[],
+            stages_checkbox:[],
+            bukis_checkbox:[],
+            xp_min:null,
+            xp_max:null,
         }
     },
     mounted(){
         this.getParentTables();
+        //this.setCheckBox();
         this.getInputDatas(1);
         //this.getStageInfo();
     },
@@ -51,27 +62,51 @@ new Vue({
             const func = async ()=>{
                 try{
                     let res = await axios.get('get_parent_tables');
-                    console.log(res);
                     const tables = res.data.db_data;
+                    //rules
                     this.rules = tables.rules;
+                    var temp=[];
+                    this.rules.forEach(function(rule){
+                        temp.push(rule.rule_id);
+                    });
+                    this.filterOptions.rules_checkbox = temp.slice(0, temp.length);
+                    //stages
                     this.stages = tables.stages;
+                    temp=[];
+                    this.stages.forEach(function(stage){
+                        temp.push(stage.stage_id);
+                    });
+                    this.filterOptions.stages_checkbox = temp.slice(0, temp.length);
+                    //bukis
                     this.bukis = tables.bukis;
+                    temp=[];
+                    this.bukis.forEach(function(buki){
+                        temp.push(buki.buki_id);
+                    });
+                    this.filterOptions.bukis_checkbox = temp.slice(0, temp.length);
                 }
                 catch (error){
-                    console.log(error.response.data);
+                    console.log(error.response);
                     alert("サーバーエラーが発生しました。");
                 }
             }
             func();
         },
         getInputDatas: function(targetPage){
+
             const func = async ()=>{
-                try{
+                try{                    
                     let res = await axios.get('get_input_datas', {
                         params:{
-                            page:targetPage
+                            page:targetPage,
+                            rules_checkbox:this.filterOptions.rules_checkbox,
+                            stages_checkbox:this.filterOptions.stages_checkbox,
+                            bukis_checkbox:this.filterOptions.bukis_checkbox,
                         }
                     });
+                    console.log("送信データ↓");
+                    console.log(this.filterOptions);
+                    console.log("返答↓");
                     console.log(res);
                     let input_datas = res.data.db_data
                     this.input_datas = input_datas.data;
@@ -94,6 +129,16 @@ new Vue({
             }
             func();
         },
+        setCheckBox: function(){
+            /*
+            console.log("あああ");
+            console.log(this.rules);
+            this.rules.forEach(function(rule){
+                this.filterOptions.rules_checkbox.push(rule.rule_id);
+            });
+            */
+        },
+        /*
         getStageInfo: function(){
             const func = async ()=>{
                 try{
@@ -108,6 +153,7 @@ new Vue({
             }
             func();
         },
+        */
         movePage: function(pageNumber){
             this.getInputDatas(pageNumber);
         },
@@ -126,6 +172,10 @@ new Vue({
         },
         deleteRecord: function(deleteRecordDataId){
             this.input_datas = this.input_datas.filter(data => data.input_data_id !== deleteRecordDataId);
+        },
+        filterRecord: function(){
+            console.log(this.filterOptions);
+            this.getInputDatas(1);
         }
     }
 });

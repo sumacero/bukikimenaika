@@ -34,7 +34,6 @@
             <button v-on:click="updateRecord">変更</button>
             <button v-on:click="cancelEditEvent">キャンセル</button>
         </div>
-        
     </div>
 </template>
 
