@@ -9,7 +9,8 @@
         <button v-on:click="switchInsertRecord()">データの追加</button>
         <insert-record v-if="showInsertRecord" v-on:click-cancel-insert-btn="switchInsertRecord" v-on:click-insert-btn="insertRecord" v-bind:rules="rules" v-bind:stages="stages" v-bind:bukis="bukis">
         </insert-record>
-        <search-menu v-bind:rules="rules" v-bind:stages="stages" v-bind:bukis="bukis" v-bind:filter-options="filterOptions" v-on:click-filter-btn="filterRecord">
+        <div v-on:click="switchFilterOption()">絞り込み@{{ filterIcon }}</div>
+        <search-menu v-show="showFilterOption" v-bind:rules="rules" v-bind:stages="stages" v-bind:bukis="bukis" v-bind:filter-options="filterOptions" v-on:click-filter-btn="filterRecord">
         </search-menu>
         <div>@{{ paginationData.total }}件</div>
         <edit-table v-bind:input_datas="input_datas" v-bind:rules="rules" v-bind:stages="stages" v-bind:bukis="bukis" v-on:click-update-btn="updateRecord" v-on:click-delete-btn="deleteRecord">
@@ -30,6 +31,7 @@ new Vue({
         stages:null,
         bukis:null,
         showInsertRecord: false,
+        showFilterOption: false,
         paginationData:{
             current_page: null,
             first_page_url: null,
@@ -129,33 +131,11 @@ new Vue({
             }
             func();
         },
-        setCheckBox: function(){
-            /*
-            console.log("あああ");
-            console.log(this.rules);
-            this.rules.forEach(function(rule){
-                this.filterOptions.rules_checkbox.push(rule.rule_id);
-            });
-            */
-        },
-        /*
-        getStageInfo: function(){
-            const func = async ()=>{
-                try{
-                    let res = await axios.get('get_stage_info', {
-                    });
-                    console.log(res);
-                }
-                catch (error){
-                    console.log(error.response.data);
-                    alert("サーバーエラーが発生しました。");
-                }
-            }
-            func();
-        },
-        */
         movePage: function(pageNumber){
             this.getInputDatas(pageNumber);
+        },
+        switchFilterOption: function(){
+            this.showFilterOption = !this.showFilterOption;
         },
         switchInsertRecord: function() {
             this.showInsertRecord = !this.showInsertRecord;
@@ -176,6 +156,15 @@ new Vue({
         filterRecord: function(){
             console.log(this.filterOptions);
             this.getInputDatas(1);
+        }
+    },
+    computed:{
+        filterIcon(){
+            let icon="↓";
+            if(this.showFilterOption){
+                icon="↑"
+            }
+            return icon;
         }
     }
 });
