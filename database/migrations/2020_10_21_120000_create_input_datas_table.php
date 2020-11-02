@@ -22,7 +22,7 @@ class CreateInputDatasTable extends Migration
             $table->integer('buki_id')->unsigned();
             $table->integer('udemae_id')->unsigned();
             $table->double('xp');
-            $table->foreign('user_id')->references('user_id')->on('users'); // 外部キー参照
+            $table->foreign('user_id')->references('id')->on('users'); // 外部キー参照
             $table->foreign('rule_id')->references('rule_id')->on('rules'); // 外部キー参照
             $table->foreign('stage1_id')->references('stage_id')->on('stages'); // 外部キー参照
             $table->foreign('stage2_id')->references('stage_id')->on('stages'); // 外部キー参照

@@ -31,3 +31,7 @@ Route::post('insert_record','AjaxController@insertRecord');
 Route::post('delete_record','AjaxController@deleteRecord');
 Route::post('update_record','AjaxController@updateRecord');
 Route::get('get_stage_info','AjaxController@getStageInfo');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

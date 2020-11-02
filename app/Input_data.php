@@ -22,7 +22,7 @@ class Input_data extends Model
         return $this->belongsTo('App\Buki','buki_id');
     }
     public function user(){
-        return $this->belongsTo('App\User','user_id');
+        return $this->belongsTo('App\User','id');
     }
     public function udemae(){
         return $this->belongsTo('App\Udemae','udemae_id');

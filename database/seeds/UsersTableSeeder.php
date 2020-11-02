@@ -16,8 +16,13 @@ class UsersTableSeeder extends Seeder
         DB::statement('SET FOREIGN_KEY_CHECKS=1;'); //外部キー制約を有効化
 
         $param = [
-            'user_name' => 'debug_user',
-            'user_password' => 'debug_password',
+            'name' => 'test_name',
+            'email' =>'test@test.com',
+            'email_verified_at'=>now(),
+            'password'=>'test_password',
+            'remember_token'=>'test_token',
+            'created_at' => now(),
+            'updated_at' => now()
         ];
         DB::table('users')->insert($param);
     }

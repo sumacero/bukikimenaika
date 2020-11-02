@@ -25,7 +25,6 @@ Vue.component('edit-table', require('./components/EditTableComponent.vue').defau
 Vue.component('edit-record', require('./components/EditRecordComponent.vue').default);
 Vue.component('pagination', require('./components/PaginationComponent.vue').default);
 Vue.component('search-menu', require('./components/SearchMenuComponent.vue').default);
-
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

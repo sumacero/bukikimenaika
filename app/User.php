@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\builder;
 class User extends Model
 {
     //primaryKeyの設定
-    protected $primaryKey = "user_id";
+    protected $primaryKey = "id";
 
     //hasMany設定
     public function input_datas(){
@@ -18,8 +18,8 @@ class User extends Model
     //idで昇順
     protected static function boot(){
         parent::boot();
-        static::addGlobalScope('user_id',function(Builder $builder){
-            $builder->orderBy('user_id','asc');
+        static::addGlobalScope('id',function(Builder $builder){
+            $builder->orderBy('id','asc');
         });
     }
 }
