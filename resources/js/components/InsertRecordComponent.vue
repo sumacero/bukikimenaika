@@ -30,10 +30,19 @@
                 </select>
                 <p class="errors" v-for="error in errors.buki" :key="error.buki">{{error}}</p>
                 <br>
-                <label for="xp">ウデマエポイント<span class="badge">必須</span></label>
+                <label for="udemae_id">ウデマエ<span class="badge">必須</span></label>
+                <select v-model="udemae_id" name="udemae_id">
+                <option value="" disabled selected>選択してください</option>
+                <option v-for="udemae in udemaes" :key="udemae.id" v-bind:value="udemae.udemae_id" >{{ udemae.udemae_name }}</option>
+                </select>
+                <p class="errors" v-for="error in errors.udemae" :key="error.udemae">{{error}}</p>
+                <br>
+                <span v-if="udemae_id=='21'">
+                <label for="xp">XP<span class="badge">必須</span></label>
                 <input v-model="xp" type="text" name="xp" value="">
                 <p class="errors" v-for="error in errors.xp" :key="error.xp">{{error}}</p>
                 <br>
+                </span>
             </form>
             <button v-on:click="insertRecord">データ追加</button>
             <button v-on:click="cancelInsertEvent">キャンセル</button>
@@ -44,7 +53,7 @@
 
 <script>
     export default {
-        props:["rules", "stages", "bukis"],
+        props:["rules", "stages", "bukis","udemaes"],
 
         data () {
             return {
@@ -52,12 +61,14 @@
                 stage1_id: null,
                 stage2_id: null,
                 buki_id: null,
+                udemae_id: null,
                 xp: null,
                 errors:{
                     rule:[],
                     stage1:[],
                     stage2:[],
                     buki:[],
+                    udemae:[],
                     xp:[]
                 },
                 error:false
@@ -76,6 +87,7 @@
                         'stage1_id':this.stage1_id,
                         'stage2_id':this.stage2_id,
                         'buki_id':this.buki_id,
+                        'udemae_id':this.udemae_id,
                         'xp':this.xp
                     }
                     const func = async ()=>{
@@ -100,6 +112,7 @@
                 let stage1 = [];
                 let stage2 = [];
                 let buki = [];
+                let udemae = [];
                 let xp = [];
                 let message = '';
                 this.error = false;
@@ -128,19 +141,28 @@
                     buki.push(message);
                     this.error = true;
                 }
-                if(!this.xp){
-                    message = 'ウデマエを入力してください。';
-                    buki.push(message);
+                if(!this.udemae_id){
+                    message = 'ウデマエを選択してください。';
+                    udemae.push(message);
                     this.error = true;
-                }else if(!(this.xp>=1000 && this.xp<=4000) ){
-                    message = 'xpは1000～4000の半角数字で入力してください。';
-                    xp.push(message);
-                    this.error = true;
+                }
+                //ウデマエXの場合
+                if(this.udemae_id=='21'){
+                    if(!this.xp){
+                        message = 'XPを入力してください。';
+                        xp.push(message);
+                        this.error = true;
+                    }else if(!(this.xp>=1800 && this.xp<=4000) ){
+                        message = 'XPは1800～4000の半角数字で入力してください。';
+                        xp.push(message);
+                        this.error = true;
+                    }
                 }
                 this.errors.rule = rule;
                 this.errors.stage1 = stage1;
                 this.errors.stage2 = stage2;
                 this.errors.buki = buki;
+                this.errors.udemae = udemae;
                 this.errors.xp = xp;
             },
         },

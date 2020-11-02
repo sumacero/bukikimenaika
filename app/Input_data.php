@@ -25,6 +25,6 @@ class Input_data extends Model
         return $this->belongsTo('App\User','user_id');
     }
     public function udemae(){
-        return $this->belongsTo('App\User','udemae_id');
+        return $this->belongsTo('App\Udemae','udemae_id');
     }
 }

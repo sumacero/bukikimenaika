@@ -29,9 +29,17 @@ class UpdateInputDataRequest extends FormRequest
             'stage1_id' => 'required',
             'stage2_id' => 'required',
             'buki_id' => 'required',
-            'xp' => 'numeric|between:1000,4000',
+            'udemae_id' => 'required',
+            'xp' => 'required_if:udemae_id,21',
             'stage1_id' => 'different:stage2_id',
             'stage2_id' => 'different:stage1_id',
         ];
+    }
+    public function withValidator($validator)
+    {
+        //ウデマエXの場合にXPの値をチェックする
+        $validator->sometimes('xp','numeric|between:1800, 4000',function($input){
+            return $input->udemae_id==21;
+        });
     }
 }

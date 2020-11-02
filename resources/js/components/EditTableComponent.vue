@@ -7,6 +7,7 @@
                     <th>ステージ1</th>
                     <th>ステージ2</th>
                     <th>ブキ</th>
+                    <th>ウデマエ</th>
                     <th>XP</th>
                     <th></th>
                     <th></th>
@@ -18,20 +19,21 @@
                     <td>{{ input_data.stage1.stage_name }}</td>
                     <td>{{ input_data.stage2.stage_name }}</td>
                     <td>{{ input_data.buki.buki_name }}</td>
+                    <td>{{ input_data.udemae.udemae_name }}</td>
                     <td>{{ input_data.xp }}</td>
                     <td><button type="button" class="editBtn btn btn-info" @click.prevent="switchEditRecord(input_data)">編集</button></td>
                     <td><button type="button" class="deleteBtn btn btn-info" @click.prevent="deleteRecord(input_data.input_data_id)">削除</button></td>
                 </tr>
             </tbody>
         </table>
-        <edit-record v-if="showEditRecord" v-on:click-update-btn="updateRecord" v-on:click-cancel-edit-btn="switchEditRecord" v-bind:rules="rules" v-bind:stages="stages" v-bind:bukis="bukis" v-bind:editData="editData">
+        <edit-record v-if="showEditRecord" v-on:click-update-btn="updateRecord" v-on:click-cancel-edit-btn="switchEditRecord" v-bind:rules="rules" v-bind:stages="stages" v-bind:bukis="bukis" v-bind:udemaes="udemaes" v-bind:editData="editData">
         </edit-record>
     </div>
 </template>
 
 <script>
     export default {
-        props:["input_datas", "rules", "stages", "bukis", "insert_record_data"],
+        props:["input_datas", "rules", "stages", "bukis", "udemaes", "insert_record_data"],
         data: function(){
             return{
                 showEditRecord: false,

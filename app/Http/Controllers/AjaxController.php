@@ -11,6 +11,7 @@ use App\Rule;
 use App\Stage;
 use App\Buki;
 use App\User;
+use App\Udemae;
 use App\Input_data;
 
 class AjaxController extends Controller
@@ -19,7 +20,8 @@ class AjaxController extends Controller
         $rules = Rule::get();
         $stages = Stage::get();
         $bukis = Buki::get();
-        return ['db_data' => compact('rules','stages','bukis')];
+        $udemaes = Udemae::get();
+        return ['db_data' => compact('rules','stages','bukis','udemaes')];
     }
     public function getInputDatas(Request $request){
         $rulesCheckbox = request('rules_checkbox');
@@ -27,13 +29,13 @@ class AjaxController extends Controller
         $bukisCheckbox = request('bukis_checkbox');
         //絞り込み実行前(初期画面)
         if($rulesCheckbox=="" && $stagesCheckbox=="" && $bukisCheckbox=="" ){
-            $input_datas = Input_data::with('user','rule','stage1','stage2','buki')->paginate(10);
+            $input_datas = Input_data::with('user','rule','stage1','stage2','buki','udemae')->paginate(10);
         //絞り込み実行時
         }else{
-            $input_datas = Input_data::with('user','rule','stage1','stage2','buki')
+            $input_datas = Input_data::with('user','rule','stage1','stage2','buki', 'udemae')
             ->whereIn('rule_id', $rulesCheckbox)->whereIn('buki_id', $bukisCheckbox)
             ->whereIn('stage1_id', $stagesCheckbox);
-            $input_datas = Input_data::with('user','rule','stage1','stage2','buki')
+            $input_datas = Input_data::with('user','rule','stage1','stage2','buki', 'udemae')
             ->whereIn('rule_id', $rulesCheckbox)->whereIn('buki_id', $bukisCheckbox)
             ->whereIn('stage2_id', $stagesCheckbox)->union($input_datas)->paginate(10);
         }
@@ -62,10 +64,19 @@ class AjaxController extends Controller
         $input_data->stage1_id = request('stage1_id');
         $input_data->stage2_id = request('stage2_id');
         $input_data->buki_id = request('buki_id');
-        $input_data->xp = request('xp');
+        $input_data->udemae_id = request('udemae_id');
+        //ウデマエXの場合
+        if($input_data->udemae_id==21){
+            //ユーザー入力のxpを設定
+            $input_data->xp = request('xp');
+        }else{
+            //udemaesテーブルのxpを設定
+            $udemaes_xp = Udemae::find($input_data->udemae_id)->xp;
+            $input_data->xp = $udemaes_xp;
+        }
         $input_data->save();
         $inserted_id = $input_data->input_data_id;
-        $input_data = Input_data::with('user','rule','stage1','stage2','buki')->get()->find($inserted_id);
+        $input_data = Input_data::with('user','rule','stage1','stage2','buki','udemae')->get()->find($inserted_id);
         return ['input_data' => $input_data];
     }
     public function deleteRecord(DeleteInputDataRequest $request){
@@ -79,9 +90,18 @@ class AjaxController extends Controller
         $input_data->stage1_id = request('stage1_id');
         $input_data->stage2_id = request('stage2_id');
         $input_data->buki_id = request('buki_id');
-        $input_data->xp = request('xp');
+        $input_data->udemae_id = request('udemae_id');
+        //ウデマエXの場合
+        if($input_data->udemae_id==21){
+            //ユーザー入力のxpを設定
+            $input_data->xp = request('xp');
+        }else{
+            //udemaesテーブルのxpを設定
+            $udemaes_xp = Udemae::find($input_data->udemae_id)->xp;
+            $input_data->xp = $udemaes_xp;
+        }
         $input_data->save();
-        $input_data = Input_data::with('user','rule','stage1','stage2','buki')->get()->find(request('input_data_id'));
+        $input_data = Input_data::with('user','rule','stage1','stage2','buki','udemae')->get()->find(request('input_data_id'));
         return ['input_data' => $input_data];
     }
 }

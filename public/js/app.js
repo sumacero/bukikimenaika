@@ -1967,8 +1967,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ["rules", "stages", "bukis", "editData"],
+  props: ["rules", "stages", "bukis", "udemaes", "editData"],
   data: function data() {
     return {
       input_data_id: this.editData.input_data_id,
@@ -1976,16 +1984,23 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       stage1_id: this.editData.stage1_id,
       stage2_id: this.editData.stage2_id,
       buki_id: this.editData.buki_id,
+      udemae_id: this.editData.udemae_id,
       xp: this.editData.xp,
       errors: {
         rule: [],
         stage1: [],
         stage2: [],
         buki: [],
+        udemae: [],
         xp: []
       },
       error: false
     };
+  },
+  mounted: function mounted() {
+    if (this.udemae_id != "21") {
+      this.xp = "";
+    }
   },
   methods: {
     cancelEditEvent: function cancelEditEvent() {
@@ -2003,6 +2018,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           'stage1_id': this.stage1_id,
           'stage2_id': this.stage2_id,
           'buki_id': this.buki_id,
+          'udemae_id': this.udemae_id,
           'xp': this.xp
         };
 
@@ -2057,6 +2073,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var stage1 = [];
       var stage2 = [];
       var buki = [];
+      var udemae = [];
       var xp = [];
       var message = '';
       this.error = false;
@@ -2091,20 +2108,30 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         this.error = true;
       }
 
-      if (!this.xp) {
-        message = 'ウデマエを入力してください。';
-        buki.push(message);
+      if (!this.udemae_id) {
+        message = 'ウデマエを選択してください。';
+        udemae.push(message);
         this.error = true;
-      } else if (!(this.xp >= 1000 && this.xp <= 4000)) {
-        message = 'xpは1000～4000の半角数字で入力してください。';
-        xp.push(message);
-        this.error = true;
+      } //ウデマエXの場合
+
+
+      if (this.udemae_id == '21') {
+        if (!this.xp) {
+          message = 'XPを入力してください。';
+          xp.push(message);
+          this.error = true;
+        } else if (!(this.xp >= 1800 && this.xp <= 4000)) {
+          message = 'XPは1800～4000の半角数字で入力してください。';
+          xp.push(message);
+          this.error = true;
+        }
       }
 
       this.errors.rule = rule;
       this.errors.stage1 = stage1;
       this.errors.stage2 = stage2;
       this.errors.buki = buki;
+      this.errors.udemae = udemae;
       this.errors.xp = xp;
     }
   }
@@ -2160,8 +2187,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ["input_datas", "rules", "stages", "bukis", "insert_record_data"],
+  props: ["input_datas", "rules", "stages", "bukis", "udemaes", "insert_record_data"],
   data: function data() {
     return {
       showEditRecord: false,
@@ -2322,20 +2351,31 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ["rules", "stages", "bukis"],
+  props: ["rules", "stages", "bukis", "udemaes"],
   data: function data() {
     return {
       rule_id: null,
       stage1_id: null,
       stage2_id: null,
       buki_id: null,
+      udemae_id: null,
       xp: null,
       errors: {
         rule: [],
         stage1: [],
         stage2: [],
         buki: [],
+        udemae: [],
         xp: []
       },
       error: false
@@ -2356,6 +2396,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           'stage1_id': this.stage1_id,
           'stage2_id': this.stage2_id,
           'buki_id': this.buki_id,
+          'udemae_id': this.udemae_id,
           'xp': this.xp
         };
 
@@ -2414,6 +2455,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var stage1 = [];
       var stage2 = [];
       var buki = [];
+      var udemae = [];
       var xp = [];
       var message = '';
       this.error = false;
@@ -2448,20 +2490,30 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         this.error = true;
       }
 
-      if (!this.xp) {
-        message = 'ウデマエを入力してください。';
-        buki.push(message);
+      if (!this.udemae_id) {
+        message = 'ウデマエを選択してください。';
+        udemae.push(message);
         this.error = true;
-      } else if (!(this.xp >= 1000 && this.xp <= 4000)) {
-        message = 'xpは1000～4000の半角数字で入力してください。';
-        xp.push(message);
-        this.error = true;
+      } //ウデマエXの場合
+
+
+      if (this.udemae_id == '21') {
+        if (!this.xp) {
+          message = 'XPを入力してください。';
+          xp.push(message);
+          this.error = true;
+        } else if (!(this.xp >= 1800 && this.xp <= 4000)) {
+          message = 'XPは1800～4000の半角数字で入力してください。';
+          xp.push(message);
+          this.error = true;
+        }
       }
 
       this.errors.rule = rule;
       this.errors.stage1 = stage1;
       this.errors.stage2 = stage2;
       this.errors.buki = buki;
+      this.errors.udemae = udemae;
       this.errors.xp = xp;
     }
   }
@@ -39763,34 +39815,90 @@ var render = function() {
           _vm._v(" "),
           _vm._m(4),
           _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.xp,
-                expression: "xp"
-              }
-            ],
-            attrs: { type: "text", name: "xp", value: "" },
-            domProps: { value: _vm.xp },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
+          _c(
+            "select",
+            {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.udemae_id,
+                  expression: "udemae_id"
                 }
-                _vm.xp = $event.target.value
+              ],
+              attrs: { name: "udemae_id" },
+              on: {
+                change: function($event) {
+                  var $$selectedVal = Array.prototype.filter
+                    .call($event.target.options, function(o) {
+                      return o.selected
+                    })
+                    .map(function(o) {
+                      var val = "_value" in o ? o._value : o.value
+                      return val
+                    })
+                  _vm.udemae_id = $event.target.multiple
+                    ? $$selectedVal
+                    : $$selectedVal[0]
+                }
               }
-            }
-          }),
+            },
+            _vm._l(_vm.udemaes, function(udemae) {
+              return _c(
+                "option",
+                { key: udemae.id, domProps: { value: udemae.udemae_id } },
+                [_vm._v(_vm._s(udemae.udemae_name))]
+              )
+            }),
+            0
+          ),
           _vm._v(" "),
-          _vm._l(_vm.errors.xp, function(error) {
-            return _c("p", { key: error.xp, staticClass: "errors" }, [
+          _vm._l(_vm.errors.udemae, function(error) {
+            return _c("p", { key: error.udemae_id, staticClass: "errors" }, [
               _vm._v(_vm._s(error))
             ])
           }),
           _vm._v(" "),
-          _c("br")
+          _c("br"),
+          _vm._v(" "),
+          _vm.udemae_id == "21"
+            ? _c(
+                "span",
+                [
+                  _vm._m(5),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.xp,
+                        expression: "xp"
+                      }
+                    ],
+                    attrs: { type: "text", name: "xp" },
+                    domProps: { value: _vm.xp },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.xp = $event.target.value
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _vm._l(_vm.errors.xp, function(error) {
+                    return _c("p", { key: error.xp, staticClass: "errors" }, [
+                      _vm._v(_vm._s(error))
+                    ])
+                  }),
+                  _vm._v(" "),
+                  _c("br")
+                ],
+                2
+              )
+            : _vm._e()
         ],
         2
       ),
@@ -39844,8 +39952,17 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
+    return _c("label", { attrs: { for: "udemae_id" } }, [
+      _vm._v("ウデマエ"),
+      _c("span", { staticClass: "badge" }, [_vm._v("必須")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
     return _c("label", { attrs: { for: "xp" } }, [
-      _vm._v("ウデマエポイント"),
+      _vm._v("XP"),
       _c("span", { staticClass: "badge" }, [_vm._v("必須")])
     ])
   }
@@ -39888,6 +40005,8 @@ var render = function() {
               _c("td", [_vm._v(_vm._s(input_data.stage2.stage_name))]),
               _vm._v(" "),
               _c("td", [_vm._v(_vm._s(input_data.buki.buki_name))]),
+              _vm._v(" "),
+              _c("td", [_vm._v(_vm._s(input_data.udemae.udemae_name))]),
               _vm._v(" "),
               _c("td", [_vm._v(_vm._s(input_data.xp))]),
               _vm._v(" "),
@@ -39936,6 +40055,7 @@ var render = function() {
               rules: _vm.rules,
               stages: _vm.stages,
               bukis: _vm.bukis,
+              udemaes: _vm.udemaes,
               editData: _vm.editData
             },
             on: {
@@ -39962,6 +40082,8 @@ var staticRenderFns = [
         _c("th", [_vm._v("ステージ2")]),
         _vm._v(" "),
         _c("th", [_vm._v("ブキ")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("ウデマエ")]),
         _vm._v(" "),
         _c("th", [_vm._v("XP")]),
         _vm._v(" "),
@@ -40272,34 +40394,98 @@ var render = function() {
           _vm._v(" "),
           _vm._m(4),
           _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.xp,
-                expression: "xp"
-              }
-            ],
-            attrs: { type: "text", name: "xp", value: "" },
-            domProps: { value: _vm.xp },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
+          _c(
+            "select",
+            {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.udemae_id,
+                  expression: "udemae_id"
                 }
-                _vm.xp = $event.target.value
+              ],
+              attrs: { name: "udemae_id" },
+              on: {
+                change: function($event) {
+                  var $$selectedVal = Array.prototype.filter
+                    .call($event.target.options, function(o) {
+                      return o.selected
+                    })
+                    .map(function(o) {
+                      var val = "_value" in o ? o._value : o.value
+                      return val
+                    })
+                  _vm.udemae_id = $event.target.multiple
+                    ? $$selectedVal
+                    : $$selectedVal[0]
+                }
               }
-            }
-          }),
+            },
+            [
+              _c(
+                "option",
+                { attrs: { value: "", disabled: "", selected: "" } },
+                [_vm._v("選択してください")]
+              ),
+              _vm._v(" "),
+              _vm._l(_vm.udemaes, function(udemae) {
+                return _c(
+                  "option",
+                  { key: udemae.id, domProps: { value: udemae.udemae_id } },
+                  [_vm._v(_vm._s(udemae.udemae_name))]
+                )
+              })
+            ],
+            2
+          ),
           _vm._v(" "),
-          _vm._l(_vm.errors.xp, function(error) {
-            return _c("p", { key: error.xp, staticClass: "errors" }, [
+          _vm._l(_vm.errors.udemae, function(error) {
+            return _c("p", { key: error.udemae, staticClass: "errors" }, [
               _vm._v(_vm._s(error))
             ])
           }),
           _vm._v(" "),
-          _c("br")
+          _c("br"),
+          _vm._v(" "),
+          _vm.udemae_id == "21"
+            ? _c(
+                "span",
+                [
+                  _vm._m(5),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.xp,
+                        expression: "xp"
+                      }
+                    ],
+                    attrs: { type: "text", name: "xp", value: "" },
+                    domProps: { value: _vm.xp },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.xp = $event.target.value
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _vm._l(_vm.errors.xp, function(error) {
+                    return _c("p", { key: error.xp, staticClass: "errors" }, [
+                      _vm._v(_vm._s(error))
+                    ])
+                  }),
+                  _vm._v(" "),
+                  _c("br")
+                ],
+                2
+              )
+            : _vm._e()
         ],
         2
       ),
@@ -40353,8 +40539,17 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
+    return _c("label", { attrs: { for: "udemae_id" } }, [
+      _vm._v("ウデマエ"),
+      _c("span", { staticClass: "badge" }, [_vm._v("必須")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
     return _c("label", { attrs: { for: "xp" } }, [
-      _vm._v("ウデマエポイント"),
+      _vm._v("XP"),
       _c("span", { staticClass: "badge" }, [_vm._v("必須")])
     ])
   }

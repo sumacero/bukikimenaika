@@ -7,13 +7,13 @@
 @section('content')
     <div id="app1">
         <button v-on:click="switchInsertRecord()">データの追加</button>
-        <insert-record v-if="showInsertRecord" v-on:click-cancel-insert-btn="switchInsertRecord" v-on:click-insert-btn="insertRecord" v-bind:rules="rules" v-bind:stages="stages" v-bind:bukis="bukis">
+        <insert-record v-if="showInsertRecord" v-on:click-cancel-insert-btn="switchInsertRecord" v-on:click-insert-btn="insertRecord" v-bind:rules="rules" v-bind:stages="stages" v-bind:bukis="bukis" v-bind:udemaes="udemaes">
         </insert-record>
         <div v-on:click="switchFilterOption()">絞り込み@{{ filterIcon }}</div>
         <search-menu v-show="showFilterOption" v-bind:rules="rules" v-bind:stages="stages" v-bind:bukis="bukis" v-bind:filter-options="filterOptions" v-on:click-filter-btn="filterRecord">
         </search-menu>
         <div>@{{ paginationData.total }}件</div>
-        <edit-table v-bind:input_datas="input_datas" v-bind:rules="rules" v-bind:stages="stages" v-bind:bukis="bukis" v-on:click-update-btn="updateRecord" v-on:click-delete-btn="deleteRecord">
+        <edit-table v-bind:input_datas="input_datas" v-bind:rules="rules" v-bind:stages="stages" v-bind:bukis="bukis" v-bind:udemaes="udemaes" v-on:click-update-btn="updateRecord" v-on:click-delete-btn="deleteRecord">
         </edit-table>
         <pagination v-bind:pagination-data="paginationData" v-on:click-page-number="movePage"></pagination>
     </div>
@@ -30,6 +30,7 @@ new Vue({
         rules:null,
         stages:null,
         bukis:null,
+        udemaes:null,
         showInsertRecord: false,
         showFilterOption: false,
         paginationData:{
@@ -86,6 +87,8 @@ new Vue({
                         temp.push(buki.buki_id);
                     });
                     this.filterOptions.bukis_checkbox = temp.slice(0, temp.length);
+                    //udemaes
+                    this.udemaes = tables.udemaes;
                 }
                 catch (error){
                     console.log(error.response);
