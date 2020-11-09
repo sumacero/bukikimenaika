@@ -12,12 +12,15 @@ use Validator;
 
 class MainController extends Controller
 {
+    /*
     public function login(){
         return view('login');
     }
+    */
     public function create_account(){
         return view('create_account');
     }
+    
     public function home(){
         return view('home');
     }

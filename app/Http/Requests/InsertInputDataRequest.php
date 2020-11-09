@@ -27,7 +27,7 @@ class InsertInputDataRequest extends FormRequest
     public function withValidator($validator)
     {
         //ウデマエXの場合にXPの値をチェックする
-        $validator->sometimes('xp','numeric|between:1800, 4000',function($input){
+        $validator->sometimes('xp','numeric|between:1900, 4000',function($input){
             return $input->udemae_id==21;
         });
     }

@@ -7,6 +7,7 @@ use App\Http\Requests\InsertInputDataRequest;
 use App\Http\Requests\DeleteInputDataRequest;
 use App\Http\Requests\UpdateInputDataRequest;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use App\Rule;
 use App\Stage;
 use App\Buki;
@@ -24,15 +25,17 @@ class AjaxController extends Controller
         return ['db_data' => compact('rules','stages','bukis','udemaes')];
     }
     public function getInputDatas(Request $request){
+        $loginUserId = Auth::user()->id;
         $rulesCheckbox = request('rules_checkbox');
         $stagesCheckbox = request('stages_checkbox');
         $bukisCheckbox = request('bukis_checkbox');
         //絞り込み実行前(初期画面)
         if($rulesCheckbox=="" && $stagesCheckbox=="" && $bukisCheckbox=="" ){
-            $input_datas = Input_data::with('user','rule','stage1','stage2','buki','udemae')->paginate(10);
+            $input_datas = Input_data::with('user','rule','stage1','stage2','buki','udemae')->where('user_id',$loginUserId)->paginate(10);
         //絞り込み実行時
         }else{
             $input_datas = Input_data::with('user','rule','stage1','stage2','buki', 'udemae')
+            ->where('user_id',$loginUserId)
             ->whereIn('rule_id', $rulesCheckbox)->whereIn('buki_id', $bukisCheckbox)
             ->whereIn('stage1_id', $stagesCheckbox);
             $input_datas = Input_data::with('user','rule','stage1','stage2','buki', 'udemae')
@@ -58,8 +61,9 @@ class AjaxController extends Controller
         return ['stage_info' => $json_data];
     }
     public function insertRecord(InsertInputDataRequest $request){
+        $loginUserId = Auth::user()->id;
         $input_data = new input_data;
-        $input_data->user_id = 1;
+        $input_data->user_id = $loginUserId;
         $input_data->rule_id = request('rule_id');
         $input_data->stage1_id = request('stage1_id');
         $input_data->stage2_id = request('stage2_id');
@@ -84,8 +88,9 @@ class AjaxController extends Controller
         return ['input_data_id' => request('input_data_id')];
     }
     public function updateRecord(UpdateInputDataRequest $request){
+        $loginUserId = Auth::user()->id;
         $input_data= Input_data::find(request('input_data_id'));
-        $input_data->user_id = 1;
+        $input_data->user_id = $loginUserId;
         $input_data->rule_id = request('rule_id');
         $input_data->stage1_id = request('stage1_id');
         $input_data->stage2_id = request('stage2_id');

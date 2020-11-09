@@ -2120,8 +2120,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           message = 'XPを入力してください。';
           xp.push(message);
           this.error = true;
-        } else if (!(this.xp >= 1800 && this.xp <= 4000)) {
-          message = 'XPは1800～4000の半角数字で入力してください。';
+        } else if (!(this.xp >= 1900 && this.xp <= 4000)) {
+          message = 'XPは1900～4000の半角数字で入力してください。';
           xp.push(message);
           this.error = true;
         }
@@ -2502,8 +2502,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           message = 'XPを入力してください。';
           xp.push(message);
           this.error = true;
-        } else if (!(this.xp >= 1800 && this.xp <= 4000)) {
-          message = 'XPは1800～4000の半角数字で入力してください。';
+        } else if (!(this.xp >= 1900 && this.xp <= 4000)) {
+          message = 'XPは1900～4000の半角数字で入力してください。';
           xp.push(message);
           this.error = true;
         }
