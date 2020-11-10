@@ -76,7 +76,7 @@ class StagesTableSeeder extends Seeder
         ];
         DB::table('stages')->insert($param);
         $param = [
-            'stage_name' => 'Bバスパーク',
+            'stage_name' => 'Ｂバスパーク',
         ];
         DB::table('stages')->insert($param);
         $param = [

@@ -14,7 +14,7 @@ class CreateRulesTable extends Migration
     public function up()
     {
         Schema::create('rules', function (Blueprint $table) {
-            $table->increments('rule_id');
+            $table->bigIncrements('rule_id');
             $table->string('rule_name',20)->unique();
         });
     }

@@ -14,18 +14,14 @@ class CreateInputDatasTable extends Migration
     public function up()
     {
         Schema::create('input_datas', function (Blueprint $table) {
-            $table->increments('input_data_id');
-            $table->integer('user_id')->unsigned();
-            $table->integer('rule_id')->unsigned();
-            $table->integer('stage1_id')->unsigned();
-            $table->integer('stage2_id')->unsigned();
-            $table->integer('buki_id')->unsigned();
-            $table->integer('udemae_id')->unsigned();
+            $table->bigIncrements('input_data_id');
+            $table->bigInteger('user_id')->unsigned();
+            $table->bigInteger('gachi_id')->unsigned();
+            $table->bigInteger('buki_id')->unsigned();
+            $table->bigInteger('udemae_id')->unsigned();
             $table->double('xp');
             $table->foreign('user_id')->references('id')->on('users'); // 外部キー参照
-            $table->foreign('rule_id')->references('rule_id')->on('rules'); // 外部キー参照
-            $table->foreign('stage1_id')->references('stage_id')->on('stages'); // 外部キー参照
-            $table->foreign('stage2_id')->references('stage_id')->on('stages'); // 外部キー参照
+            $table->foreign('gachi_id')->references('gachi_id')->on('gachis'); // 外部キー参照
             $table->foreign('buki_id')->references('buki_id')->on('bukis'); // 外部キー参照
             $table->foreign('udemae_id')->references('udemae_id')->on('udemaes'); // 外部キー参照
             $table->timestamps(); // タイムスタンプ列を追加

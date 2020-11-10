@@ -14,7 +14,7 @@ class CreateBukisTable extends Migration
     public function up()
     {
         Schema::create('bukis', function (Blueprint $table) {
-            $table->increments('buki_id');
+            $table->bigIncrements('buki_id');
             $table->string('buki_name',50)->unique();
         });
     }

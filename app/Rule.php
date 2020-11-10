@@ -12,7 +12,7 @@ class Rule extends Model
 
     //hasMany設定
     public function input_datas(){
-        return $this->hasMany('App\Input_data');
+        return $this->hasMany('App\Gachi');
     }
 
     //idで昇順

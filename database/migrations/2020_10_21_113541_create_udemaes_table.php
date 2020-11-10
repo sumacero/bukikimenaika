@@ -14,7 +14,7 @@ class CreateUdemaesTable extends Migration
     public function up()
     {
         Schema::create('udemaes', function (Blueprint $table) {
-            $table->increments('udemae_id');
+            $table->bigIncrements('udemae_id');
             $table->string('udemae_name',10)->unique();
             $table->double('xp');
         });

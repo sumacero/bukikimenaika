@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class Input_datasTableSeeder extends Seeder
+class GachisTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -16,14 +16,12 @@ class Input_datasTableSeeder extends Seeder
         DB::statement('SET FOREIGN_KEY_CHECKS=1;'); //外部キー制約を有効化
 
         $param = [
-            'user_id' => '1',
-            'gachi_id' => '1',
-            'buki_id' => '1',
-            'udemae_id' => '1',
-            'xp' => '1000',
-            'created_at' => now(),
-            'updated_at' => now()
+            'start_t' => '2000-01-01-00-00-00',
+            'end_t' => '2000-01-01-02-00-00',
+            'rule_id' => '1',
+            'stage1_id' => '1',
+            'stage2_id' => '2',
         ];
-        DB::table('input_datas')->insert($param);
+        DB::table('gachis')->insert($param);
     }
 }
