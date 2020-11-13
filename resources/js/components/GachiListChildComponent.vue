@@ -2,7 +2,7 @@
     <div v-bind:class="customizedClass" style="border: 2px solid">       
         <div style="border: 1px solid">
             {{ gachiState }}
-            <div>期間：{{ gachi.start_t }}～{{ gachi.end_t }}</div>
+            <div>期間：{{ formatTimeStamp(gachi.start_t) }}～{{ formatTimeStamp(gachi.end_t) }}</div>
             <div>ルール：{{ gachi.rule.rule_name }}</div>
             <span style="display: flex">
             <div class="col-md-3">ステージ1：{{ gachi.stage1.stage_name }}<br>
@@ -72,6 +72,14 @@
                     }
                 }
                 func();
+            },
+            formatTimeStamp: function(timeStamp){
+                let tmpTimeStamp = timeStamp;
+                tmpTimeStamp = tmpTimeStamp.replace(/-/, "年");
+                tmpTimeStamp = tmpTimeStamp.replace(/-/, "月");
+                tmpTimeStamp = tmpTimeStamp.replace(/ /, "日 ");
+                tmpTimeStamp = tmpTimeStamp.replace(/.{6}$/, "時");
+                return tmpTimeStamp;
             },
         },
     }

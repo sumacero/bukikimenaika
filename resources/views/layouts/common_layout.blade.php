@@ -16,11 +16,6 @@
         <li>{{Form::button('ガチマッチ情報参照',['onclick' => 'location.href="./view_gachi"'])}}</li>
         <li>{{Form::button('オススメブキ検索',['onclick' => 'location.href="./search_buki"'])}}</li>
     </ul>
-    <hr size="1">
-    <div class="content">
-    @yield('content')
-    </div>
-
     <div>
         <a class="dropdown-item" href="{{ route('logout') }}"
             onclick="event.preventDefault();
@@ -31,6 +26,10 @@
         <form id="logout-form" action="{{ route('logout') }}" method="POST">
             @csrf
         </form>
+    </div>
+    <hr size="1">
+    <div class="content">
+    @yield('content')
     </div>
     
     <div class="footer">

@@ -2317,6 +2317,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }();
 
       func();
+    },
+    formatTimeStamp: function formatTimeStamp(timeStamp) {
+      var tmpTimeStamp = timeStamp;
+      tmpTimeStamp = tmpTimeStamp.replace(/-/, "年");
+      tmpTimeStamp = tmpTimeStamp.replace(/-/, "月");
+      tmpTimeStamp = tmpTimeStamp.replace(/ /, "日 ");
+      tmpTimeStamp = tmpTimeStamp.replace(/.{6}$/, "時");
+      return tmpTimeStamp;
     }
   }
 });
@@ -39679,9 +39687,9 @@ var render = function() {
         _c("div", [
           _vm._v(
             "期間：" +
-              _vm._s(_vm.gachi.start_t) +
+              _vm._s(_vm.formatTimeStamp(_vm.gachi.start_t)) +
               "～" +
-              _vm._s(_vm.gachi.end_t)
+              _vm._s(_vm.formatTimeStamp(_vm.gachi.end_t))
           )
         ]),
         _vm._v(" "),
