@@ -20,11 +20,11 @@ window.Vue = require('vue');
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
-Vue.component('insert-record', require('./components/InsertRecordComponent.vue').default);
-Vue.component('edit-table', require('./components/EditTableComponent.vue').default);
 Vue.component('edit-record', require('./components/EditRecordComponent.vue').default);
 Vue.component('pagination', require('./components/PaginationComponent.vue').default);
 Vue.component('search-menu', require('./components/SearchMenuComponent.vue').default);
+Vue.component('gachi-list', require('./components/GachiListComponent.vue').default);
+Vue.component('gachi-list-child', require('./components/GachiListChildComponent.vue').default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

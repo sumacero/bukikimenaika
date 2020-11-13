@@ -3,12 +3,14 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\builder;
 
 class Input_data extends Model
 {
     //primaryKeyの設定
     protected $primaryKey = "input_data_id";
 
+    //belongsTo設定
     public function gachi(){
         return $this->belongsTo('App\Gachi','gachi_id');
     }

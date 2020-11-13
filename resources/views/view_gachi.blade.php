@@ -2,27 +2,29 @@
 
 @section('title', 'ブキキメナイカ')
 
-@section('h1', 'データ編集')
+@section('h1', 'ガチマッチ情報')
 
 @section('content')
     <div id="app1">
-        <button v-on:click="switchInsertRecord()">データの追加</button>
-        <insert-record v-if="showInsertRecord" v-on:click-cancel-insert-btn="switchInsertRecord" v-on:click-insert-btn="insertRecord" v-bind:rules="rules" v-bind:stages="stages" v-bind:gachis="gachis" v-bind:bukis="bukis" v-bind:udemaes="udemaes">
-        </insert-record>
-        <div v-on:click="switchFilterOption()">絞り込み@{{ filterIcon }}</div>
-        <search-menu v-show="showFilterOption" v-bind:rules="rules" v-bind:stages="stages" v-bind:bukis="bukis" v-bind:filter-options="filterOptions" v-on:click-filter-btn="filterRecord">
-        </search-menu>
-        <div>@{{ paginationData.total }}件</div>
-        <edit-table v-bind:input_datas="input_datas" v-bind:gachis="gachis" v-bind:rules="rules" v-bind:stages="stages" v-bind:bukis="bukis" v-bind:udemaes="udemaes" v-on:click-update-btn="updateRecord" v-on:click-delete-btn="deleteRecord">
-        </edit-table>
-        <pagination v-bind:pagination-data="paginationData" v-on:click-page-number="movePage"></pagination>
+        <span style="display: flex">
+            <div class="col-md-2">
+                <div>絞り込み</div>
+                <search-menu v-bind:rules="rules" v-bind:stages="stages" v-bind:bukis="bukis" v-bind:filter-options="filterOptions" v-on:click-filter-btn="filterRecord">
+                </search-menu>
+            </div>
+            <div class="col-md-10">
+                <div>@{{ paginationData.total }}件</div>
+                <gachi-list v-bind:input_datas="input_datas" v-bind:gachis="gachis" v-bind:rules="rules" v-bind:stages="stages" v-bind:bukis="bukis" v-bind:udemaes="udemaes" v-on:click-insert-btn="insertRecord" v-on:click-update-btn="updateRecord" v-on:click-delete-btn="deleteRecord">
+                </gachi-list>
+                <pagination v-bind:pagination-data="paginationData" v-on:click-page-number="movePage"></pagination>
+            </div>
+        </span>
     </div>
 @endsection
 
 @section('vue')
 <script>
 Vue.config.devtools = true;
-
 new Vue({
     el: '#app1',
     data: {
@@ -33,7 +35,6 @@ new Vue({
         bukis:null,
         udemaes:null,
         showInsertRecord: false,
-        showFilterOption: false,
         paginationData:{
             current_page: null,
             first_page_url: null,
@@ -57,7 +58,7 @@ new Vue({
     },
     mounted(){
         this.getParentTables();
-        this.getInputDatas(1);
+        this.getGachis(1);
     },
     methods:{
         getParentTables:function(){
@@ -86,8 +87,8 @@ new Vue({
                         temp.push(buki.buki_id);
                     });
                     this.filterOptions.bukis_checkbox = temp.slice(0, temp.length);
-                    //gachis
-                    this.gachis = tables.gachis;
+                    //input_datas
+                    this.input_datas = tables.input_datas;
                     //udemaes
                     this.udemaes = tables.udemaes;
                 }
@@ -98,11 +99,10 @@ new Vue({
             }
             func();
         },
-        getInputDatas: function(targetPage){
-
+        getGachis: function(targetPage){
             const func = async ()=>{
                 try{                    
-                    let res = await axios.get('get_input_datas', {
+                    let res = await axios.get('get_gachis', {
                         params:{
                             page:targetPage,
                             rules_checkbox:this.filterOptions.rules_checkbox,
@@ -114,19 +114,19 @@ new Vue({
                     console.log(this.filterOptions);
                     console.log("返答↓");
                     console.log(res);
-                    let input_datas = res.data.db_data
-                    this.input_datas = input_datas.data;
-                    this.paginationData.current_page = input_datas.current_page;
-                    this.paginationData.first_page_url = input_datas.first_page_url;
-                    this.paginationData.from = input_datas.from;
-                    this.paginationData.last_page = input_datas.last_page;
-                    this.paginationData.last_page_url = input_datas.last_page_url;
-                    this.paginationData.next_page_url = input_datas.next_page_url;
-                    this.paginationData.path = input_datas.path;
-                    this.paginationData.per_page = input_datas.per_page;
-                    this.paginationData.prev_page_url = input_datas.prev_page_url;
-                    this.paginationData.to = input_datas.to;
-                    this.paginationData.total = input_datas.total;
+                    let gachis = res.data.db_data
+                    this.gachis = gachis.data;
+                    this.paginationData.current_page = gachis.current_page;
+                    this.paginationData.first_page_url = gachis.first_page_url;
+                    this.paginationData.from = gachis.from;
+                    this.paginationData.last_page = gachis.last_page;
+                    this.paginationData.last_page_url = gachis.last_page_url;
+                    this.paginationData.next_page_url = gachis.next_page_url;
+                    this.paginationData.path = gachis.path;
+                    this.paginationData.per_page = gachis.per_page;
+                    this.paginationData.prev_page_url = gachis.prev_page_url;
+                    this.paginationData.to = gachis.to;
+                    this.paginationData.total = gachis.total;
                 }
                 catch (error){
                     console.log(error.response.data);
@@ -136,10 +136,7 @@ new Vue({
             func();
         },
         movePage: function(pageNumber){
-            this.getInputDatas(pageNumber);
-        },
-        switchFilterOption: function(){
-            this.showFilterOption = !this.showFilterOption;
+            this.getGachis(pageNumber);
         },
         switchInsertRecord: function() {
             this.showInsertRecord = !this.showInsertRecord;
@@ -159,16 +156,7 @@ new Vue({
         },
         filterRecord: function(){
             console.log(this.filterOptions);
-            this.getInputDatas(1);
-        }
-    },
-    computed:{
-        filterIcon(){
-            let icon="↓";
-            if(this.showFilterOption){
-                icon="↑"
-            }
-            return icon;
+            this.getGachis(1);
         }
     }
 });

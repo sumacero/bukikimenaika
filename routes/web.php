@@ -15,17 +15,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-//Route::get('hello','HelloController@index');
-//Route::get('login','HelloController@getAuth');
-//Route::post('login','HelloController@postAuth');
-//Route::get('create_account','MainController@create_account');
-
-//Route::get('home','MainController@home')->middleware('auth');
 Route::get('search_buki','MainController@search_buki')->middleware('auth');
 Route::post('search_buki','MainController@analysis_buki')->middleware('auth');
 Route::get('edit_data','MainController@edit_data')->middleware('auth');
+Route::get('view_gachi','MainController@view_gachi')->middleware('auth');
 Route::get('get_parent_tables','AjaxController@getParentTables');
 Route::get('get_input_datas','AjaxController@getInputDatas');
+Route::get('get_gachis','AjaxController@getGachis');
 Route::post('insert_record','AjaxController@insertRecord');
 Route::post('delete_record','AjaxController@deleteRecord');
 Route::post('update_record','AjaxController@updateRecord');

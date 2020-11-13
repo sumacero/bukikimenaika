@@ -19,6 +19,7 @@
                 </label>
             </span>
             </div>
+            <!--
             <div>
             <label>ブキ</label><br>
             <span v-for="buki in bukis" :key="buki.id">
@@ -28,7 +29,8 @@
                 </label>
             </span>
             </div>
-             <button type="button" class="btn btn-info" v-on:click="filterClick()">絞り込み</button>
+            -->
+             <button type="button" class="btn btn-info" v-on:click="filterClick">絞り込み</button>
         </form>
     </div>
 </template>

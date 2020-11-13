@@ -13,6 +13,7 @@
     <h2>メニュー</h2>
     <ul>
         <li>{{Form::button('データ編集',['onclick' => 'location.href="./edit_data"'])}}</li>
+        <li>{{Form::button('ガチマッチ情報参照',['onclick' => 'location.href="./view_gachi"'])}}</li>
         <li>{{Form::button('オススメブキ検索',['onclick' => 'location.href="./search_buki"'])}}</li>
     </ul>
     <hr size="1">

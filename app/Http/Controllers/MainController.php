@@ -29,6 +29,10 @@ class MainController extends Controller
         return view('edit_data');
     }
     
+    public function view_gachi(){
+        return view('view_gachi');
+    }
+
     public function search_buki(){
         $rules = Rule::all();
         $stages = Stage::all();
