@@ -1,24 +1,24 @@
 <template>
     <div class="filter-option">
         <form>
-            <div>
-            <label>ルール</label><br>
+            <fieldset style="border: 1px solid #000000; padding: 10px;">
+            <legend>ルール</legend>
             <span v-for="rule in rules" :key="rule.id">
                 <label>
                     <input type="checkbox" v-bind:id=rule.rule_id v-bind:value=rule.rule_id v-model="filterOptions.rules_checkbox">
                     {{rule.rule_name}}
                 </label>
             </span>
-            </div>
-            <div>
-            <label>ステージ</label><br>
+            </fieldset>
+            <fieldset style="border: 1px solid #000000; padding: 10px;">
+            <legend>ステージ</legend>
             <span v-for="stage in stages" :key="stage.id">
                 <label>
                     <input type="checkbox" v-bind:id=stage.stage_id v-bind:value=stage.stage_id v-model="filterOptions.stages_checkbox">
                     {{stage.stage_name}}
                 </label>
             </span>
-            </div>
+            </fieldset>
             <!--
             <div>
             <label>ブキ</label><br>
@@ -63,3 +63,17 @@
         }
     }
 </script>
+
+<style>
+    legend {
+        display: initial;
+        width: initial;
+        max-width: initial;
+        padding: initial;
+        margin-bottom: initial;
+        font-size: initial;
+        line-height: initial;
+        color: initial;
+        white-space: initial;
+    }
+</style>

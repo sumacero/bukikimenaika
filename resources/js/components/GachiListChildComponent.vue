@@ -1,9 +1,8 @@
 <template> 
-    <div v-bind:class="customizedClass" style="border: 2px solid">       
-        <div style="border: 1px solid">
-            {{ gachiState }}
-            <div>期間：{{ formatTimeStamp(gachi.start_t) }}～{{ formatTimeStamp(gachi.end_t) }}</div>
-            <div>ルール：{{ gachi.rule.rule_name }}</div>
+    <fieldset v-bind:class="customizedClass" style="border: 1px solid #000000; padding: 10px;">
+        <legend>{{ formatTimeStamp(gachi.start_t) }}～{{ formatTimeStamp(gachi.end_t) }}</legend>
+        <fieldset style="border: 1px solid #000000; padding: 10px;">
+            <div class="col-md-3">ルール：{{ gachi.rule.rule_name }}</div>
             <span style="display: flex">
             <div class="col-md-3">ステージ1：{{ gachi.stage1.stage_name }}<br>
                 <img v-bind:src="'images/'+gachi.stage1.stage_name+'.png'" v-bind:alt="gachi.stage1.stage_name+'.png'" width="200" height="100">
@@ -12,24 +11,29 @@
                 <img v-bind:src="'images/'+gachi.stage2.stage_name+'.png'" v-bind:alt="gachi.stage2.stage_name+'.png'" width="200" height="100">
             </div>
             </span>
-        </div>
+        </fieldset>
          
-        <div style="border: 1px solid">
+        <fieldset style="border: 1px solid #000000; padding: 10px;">
+            <legend>あなたの記録</legend>
             <div v-if="input_data">
-            あなたの記録
                 <div>ブキ：{{ input_data.buki.buki_name }}</div>
                 <div>ウデマエ：{{ input_data.udemae.udemae_name }}</div>
                 <div>XP：{{ input_data.xp }}</div>
             </div>
-            <button type="button" class="editBtn btn btn-info" @click.prevent="switchEditRecord(input_data)">編集</button>
-            <button type="button" class="deleteBtn btn btn-info" @click.prevent="deleteRecord(input_data.input_data_id)">削除</button>
-        </div>
-    </div>
+            <div v-if="input_data">
+                <button type="button" class="editBtn btn btn-info" @click.prevent="switchEditRecord(input_data)">戦績を編集</button>
+                <button type="button" class="deleteBtn btn btn-info" @click.prevent="deleteRecord(input_data.input_data_id)">削除</button>
+            </div>
+            <div v-else>
+                <button type="button" class="editBtn btn btn-info" @click.prevent="switchEditRecord(input_data)">戦績を入力</button>
+            </div>
+        </fieldset>
+    </fieldset>
 </template>
 
 <script>
     export default {
-        props:["gachi", "input_data", "rules", "stages", "bukis", "udemaes"],
+        props:["gachi", "input_data", "rules", "stages", "bukis", "udemaes", "active"],
         data: function(){
             return{
                 showEditRecord: false,
@@ -39,6 +43,7 @@
                 gachiEndTimeStamp: null,
                 gachiState: null,
                 customizedClass: null,
+                activeMsg: null,
             }
         },
         mounted(){
@@ -82,13 +87,47 @@
                 return tmpTimeStamp;
             },
         },
+        watch:{
+            active(value){
+                if(value){
+                    this.customizedClass="active";
+                    this.activeMsg="編集中";
+                }else{
+                    this.customizedClass="";
+                    this.activeMsg="";
+                }
+            }
+        }
     }
 </script>
 
-<!--
 <style lang="scss" scoped>
-.active {
-  background-color: #000000;
+.active{
+  animation: flash 2s linear infinite;
 }
+
+@keyframes flash {
+  0%,100% {
+    //opacity: 1;
+    background:white;
+  }
+
+  50% {
+    //opacity: 0.5;
+    background:rgb(255, 255, 0);
+  }
+}
+
+legend {
+    display: initial;
+    width: initial;
+    max-width: initial;
+    padding: initial;
+    margin-bottom: initial;
+    font-size: initial;
+    line-height: initial;
+    color: initial;
+    white-space: initial;
+}
+
 </style>
--->

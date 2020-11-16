@@ -8,7 +8,6 @@
     <div id="app1">
         <span style="display: flex">
             <div class="col-md-2">
-                <div>絞り込み</div>
                 <search-menu v-bind:rules="rules" v-bind:stages="stages" v-bind:bukis="bukis" v-bind:filter-options="filterOptions" v-on:click-filter-btn="filterRecord">
                 </search-menu>
             </div>
@@ -125,8 +124,10 @@ new Vue({
                     this.paginationData.path = gachis.path;
                     this.paginationData.per_page = gachis.per_page;
                     this.paginationData.prev_page_url = gachis.prev_page_url;
-                    this.paginationData.to = gachis.to;
                     this.paginationData.total = gachis.total;
+                    if(!this.paginationData.total){
+                        this.paginationData.total = 0;
+                    }
                 }
                 catch (error){
                     console.log(error.response.data);

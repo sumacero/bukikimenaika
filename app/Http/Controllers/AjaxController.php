@@ -56,8 +56,11 @@ class AjaxController extends Controller
         $stagesCheckbox = request('stages_checkbox');
         $bukisCheckbox = request('bukis_checkbox');
         //絞り込み実行前(初期画面)
-        if($rulesCheckbox=="" && $stagesCheckbox=="" && $bukisCheckbox=="" ){
+        if($rulesCheckbox=="" && $stagesCheckbox=="" ){
             $gachis = Gachi::with('rule','stage1','stage2')->paginate(10);
+        //絞り込み実行時
+        }else if($rulesCheckbox=="" || $stagesCheckbox=="" ){
+            $gachis = new Gachi;
         //絞り込み実行時
         }else{
             $gachis = Gachi::with('rule','stage1','stage2')
