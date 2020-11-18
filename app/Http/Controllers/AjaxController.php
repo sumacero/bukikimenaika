@@ -8,6 +8,7 @@ use App\Http\Requests\DeleteInputDataRequest;
 use App\Http\Requests\UpdateInputDataRequest;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 use App\Rule;
 use App\Stage;
 use App\Buki;
@@ -52,21 +53,44 @@ class AjaxController extends Controller
     }
     */
     public function getGachis(Request $request){
+        $initFlag = request('init_flag');
+        $detaRadio = request('date_radio');
         $rulesCheckbox = request('rules_checkbox');
         $stagesCheckbox = request('stages_checkbox');
         $bukisCheckbox = request('bukis_checkbox');
-        //絞り込み実行前(初期画面)
-        if($rulesCheckbox=="" && $stagesCheckbox=="" ){
+        
+        //初回アクセス時
+        if($initFlag == "true"){
             $gachis = Gachi::with('rule','stage1','stage2')->paginate(10);
-        //絞り込み実行時
-        }else if($rulesCheckbox=="" || $stagesCheckbox=="" ){
-            $gachis = new Gachi;
         //絞り込み実行時
         }else{
             $gachis = Gachi::with('rule','stage1','stage2')
-            ->whereIn('rule_id', $rulesCheckbox)->whereIn('stage1_id', $stagesCheckbox);
-            $gachis = Gachi::with('rule','stage1','stage2')
-            ->whereIn('rule_id', $rulesCheckbox)->whereIn('stage2_id', $stagesCheckbox)->union($gachis)->paginate(10);
+            ->where(function($gachis) use($rulesCheckbox){
+                $gachis->whereIn('rule_id', $rulesCheckbox);
+            })->where(function($gachis) use($stagesCheckbox) {
+                $gachis->orwhereIn('stage1_id',$stagesCheckbox)
+                      ->orWhereIn('stage2_id',$stagesCheckbox);
+            });
+            $targetTimeStamp = null;
+            $nowTimeStamp = Carbon::now();
+            switch($detaRadio){
+                case 'allTime':
+                    $targetTimeStamp = Carbon::parse('2000-01-01 00:00:00');
+                break;
+                case '1year':
+                    $targetTimeStamp = $nowTimeStamp->subYear(1);
+                break;
+                case '1month':
+                    $targetTimeStamp = $nowTimeStamp->subMonth(1);
+                break;
+                case '1week':
+                    $targetTimeStamp = $nowTimeStamp->subDay(7);
+                break;
+                case '3day':
+                    $targetTimeStamp = $nowTimeStamp->subDay(3);
+                break;            
+            }
+            $gachis = $gachis->where('start_t', '>=', $targetTimeStamp)->paginate(10);
         }
         return ['db_data' => $gachis];
     }

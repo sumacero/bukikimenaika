@@ -42,3 +42,11 @@
         },
     }
 </script>
+
+<style lang="scss" scoped>
+
+ul{
+    padding-left: 0px;
+}
+
+</style>

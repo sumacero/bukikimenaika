@@ -8,10 +8,11 @@
     <div id="app1">
         <span style="display: flex">
             <div class="col-md-2">
-                <search-menu v-bind:rules="rules" v-bind:stages="stages" v-bind:bukis="bukis" v-bind:filter-options="filterOptions" v-on:click-filter-btn="filterRecord">
+                <search-menu v-bind:rules="rules" v-bind:stages="stages" v-bind:bukis="bukis" v-bind:udemaes="udemaes" v-bind:filter-options="filterOptions" v-on:click-filter-btn="filterRecord">
                 </search-menu>
             </div>
             <div class="col-md-10">
+                <pagination v-bind:pagination-data="paginationData" v-on:click-page-number="movePage"></pagination>
                 <div>@{{ paginationData.total }}件</div>
                 <gachi-list v-bind:input_datas="input_datas" v-bind:gachis="gachis" v-bind:rules="rules" v-bind:stages="stages" v-bind:bukis="bukis" v-bind:udemaes="udemaes" v-on:click-insert-btn="insertRecord" v-on:click-update-btn="updateRecord" v-on:click-delete-btn="deleteRecord">
                 </gachi-list>
@@ -27,6 +28,7 @@ Vue.config.devtools = true;
 new Vue({
     el: '#app1',
     data: {
+        initFlag: true,
         input_datas: null,
         gachis:null,
         rules:null,
@@ -48,11 +50,11 @@ new Vue({
             total: null,
         },
         filterOptions:{
+            date_radio:"allTime",
             rules_checkbox:[],
             stages_checkbox:[],
             bukis_checkbox:[],
-            xp_min:null,
-            xp_max:null,
+            udemaes_checkbox:[],
         }
     },
     mounted(){
@@ -86,10 +88,15 @@ new Vue({
                         temp.push(buki.buki_id);
                     });
                     this.filterOptions.bukis_checkbox = temp.slice(0, temp.length);
-                    //input_datas
-                    this.input_datas = tables.input_datas;
                     //udemaes
                     this.udemaes = tables.udemaes;
+                    temp=[];
+                    this.udemaes.forEach(function(udemae){
+                        temp.push(udemae.udemae_id);
+                    });
+                    this.filterOptions.udemaes_checkbox = temp.slice(0, temp.length);
+                    //input_datas
+                    this.input_datas = tables.input_datas;
                 }
                 catch (error){
                     console.log(error.response);
@@ -103,7 +110,9 @@ new Vue({
                 try{                    
                     let res = await axios.get('get_gachis', {
                         params:{
+                            init_flag:this.initFlag,
                             page:targetPage,
+                            date_radio:this.filterOptions.date_radio,
                             rules_checkbox:this.filterOptions.rules_checkbox,
                             stages_checkbox:this.filterOptions.stages_checkbox,
                             bukis_checkbox:this.filterOptions.bukis_checkbox,
@@ -156,6 +165,7 @@ new Vue({
             this.input_datas = this.input_datas.filter(data => data.input_data_id !== deleteRecordDataId);
         },
         filterRecord: function(){
+            this.initFlag = false;
             console.log(this.filterOptions);
             this.getGachis(1);
         }
