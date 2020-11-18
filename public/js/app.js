@@ -2572,6 +2572,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["rules", "stages", "bukis", "udemaes", "filterOptions"],
   data: function data() {
@@ -2583,6 +2587,7 @@ __webpack_require__.r(__webpack_exports__);
       buki_id: null,
       udemae_id: null,
       xp: null,
+      fieldsetDisable: null,
       errors: {
         rule: [],
         stage1: [],
@@ -2596,6 +2601,28 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     filterClick: function filterClick() {
       this.$emit('click-filter-btn');
+    }
+    /*
+    switchFieldset:function(){
+        if(this.filterOptions.input_data_radio == "inserted"){
+            this.fieldsetDisable=true;
+        }else{
+            this.fieldsetDisable=false;
+        }
+    }
+    */
+
+  },
+  watch: {
+    filterOptions: {
+      handler: function handler(value) {
+        if (value.input_data_radio == "inserted") {
+          this.fieldsetDisable = false;
+        } else {
+          this.fieldsetDisable = true;
+        }
+      },
+      deep: true
     }
   }
 });
@@ -40549,11 +40576,101 @@ var render = function() {
         [
           _c("legend", [_vm._v("あなたの記録")]),
           _vm._v(" "),
-          _vm._m(0),
+          _c("span", [
+            _c("label", [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.filterOptions.input_data_radio,
+                    expression: "filterOptions.input_data_radio"
+                  }
+                ],
+                attrs: { type: "radio", value: "all" },
+                domProps: {
+                  checked: _vm._q(_vm.filterOptions.input_data_radio, "all")
+                },
+                on: {
+                  change: function($event) {
+                    return _vm.$set(
+                      _vm.filterOptions,
+                      "input_data_radio",
+                      "all"
+                    )
+                  }
+                }
+              }),
+              _vm._v("\n                    入力済/未入力\n                ")
+            ]),
+            _vm._v(" "),
+            _c("label", [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.filterOptions.input_data_radio,
+                    expression: "filterOptions.input_data_radio"
+                  }
+                ],
+                attrs: { type: "radio", value: "inserted" },
+                domProps: {
+                  checked: _vm._q(
+                    _vm.filterOptions.input_data_radio,
+                    "inserted"
+                  )
+                },
+                on: {
+                  change: function($event) {
+                    return _vm.$set(
+                      _vm.filterOptions,
+                      "input_data_radio",
+                      "inserted"
+                    )
+                  }
+                }
+              }),
+              _vm._v("\n                    入力済\n                ")
+            ]),
+            _vm._v(" "),
+            _c("label", [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.filterOptions.input_data_radio,
+                    expression: "filterOptions.input_data_radio"
+                  }
+                ],
+                attrs: { type: "radio", value: "uninserted" },
+                domProps: {
+                  checked: _vm._q(
+                    _vm.filterOptions.input_data_radio,
+                    "uninserted"
+                  )
+                },
+                on: {
+                  change: function($event) {
+                    return _vm.$set(
+                      _vm.filterOptions,
+                      "input_data_radio",
+                      "uninserted"
+                    )
+                  }
+                }
+              }),
+              _vm._v("\n                    未入力\n                ")
+            ])
+          ]),
           _vm._v(" "),
           _c(
             "fieldset",
-            { staticStyle: { border: "1px solid #000000", padding: "10px" } },
+            {
+              staticStyle: { border: "1px solid #000000", padding: "10px" },
+              attrs: { disabled: _vm.fieldsetDisable }
+            },
             [
               _c("legend", [_vm._v("ブキ")]),
               _vm._v(" "),
@@ -40622,7 +40739,10 @@ var render = function() {
           _vm._v(" "),
           _c(
             "fieldset",
-            { staticStyle: { border: "1px solid #000000", padding: "10px" } },
+            {
+              staticStyle: { border: "1px solid #000000", padding: "10px" },
+              attrs: { disabled: _vm.fieldsetDisable }
+            },
             [
               _c("legend", [_vm._v("ウデマエ")]),
               _vm._v(" "),
@@ -40688,7 +40808,7 @@ var render = function() {
                 })
               ]),
               _vm._v(" "),
-              _vm._m(1)
+              _vm._m(0)
             ]
           )
         ]
@@ -40707,22 +40827,6 @@ var render = function() {
   ])
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("span", [
-      _c("label", [
-        _c("input", { attrs: { type: "checkbox" } }),
-        _vm._v("\n                    入力済み\n                ")
-      ]),
-      _vm._v(" "),
-      _c("label", [
-        _c("input", { attrs: { type: "checkbox" } }),
-        _vm._v("\n                    未入力\n                ")
-      ])
-    ])
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement

@@ -49,15 +49,19 @@
                 <legend>あなたの記録</legend>
                 <span>
                     <label>
-                        <input type="checkbox">
-                        入力済み
+                        <input type="radio" value="all" v-model="filterOptions.input_data_radio">
+                        入力済/未入力
                     </label>
                     <label>
-                        <input type="checkbox">
+                        <input type="radio" value="inserted" v-model="filterOptions.input_data_radio">
+                        入力済
+                    </label>
+                    <label>
+                        <input type="radio" value="uninserted" v-model="filterOptions.input_data_radio">
                         未入力
                     </label>
                 </span>
-                <fieldset style="border: 1px solid #000000; padding: 10px;">
+                <fieldset v-bind:disabled="fieldsetDisable" style="border: 1px solid #000000; padding: 10px;">
                     <legend>ブキ</legend>
                     <span v-for="buki in bukis" :key="buki.id">
                         <label>
@@ -66,7 +70,7 @@
                         </label>
                     </span>
                 </fieldset>
-                <fieldset style="border: 1px solid #000000; padding: 10px;">
+                <fieldset v-bind:disabled="fieldsetDisable" style="border: 1px solid #000000; padding: 10px;">
                     <legend>ウデマエ</legend>
                     <select v-model="udemae_id" name="udemae_id">
                         <option v-for="udemae in udemaes" :key="udemae.id" v-bind:value="udemae.udemae_id" >{{ udemae.udemae_name }}</option>
@@ -113,6 +117,7 @@
                 buki_id:null,
                 udemae_id:null,
                 xp:null,
+                fieldsetDisable:null,
                 errors:{
                     rule:[],
                     stage1:[],
@@ -120,17 +125,37 @@
                     buki:[],
                     xp:[]
                 },
-                error:false,
+                error:false
             }
         },
         methods:{
             filterClick:function(){
                 this.$emit('click-filter-btn');
+            },
+            /*
+            switchFieldset:function(){
+                if(this.filterOptions.input_data_radio == "inserted"){
+                    this.fieldsetDisable=true;
+                }else{
+                    this.fieldsetDisable=false;
+                }
+            }
+            */
+        },
+        watch:{
+            filterOptions:{
+                handler: function(value){
+                    if(value.input_data_radio == "inserted"){
+                        this.fieldsetDisable=false;
+                    }else{
+                        this.fieldsetDisable=true;
+                    }
+                },
+                deep: true
             }
         }
-    }
+    }   
 </script>
-
 <style>
     legend {
         display: initial;

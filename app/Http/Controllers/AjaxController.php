@@ -58,12 +58,15 @@ class AjaxController extends Controller
         $rulesCheckbox = request('rules_checkbox');
         $stagesCheckbox = request('stages_checkbox');
         $bukisCheckbox = request('bukis_checkbox');
+        $inputDataRadio = request('input_data_radio');
+        $loginUserId = Auth::user()->id;
         
         //初回アクセス時
         if($initFlag == "true"){
             $gachis = Gachi::with('rule','stage1','stage2')->paginate(10);
         //絞り込み実行時
         }else{
+            //ルール、ステージフィルタ
             $gachis = Gachi::with('rule','stage1','stage2')
             ->where(function($gachis) use($rulesCheckbox){
                 $gachis->whereIn('rule_id', $rulesCheckbox);
@@ -71,6 +74,7 @@ class AjaxController extends Controller
                 $gachis->orwhereIn('stage1_id',$stagesCheckbox)
                       ->orWhereIn('stage2_id',$stagesCheckbox);
             });
+            //日付フィルタ
             $targetTimeStamp = null;
             $nowTimeStamp = Carbon::now();
             switch($detaRadio){
@@ -90,7 +94,33 @@ class AjaxController extends Controller
                     $targetTimeStamp = $nowTimeStamp->subDay(3);
                 break;            
             }
-            $gachis = $gachis->where('start_t', '>=', $targetTimeStamp)->paginate(10);
+            $gachis = $gachis->where('start_t', '>=', $targetTimeStamp);
+            //戦績有無フィルタ
+            $inputDatas = Input_data::where('user_id',$loginUserId)->get();
+            $inputDataGachiIds=[];
+            foreach($inputDatas As $inputData){
+                array_push($inputDataGachiIds, $inputData->gachi_id);
+            }
+            switch($inputDataRadio){
+                case 'all':
+                break;
+                case 'inserted':
+                    $inputDataGachiIds=[];
+                    //ブキフィルタ
+                    if(count((array)$bukisCheckbox)!=null){
+                        foreach($inputDatas As $inputData){
+                            if(in_array($inputData->buki_id, $bukisCheckbox)){
+                                array_push($inputDataGachiIds, $inputData->gachi_id);
+                            }
+                        }
+                    }
+                    $gachis = $gachis->whereIn('gachi_id', $inputDataGachiIds);
+                break;
+                case 'uninserted':
+                    $gachis = $gachis->whereNotIn('gachi_id', $inputDataGachiIds);
+                break;          
+            }
+            $gachis = $gachis->paginate(10);
         }
         return ['db_data' => $gachis];
     }

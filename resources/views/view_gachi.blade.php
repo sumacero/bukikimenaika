@@ -55,6 +55,7 @@ new Vue({
             stages_checkbox:[],
             bukis_checkbox:[],
             udemaes_checkbox:[],
+            input_data_radio:"all",
         }
     },
     mounted(){
@@ -116,6 +117,7 @@ new Vue({
                             rules_checkbox:this.filterOptions.rules_checkbox,
                             stages_checkbox:this.filterOptions.stages_checkbox,
                             bukis_checkbox:this.filterOptions.bukis_checkbox,
+                            input_data_radio:this.filterOptions.input_data_radio,
                         }
                     });
                     console.log("送信データ↓");
