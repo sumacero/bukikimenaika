@@ -25,6 +25,7 @@ Vue.component('pagination', require('./components/PaginationComponent.vue').defa
 Vue.component('search-menu', require('./components/SearchMenuComponent.vue').default);
 Vue.component('gachi-list', require('./components/GachiListComponent.vue').default);
 Vue.component('gachi-list-child', require('./components/GachiListChildComponent.vue').default);
+Vue.component('plus-minus', require('./components/PlusMinusComponent.vue').default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

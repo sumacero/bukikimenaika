@@ -54,8 +54,10 @@ new Vue({
             rules_checkbox:[],
             stages_checkbox:[],
             bukis_checkbox:[],
-            udemaes_checkbox:[],
             input_data_radio:"all",
+            udemaes_pull:null,
+            xp_text:null,
+            udemae_relation_radio:">=",
         }
     },
     mounted(){
@@ -91,11 +93,6 @@ new Vue({
                     this.filterOptions.bukis_checkbox = temp.slice(0, temp.length);
                     //udemaes
                     this.udemaes = tables.udemaes;
-                    temp=[];
-                    this.udemaes.forEach(function(udemae){
-                        temp.push(udemae.udemae_id);
-                    });
-                    this.filterOptions.udemaes_checkbox = temp.slice(0, temp.length);
                     //input_datas
                     this.input_datas = tables.input_datas;
                 }
@@ -118,6 +115,9 @@ new Vue({
                             stages_checkbox:this.filterOptions.stages_checkbox,
                             bukis_checkbox:this.filterOptions.bukis_checkbox,
                             input_data_radio:this.filterOptions.input_data_radio,
+                            udemaes_pull:this.filterOptions.udemaes_pull,
+                            xp_text:this.filterOptions.xp_text,
+                            udemae_relation_radio:this.filterOptions.udemae_relation_radio,
                         }
                     });
                     console.log("送信データ↓");

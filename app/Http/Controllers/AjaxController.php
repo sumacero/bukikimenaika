@@ -59,6 +59,9 @@ class AjaxController extends Controller
         $stagesCheckbox = request('stages_checkbox');
         $bukisCheckbox = request('bukis_checkbox');
         $inputDataRadio = request('input_data_radio');
+        $udemaesPull = request('udemaes_pull');
+        $xpText = request('xp_text');
+        $udemaeRelationRadio = request('udemae_relation_radio');
         $loginUserId = Auth::user()->id;
         
         //初回アクセス時
@@ -102,20 +105,64 @@ class AjaxController extends Controller
                 array_push($inputDataGachiIds, $inputData->gachi_id);
             }
             switch($inputDataRadio){
+                //戦績有りまたは無し
                 case 'all':
                 break;
+                //戦績有りのみ
                 case 'inserted':
-                    $inputDataGachiIds=[];
                     //ブキフィルタ
+                    $inputDataGachiIds=[];
                     if(count((array)$bukisCheckbox)!=null){
                         foreach($inputDatas As $inputData){
                             if(in_array($inputData->buki_id, $bukisCheckbox)){
                                 array_push($inputDataGachiIds, $inputData->gachi_id);
                             }
                         }
+                        $gachis = $gachis->whereIn('gachi_id', $inputDataGachiIds);
                     }
-                    $gachis = $gachis->whereIn('gachi_id', $inputDataGachiIds);
+                    //ウデマエフィルタ
+                    $inputDataGachiIds=[];
+                    if($udemaesPull != null){
+                        switch($udemaeRelationRadio){
+                            case '>=':
+                                //ウデマエXかつXP指定ありの場合XPでフィルタ
+                                if($udemaesPull=='21' && is_numeric($xpText)){
+                                    foreach($inputDatas As $inputData){
+                                        if($inputData->xp >= $xpText){
+                                            array_push($inputDataGachiIds, $inputData->gachi_id);
+                                        }
+                                    }
+                                //ウデマエでフィルタ
+                                }else{
+                                    foreach($inputDatas As $inputData){
+                                        if($inputData->udemae_id >= $udemaesPull){
+                                            array_push($inputDataGachiIds, $inputData->gachi_id);
+                                        }
+                                    }
+                                }
+                            break;
+                            case '<=':
+                                //ウデマエXかつXP指定ありの場合XPでフィルタ
+                                if($udemaesPull=='21' && is_numeric($xpText)){
+                                    foreach($inputDatas As $inputData){
+                                        if($inputData->xp <= $xpText){
+                                            array_push($inputDataGachiIds, $inputData->gachi_id);
+                                        }
+                                    }
+                                //ウデマエでフィルタ
+                                }else{
+                                    foreach($inputDatas As $inputData){
+                                        if($inputData->udemae_id <= $udemaesPull){
+                                            array_push($inputDataGachiIds, $inputData->gachi_id);
+                                        }
+                                    }
+                                }
+                            break;
+                        }
+                        $gachis = $gachis->whereIn('gachi_id', $inputDataGachiIds);
+                    }
                 break;
+                //戦績無しのみ
                 case 'uninserted':
                     $gachis = $gachis->whereNotIn('gachi_id', $inputDataGachiIds);
                 break;          

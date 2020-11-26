@@ -2460,6 +2460,27 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PlusMinusComponent.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/PlusMinusComponent.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ["iconPlus"]
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/SearchMenuComponent.vue?vue&type=script&lang=js&":
 /*!******************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/SearchMenuComponent.vue?vue&type=script&lang=js& ***!
@@ -2576,42 +2597,108 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["rules", "stages", "bukis", "udemaes", "filterOptions"],
   data: function data() {
     return {
-      input_data_id: null,
-      rule_id: null,
-      stage1_id: null,
-      stage2_id: null,
-      buki_id: null,
-      udemae_id: null,
-      xp: null,
       fieldsetDisable: null,
+      showDateRadio: false,
+      showRulesCheckbox: false,
+      showStagesCheckbox: false,
+      showBukisCheckbox: false,
+      showInputDataRadio: false,
+      showUdemaesPull: false,
       errors: {
-        rule: [],
-        stage1: [],
-        stage2: [],
-        buki: [],
         xp: []
       },
-      error: false
+      error: false,
+      iconPlus: {
+        dateRadio: true,
+        rulesCheckbox: true,
+        stagesCheckbox: true,
+        inputDataRadio: true,
+        bukisCheckbox: true,
+        udemaesPull: true
+      }
     };
   },
   methods: {
     filterClick: function filterClick() {
-      this.$emit('click-filter-btn');
-    }
-    /*
-    switchFieldset:function(){
-        if(this.filterOptions.input_data_radio == "inserted"){
-            this.fieldsetDisable=true;
-        }else{
-            this.fieldsetDisable=false;
-        }
-    }
-    */
+      this.validator();
 
+      if (!this.error) {
+        this.$emit('click-filter-btn');
+      }
+    },
+    switchShowDateRadio: function switchShowDateRadio() {
+      this.showDateRadio = !this.showDateRadio;
+      this.iconPlus.dateRadio = !this.iconPlus.dateRadio;
+    },
+    switchShowRulesCheckbox: function switchShowRulesCheckbox() {
+      this.showRulesCheckbox = !this.showRulesCheckbox;
+      this.iconPlus.rulesCheckbox = !this.iconPlus.rulesCheckbox;
+    },
+    switchShowStagesCheckbox: function switchShowStagesCheckbox() {
+      this.showStagesCheckbox = !this.showStagesCheckbox;
+      this.iconPlus.stagesCheckbox = !this.iconPlus.stagesCheckbox;
+    },
+    switchShowInputDataRadio: function switchShowInputDataRadio() {
+      this.showInputDataRadio = !this.showInputDataRadio;
+      this.iconPlus.inputDataRadio = !this.iconPlus.inputDataRadio;
+    },
+    switchShowBukisCheckbox: function switchShowBukisCheckbox() {
+      this.showBukisCheckbox = !this.showBukisCheckbox;
+      this.iconPlus.bukisCheckbox = !this.iconPlus.bukisCheckbox;
+    },
+    switchShowUdemaesPull: function switchShowUdemaesPull() {
+      this.showUdemaesPull = !this.showUdemaesPull;
+      this.iconPlus.udemaesPull = !this.iconPlus.udemaesPull;
+    },
+    validator: function validator() {
+      var xp = [];
+      var message = '';
+      this.error = false; //ウデマエXの場合
+
+      if (this.filterOptions.udemaes_pull == '21') {
+        if (!(this.filterOptions.xp_text >= 0 && this.filterOptions.xp_text <= 9999) && this.filterOptions.xp_text != null) {
+          message = 'XPは0～9999の半角数字で入力してください。';
+          xp.push(message);
+          this.error = true;
+        }
+      }
+
+      this.errors.xp = xp;
+    }
   },
   watch: {
     filterOptions: {
@@ -7110,6 +7197,25 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 // module
 exports.push([module.i, "\n#overlay{\r\n  /*要素を重ねた時の順番*/\r\n  z-index:1;\r\n\r\n  /*画面全体を覆う設定*/\r\n  position:fixed;\r\n  top:0;\r\n  left:0;\r\n  width:100%;\r\n  height:100%;\r\n  background-color:rgba(0,0,0,0.5);\r\n\r\n  /*　画面の中央に要素を表示させる設定　*/\r\n  display: flex;\r\n  align-items: center;\r\n  justify-content: center;\n}\n#content{\r\n  z-index:2;\r\n  width:50%;\r\n  padding: 1em;\r\n  background:#fff;\n}\r\n\r\n", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PlusMinusComponent.vue?vue&type=style&index=0&lang=css&":
+/*!************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/PlusMinusComponent.vue?vue&type=style&index=0&lang=css& ***!
+  \************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.mB20 {\n    margin-bottom: px;\n}\n.icon {\n    position: relative;\n    width: 20px;\n    height: 20px;\n    background: #ccc;\n    border-radius: 50%;\n}\n.icon::before, .icon--plus::after {\n    position: absolute;\n    top: 9px;\n    left: 50%;\n    content: '';\n    display: inline-block;\n    width: 13px;\n    height: 13px;\n    border-top: 2px solid #fff;\n    transform: translateX(-50%);\n}\n.icon--plus:after {\n    top: 3px;\n    left: -2.5px;\n    transform: rotate(90deg);\n}\n", ""]);
 
 // exports
 
@@ -39075,6 +39181,36 @@ if(false) {}
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PlusMinusComponent.vue?vue&type=style&index=0&lang=css&":
+/*!****************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/PlusMinusComponent.vue?vue&type=style&index=0&lang=css& ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var content = __webpack_require__(/*! !../../../node_modules/css-loader??ref--6-1!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/src??ref--6-2!../../../node_modules/vue-loader/lib??vue-loader-options!./PlusMinusComponent.vue?vue&type=style&index=0&lang=css& */ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PlusMinusComponent.vue?vue&type=style&index=0&lang=css&");
+
+if(typeof content === 'string') content = [[module.i, content, '']];
+
+var transform;
+var insertInto;
+
+
+
+var options = {"hmr":true}
+
+options.transform = transform
+options.insertInto = undefined;
+
+var update = __webpack_require__(/*! ../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
+
+if(content.locals) module.exports = content.locals;
+
+if(false) {}
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/SearchMenuComponent.vue?vue&type=style&index=0&lang=css&":
 /*!*****************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/SearchMenuComponent.vue?vue&type=style&index=0&lang=css& ***!
@@ -40282,6 +40418,37 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PlusMinusComponent.vue?vue&type=template&id=3a1f14d2&":
+/*!*********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/PlusMinusComponent.vue?vue&type=template&id=3a1f14d2& ***!
+  \*********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    {
+      staticClass: "icon",
+      class: { "icon--plus": _vm.iconPlus, mB20: !_vm.iconPlus }
+    },
+    [_c("span", { staticClass: "icon__mark" })]
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/SearchMenuComponent.vue?vue&type=template&id=8980bf0a&":
 /*!**********************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/SearchMenuComponent.vue?vue&type=template&id=8980bf0a& ***!
@@ -40309,510 +40476,710 @@ var render = function() {
         [_vm._v("絞り込み")]
       ),
       _vm._v(" "),
-      _c(
-        "fieldset",
-        { staticStyle: { border: "1px solid #000000", padding: "10px" } },
-        [
-          _c("legend", [_vm._v("日時")]),
-          _vm._v(" "),
-          _c("span", [
-            _c("label", [
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.filterOptions.date_radio,
-                    expression: "filterOptions.date_radio"
-                  }
-                ],
-                attrs: { type: "radio", value: "3day" },
-                domProps: {
-                  checked: _vm._q(_vm.filterOptions.date_radio, "3day")
-                },
-                on: {
-                  change: function($event) {
-                    return _vm.$set(_vm.filterOptions, "date_radio", "3day")
-                  }
-                }
-              }),
-              _vm._v("\n                    3日分\n                ")
-            ]),
-            _vm._v(" "),
-            _c("label", [
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.filterOptions.date_radio,
-                    expression: "filterOptions.date_radio"
-                  }
-                ],
-                attrs: { type: "radio", value: "1week" },
-                domProps: {
-                  checked: _vm._q(_vm.filterOptions.date_radio, "1week")
-                },
-                on: {
-                  change: function($event) {
-                    return _vm.$set(_vm.filterOptions, "date_radio", "1week")
-                  }
-                }
-              }),
-              _vm._v("\n                    1週間分\n                ")
-            ]),
-            _vm._v(" "),
-            _c("label", [
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.filterOptions.date_radio,
-                    expression: "filterOptions.date_radio"
-                  }
-                ],
-                attrs: { type: "radio", value: "1month" },
-                domProps: {
-                  checked: _vm._q(_vm.filterOptions.date_radio, "1month")
-                },
-                on: {
-                  change: function($event) {
-                    return _vm.$set(_vm.filterOptions, "date_radio", "1month")
-                  }
-                }
-              }),
-              _vm._v("\n                    1カ月分\n                ")
-            ]),
-            _vm._v(" "),
-            _c("label", [
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.filterOptions.date_radio,
-                    expression: "filterOptions.date_radio"
-                  }
-                ],
-                attrs: { type: "radio", value: "1year" },
-                domProps: {
-                  checked: _vm._q(_vm.filterOptions.date_radio, "1year")
-                },
-                on: {
-                  change: function($event) {
-                    return _vm.$set(_vm.filterOptions, "date_radio", "1year")
-                  }
-                }
-              }),
-              _vm._v("\n                    1年分\n                ")
-            ]),
-            _vm._v(" "),
-            _c("label", [
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.filterOptions.date_radio,
-                    expression: "filterOptions.date_radio"
-                  }
-                ],
-                attrs: { type: "radio", value: "allTime" },
-                domProps: {
-                  checked: _vm._q(_vm.filterOptions.date_radio, "allTime")
-                },
-                on: {
-                  change: function($event) {
-                    return _vm.$set(_vm.filterOptions, "date_radio", "allTime")
-                  }
-                }
-              }),
-              _vm._v("\n                    全期間\n                ")
-            ])
-          ])
-        ]
-      ),
-      _vm._v(" "),
-      _c(
-        "fieldset",
-        { staticStyle: { border: "1px solid #000000", padding: "10px" } },
-        [
-          _c("legend", [_vm._v("ルール")]),
-          _vm._v(" "),
-          _vm._l(_vm.rules, function(rule) {
-            return _c("span", { key: rule.id }, [
-              _c("label", [
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.filterOptions.rules_checkbox,
-                      expression: "filterOptions.rules_checkbox"
-                    }
-                  ],
-                  attrs: { type: "checkbox", id: rule.rule_id },
-                  domProps: {
-                    value: rule.rule_id,
-                    checked: Array.isArray(_vm.filterOptions.rules_checkbox)
-                      ? _vm._i(_vm.filterOptions.rules_checkbox, rule.rule_id) >
-                        -1
-                      : _vm.filterOptions.rules_checkbox
-                  },
-                  on: {
-                    change: function($event) {
-                      var $$a = _vm.filterOptions.rules_checkbox,
-                        $$el = $event.target,
-                        $$c = $$el.checked ? true : false
-                      if (Array.isArray($$a)) {
-                        var $$v = rule.rule_id,
-                          $$i = _vm._i($$a, $$v)
-                        if ($$el.checked) {
-                          $$i < 0 &&
-                            _vm.$set(
-                              _vm.filterOptions,
-                              "rules_checkbox",
-                              $$a.concat([$$v])
-                            )
-                        } else {
-                          $$i > -1 &&
-                            _vm.$set(
-                              _vm.filterOptions,
-                              "rules_checkbox",
-                              $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                            )
-                        }
-                      } else {
-                        _vm.$set(_vm.filterOptions, "rules_checkbox", $$c)
-                      }
-                    }
-                  }
-                }),
-                _vm._v(
-                  "\n                    " +
-                    _vm._s(rule.rule_name) +
-                    "\n                "
-                )
-              ])
-            ])
-          })
-        ],
-        2
-      ),
-      _vm._v(" "),
-      _c(
-        "fieldset",
-        { staticStyle: { border: "1px solid #000000", padding: "10px" } },
-        [
-          _c("legend", [_vm._v("ステージ")]),
-          _vm._v(" "),
-          _vm._l(_vm.stages, function(stage) {
-            return _c("span", { key: stage.id }, [
-              _c("label", [
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.filterOptions.stages_checkbox,
-                      expression: "filterOptions.stages_checkbox"
-                    }
-                  ],
-                  attrs: { type: "checkbox", id: stage.stage_id },
-                  domProps: {
-                    value: stage.stage_id,
-                    checked: Array.isArray(_vm.filterOptions.stages_checkbox)
-                      ? _vm._i(
-                          _vm.filterOptions.stages_checkbox,
-                          stage.stage_id
-                        ) > -1
-                      : _vm.filterOptions.stages_checkbox
-                  },
-                  on: {
-                    change: function($event) {
-                      var $$a = _vm.filterOptions.stages_checkbox,
-                        $$el = $event.target,
-                        $$c = $$el.checked ? true : false
-                      if (Array.isArray($$a)) {
-                        var $$v = stage.stage_id,
-                          $$i = _vm._i($$a, $$v)
-                        if ($$el.checked) {
-                          $$i < 0 &&
-                            _vm.$set(
-                              _vm.filterOptions,
-                              "stages_checkbox",
-                              $$a.concat([$$v])
-                            )
-                        } else {
-                          $$i > -1 &&
-                            _vm.$set(
-                              _vm.filterOptions,
-                              "stages_checkbox",
-                              $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                            )
-                        }
-                      } else {
-                        _vm.$set(_vm.filterOptions, "stages_checkbox", $$c)
-                      }
-                    }
-                  }
-                }),
-                _vm._v(
-                  "\n                    " +
-                    _vm._s(stage.stage_name) +
-                    "\n                "
-                )
-              ])
-            ])
-          })
-        ],
-        2
-      ),
-      _vm._v(" "),
-      _c(
-        "fieldset",
-        { staticStyle: { border: "1px solid #000000", padding: "10px" } },
-        [
-          _c("legend", [_vm._v("あなたの記録")]),
-          _vm._v(" "),
-          _c("span", [
-            _c("label", [
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.filterOptions.input_data_radio,
-                    expression: "filterOptions.input_data_radio"
-                  }
-                ],
-                attrs: { type: "radio", value: "all" },
-                domProps: {
-                  checked: _vm._q(_vm.filterOptions.input_data_radio, "all")
-                },
-                on: {
-                  change: function($event) {
-                    return _vm.$set(
-                      _vm.filterOptions,
-                      "input_data_radio",
-                      "all"
-                    )
-                  }
-                }
-              }),
-              _vm._v("\n                    入力済/未入力\n                ")
-            ]),
-            _vm._v(" "),
-            _c("label", [
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.filterOptions.input_data_radio,
-                    expression: "filterOptions.input_data_radio"
-                  }
-                ],
-                attrs: { type: "radio", value: "inserted" },
-                domProps: {
-                  checked: _vm._q(
-                    _vm.filterOptions.input_data_radio,
-                    "inserted"
-                  )
-                },
-                on: {
-                  change: function($event) {
-                    return _vm.$set(
-                      _vm.filterOptions,
-                      "input_data_radio",
-                      "inserted"
-                    )
-                  }
-                }
-              }),
-              _vm._v("\n                    入力済\n                ")
-            ]),
-            _vm._v(" "),
-            _c("label", [
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.filterOptions.input_data_radio,
-                    expression: "filterOptions.input_data_radio"
-                  }
-                ],
-                attrs: { type: "radio", value: "uninserted" },
-                domProps: {
-                  checked: _vm._q(
-                    _vm.filterOptions.input_data_radio,
-                    "uninserted"
-                  )
-                },
-                on: {
-                  change: function($event) {
-                    return _vm.$set(
-                      _vm.filterOptions,
-                      "input_data_radio",
-                      "uninserted"
-                    )
-                  }
-                }
-              }),
-              _vm._v("\n                    未入力\n                ")
-            ])
-          ]),
-          _vm._v(" "),
+      _c("div", { staticClass: "border rounded" }, [
+        _c("span", { on: { click: _vm.switchShowDateRadio } }, [
           _c(
-            "fieldset",
-            {
-              staticStyle: { border: "1px solid #000000", padding: "10px" },
-              attrs: { disabled: _vm.fieldsetDisable }
-            },
+            "span",
+            { staticStyle: { display: "flex" } },
             [
-              _c("legend", [_vm._v("ブキ")]),
-              _vm._v(" "),
-              _vm._l(_vm.bukis, function(buki) {
-                return _c("span", { key: buki.id }, [
-                  _c("label", [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.filterOptions.bukis_checkbox,
-                          expression: "filterOptions.bukis_checkbox"
-                        }
-                      ],
-                      attrs: { type: "checkbox", id: buki.buki_id },
-                      domProps: {
-                        value: buki.buki_id,
-                        checked: Array.isArray(_vm.filterOptions.bukis_checkbox)
-                          ? _vm._i(
-                              _vm.filterOptions.bukis_checkbox,
-                              buki.buki_id
-                            ) > -1
-                          : _vm.filterOptions.bukis_checkbox
-                      },
-                      on: {
-                        change: function($event) {
-                          var $$a = _vm.filterOptions.bukis_checkbox,
-                            $$el = $event.target,
-                            $$c = $$el.checked ? true : false
-                          if (Array.isArray($$a)) {
-                            var $$v = buki.buki_id,
-                              $$i = _vm._i($$a, $$v)
-                            if ($$el.checked) {
-                              $$i < 0 &&
-                                _vm.$set(
-                                  _vm.filterOptions,
-                                  "bukis_checkbox",
-                                  $$a.concat([$$v])
-                                )
-                            } else {
-                              $$i > -1 &&
-                                _vm.$set(
-                                  _vm.filterOptions,
-                                  "bukis_checkbox",
-                                  $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                                )
-                            }
-                          } else {
-                            _vm.$set(_vm.filterOptions, "bukis_checkbox", $$c)
-                          }
-                        }
-                      }
-                    }),
-                    _vm._v(
-                      "\n                        " +
-                        _vm._s(buki.buki_name) +
-                        "\n                    "
-                    )
-                  ])
-                ])
-              })
+              _c("plus-minus", { attrs: { iconPlus: _vm.iconPlus.dateRadio } }),
+              _vm._v("\n                日付\n                ")
             ],
-            2
-          ),
-          _vm._v(" "),
-          _c(
-            "fieldset",
-            {
-              staticStyle: { border: "1px solid #000000", padding: "10px" },
-              attrs: { disabled: _vm.fieldsetDisable }
-            },
-            [
-              _c("legend", [_vm._v("ウデマエ")]),
-              _vm._v(" "),
-              _c(
-                "select",
-                {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.udemae_id,
-                      expression: "udemae_id"
-                    }
-                  ],
-                  attrs: { name: "udemae_id" },
-                  on: {
-                    change: function($event) {
-                      var $$selectedVal = Array.prototype.filter
-                        .call($event.target.options, function(o) {
-                          return o.selected
-                        })
-                        .map(function(o) {
-                          var val = "_value" in o ? o._value : o.value
-                          return val
-                        })
-                      _vm.udemae_id = $event.target.multiple
-                        ? $$selectedVal
-                        : $$selectedVal[0]
-                    }
-                  }
-                },
-                _vm._l(_vm.udemaes, function(udemae) {
-                  return _c(
-                    "option",
-                    { key: udemae.id, domProps: { value: udemae.udemae_id } },
-                    [_vm._v(_vm._s(udemae.udemae_name))]
-                  )
-                }),
-                0
-              ),
-              _vm._v(" "),
-              _c("label", { attrs: { for: "xp" } }, [
-                _vm._v("XP"),
+            1
+          )
+        ]),
+        _vm._v(" "),
+        _vm.showDateRadio
+          ? _c("span", [
+              _c("label", [
                 _c("input", {
                   directives: [
                     {
                       name: "model",
                       rawName: "v-model",
-                      value: _vm.xp,
-                      expression: "xp"
+                      value: _vm.filterOptions.date_radio,
+                      expression: "filterOptions.date_radio"
                     }
                   ],
-                  attrs: { type: "text", name: "xp" },
-                  domProps: { value: _vm.xp },
+                  attrs: { type: "radio", value: "3day" },
+                  domProps: {
+                    checked: _vm._q(_vm.filterOptions.date_radio, "3day")
+                  },
                   on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.xp = $event.target.value
+                    change: function($event) {
+                      return _vm.$set(_vm.filterOptions, "date_radio", "3day")
                     }
                   }
-                })
+                }),
+                _vm._v("\n                    3日分\n                ")
               ]),
               _vm._v(" "),
-              _vm._m(0)
-            ]
+              _c("label", [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.filterOptions.date_radio,
+                      expression: "filterOptions.date_radio"
+                    }
+                  ],
+                  attrs: { type: "radio", value: "1week" },
+                  domProps: {
+                    checked: _vm._q(_vm.filterOptions.date_radio, "1week")
+                  },
+                  on: {
+                    change: function($event) {
+                      return _vm.$set(_vm.filterOptions, "date_radio", "1week")
+                    }
+                  }
+                }),
+                _vm._v("\n                    1週間分\n                ")
+              ]),
+              _vm._v(" "),
+              _c("label", [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.filterOptions.date_radio,
+                      expression: "filterOptions.date_radio"
+                    }
+                  ],
+                  attrs: { type: "radio", value: "1month" },
+                  domProps: {
+                    checked: _vm._q(_vm.filterOptions.date_radio, "1month")
+                  },
+                  on: {
+                    change: function($event) {
+                      return _vm.$set(_vm.filterOptions, "date_radio", "1month")
+                    }
+                  }
+                }),
+                _vm._v("\n                    1カ月分\n                ")
+              ]),
+              _vm._v(" "),
+              _c("label", [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.filterOptions.date_radio,
+                      expression: "filterOptions.date_radio"
+                    }
+                  ],
+                  attrs: { type: "radio", value: "1year" },
+                  domProps: {
+                    checked: _vm._q(_vm.filterOptions.date_radio, "1year")
+                  },
+                  on: {
+                    change: function($event) {
+                      return _vm.$set(_vm.filterOptions, "date_radio", "1year")
+                    }
+                  }
+                }),
+                _vm._v("\n                    1年分\n                ")
+              ]),
+              _vm._v(" "),
+              _c("label", [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.filterOptions.date_radio,
+                      expression: "filterOptions.date_radio"
+                    }
+                  ],
+                  attrs: { type: "radio", value: "allTime" },
+                  domProps: {
+                    checked: _vm._q(_vm.filterOptions.date_radio, "allTime")
+                  },
+                  on: {
+                    change: function($event) {
+                      return _vm.$set(
+                        _vm.filterOptions,
+                        "date_radio",
+                        "allTime"
+                      )
+                    }
+                  }
+                }),
+                _vm._v("\n                    全期間\n                ")
+              ]),
+              _vm._v(" "),
+              _c("br")
+            ])
+          : _vm._e()
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "border rounded" }, [
+        _c("div", { on: { click: _vm.switchShowRulesCheckbox } }, [
+          _c(
+            "span",
+            { staticStyle: { display: "flex" } },
+            [
+              _c("plus-minus", {
+                attrs: { iconPlus: _vm.iconPlus.rulesCheckbox }
+              }),
+              _vm._v("\n                    ルール\n                ")
+            ],
+            1
           )
-        ]
-      ),
+        ]),
+        _vm._v(" "),
+        _vm.showRulesCheckbox
+          ? _c(
+              "span",
+              [
+                _vm._l(_vm.rules, function(rule) {
+                  return _c("span", { key: rule.id }, [
+                    _c("label", [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.filterOptions.rules_checkbox,
+                            expression: "filterOptions.rules_checkbox"
+                          }
+                        ],
+                        attrs: { type: "checkbox", id: rule.rule_id },
+                        domProps: {
+                          value: rule.rule_id,
+                          checked: Array.isArray(
+                            _vm.filterOptions.rules_checkbox
+                          )
+                            ? _vm._i(
+                                _vm.filterOptions.rules_checkbox,
+                                rule.rule_id
+                              ) > -1
+                            : _vm.filterOptions.rules_checkbox
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.filterOptions.rules_checkbox,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? true : false
+                            if (Array.isArray($$a)) {
+                              var $$v = rule.rule_id,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.filterOptions,
+                                    "rules_checkbox",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.filterOptions,
+                                    "rules_checkbox",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.filterOptions, "rules_checkbox", $$c)
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(
+                        "\n                        " +
+                          _vm._s(rule.rule_name) +
+                          "\n                    "
+                      )
+                    ])
+                  ])
+                }),
+                _vm._v(" "),
+                _c("br")
+              ],
+              2
+            )
+          : _vm._e()
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "border rounded" }, [
+        _c("div", { on: { click: _vm.switchShowStagesCheckbox } }, [
+          _c(
+            "span",
+            { staticStyle: { display: "flex" } },
+            [
+              _c("plus-minus", {
+                attrs: { iconPlus: _vm.iconPlus.stagesCheckbox }
+              }),
+              _vm._v("\n                    ステージ\n                ")
+            ],
+            1
+          )
+        ]),
+        _vm._v(" "),
+        _vm.showStagesCheckbox
+          ? _c(
+              "span",
+              [
+                _vm._l(_vm.stages, function(stage) {
+                  return _c("span", { key: stage.id }, [
+                    _c("label", [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.filterOptions.stages_checkbox,
+                            expression: "filterOptions.stages_checkbox"
+                          }
+                        ],
+                        attrs: { type: "checkbox", id: stage.stage_id },
+                        domProps: {
+                          value: stage.stage_id,
+                          checked: Array.isArray(
+                            _vm.filterOptions.stages_checkbox
+                          )
+                            ? _vm._i(
+                                _vm.filterOptions.stages_checkbox,
+                                stage.stage_id
+                              ) > -1
+                            : _vm.filterOptions.stages_checkbox
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.filterOptions.stages_checkbox,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? true : false
+                            if (Array.isArray($$a)) {
+                              var $$v = stage.stage_id,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.filterOptions,
+                                    "stages_checkbox",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.filterOptions,
+                                    "stages_checkbox",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(
+                                _vm.filterOptions,
+                                "stages_checkbox",
+                                $$c
+                              )
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(
+                        "\n                        " +
+                          _vm._s(stage.stage_name) +
+                          "\n                    "
+                      )
+                    ])
+                  ])
+                }),
+                _vm._v(" "),
+                _c("br")
+              ],
+              2
+            )
+          : _vm._e()
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "border rounded" }, [
+        _c("div", { on: { click: _vm.switchShowInputDataRadio } }, [
+          _c(
+            "span",
+            { staticStyle: { display: "flex" } },
+            [
+              _c("plus-minus", {
+                attrs: { iconPlus: _vm.iconPlus.inputDataRadio }
+              }),
+              _vm._v("\n                    戦績\n                ")
+            ],
+            1
+          )
+        ]),
+        _vm._v(" "),
+        _vm.showInputDataRadio
+          ? _c("span", [
+              _c("label", [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.filterOptions.input_data_radio,
+                      expression: "filterOptions.input_data_radio"
+                    }
+                  ],
+                  attrs: { type: "radio", value: "all" },
+                  domProps: {
+                    checked: _vm._q(_vm.filterOptions.input_data_radio, "all")
+                  },
+                  on: {
+                    change: function($event) {
+                      return _vm.$set(
+                        _vm.filterOptions,
+                        "input_data_radio",
+                        "all"
+                      )
+                    }
+                  }
+                }),
+                _vm._v("\n                    入力済/未入力\n                ")
+              ]),
+              _vm._v(" "),
+              _c("label", [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.filterOptions.input_data_radio,
+                      expression: "filterOptions.input_data_radio"
+                    }
+                  ],
+                  attrs: { type: "radio", value: "inserted" },
+                  domProps: {
+                    checked: _vm._q(
+                      _vm.filterOptions.input_data_radio,
+                      "inserted"
+                    )
+                  },
+                  on: {
+                    change: function($event) {
+                      return _vm.$set(
+                        _vm.filterOptions,
+                        "input_data_radio",
+                        "inserted"
+                      )
+                    }
+                  }
+                }),
+                _vm._v("\n                    入力済\n                ")
+              ]),
+              _vm._v(" "),
+              _c("label", [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.filterOptions.input_data_radio,
+                      expression: "filterOptions.input_data_radio"
+                    }
+                  ],
+                  attrs: { type: "radio", value: "uninserted" },
+                  domProps: {
+                    checked: _vm._q(
+                      _vm.filterOptions.input_data_radio,
+                      "uninserted"
+                    )
+                  },
+                  on: {
+                    change: function($event) {
+                      return _vm.$set(
+                        _vm.filterOptions,
+                        "input_data_radio",
+                        "uninserted"
+                      )
+                    }
+                  }
+                }),
+                _vm._v("\n                    未入力\n                ")
+              ]),
+              _vm._v(" "),
+              !_vm.fieldsetDisable
+                ? _c("div", { staticClass: "border rounded" }, [
+                    _c("div", { on: { click: _vm.switchShowBukisCheckbox } }, [
+                      _c(
+                        "span",
+                        { staticStyle: { display: "flex" } },
+                        [
+                          _c("plus-minus", {
+                            attrs: { iconPlus: _vm.iconPlus.bukisCheckbox }
+                          }),
+                          _vm._v(
+                            "\n                            ブキ\n                        "
+                          )
+                        ],
+                        1
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _vm.showBukisCheckbox
+                      ? _c(
+                          "span",
+                          _vm._l(_vm.bukis, function(buki) {
+                            return _c("span", { key: buki.id }, [
+                              _c("label", [
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.filterOptions.bukis_checkbox,
+                                      expression: "filterOptions.bukis_checkbox"
+                                    }
+                                  ],
+                                  attrs: { type: "checkbox", id: buki.buki_id },
+                                  domProps: {
+                                    value: buki.buki_id,
+                                    checked: Array.isArray(
+                                      _vm.filterOptions.bukis_checkbox
+                                    )
+                                      ? _vm._i(
+                                          _vm.filterOptions.bukis_checkbox,
+                                          buki.buki_id
+                                        ) > -1
+                                      : _vm.filterOptions.bukis_checkbox
+                                  },
+                                  on: {
+                                    change: function($event) {
+                                      var $$a =
+                                          _vm.filterOptions.bukis_checkbox,
+                                        $$el = $event.target,
+                                        $$c = $$el.checked ? true : false
+                                      if (Array.isArray($$a)) {
+                                        var $$v = buki.buki_id,
+                                          $$i = _vm._i($$a, $$v)
+                                        if ($$el.checked) {
+                                          $$i < 0 &&
+                                            _vm.$set(
+                                              _vm.filterOptions,
+                                              "bukis_checkbox",
+                                              $$a.concat([$$v])
+                                            )
+                                        } else {
+                                          $$i > -1 &&
+                                            _vm.$set(
+                                              _vm.filterOptions,
+                                              "bukis_checkbox",
+                                              $$a
+                                                .slice(0, $$i)
+                                                .concat($$a.slice($$i + 1))
+                                            )
+                                        }
+                                      } else {
+                                        _vm.$set(
+                                          _vm.filterOptions,
+                                          "bukis_checkbox",
+                                          $$c
+                                        )
+                                      }
+                                    }
+                                  }
+                                }),
+                                _vm._v(
+                                  "\n                                " +
+                                    _vm._s(buki.buki_name) +
+                                    "\n                            "
+                                )
+                              ])
+                            ])
+                          }),
+                          0
+                        )
+                      : _vm._e()
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              !_vm.fieldsetDisable
+                ? _c("div", { staticClass: "border rounded" }, [
+                    _c("div", { on: { click: _vm.switchShowUdemaesPull } }, [
+                      _c(
+                        "span",
+                        { staticStyle: { display: "flex" } },
+                        [
+                          _c("plus-minus", {
+                            attrs: { iconPlus: _vm.iconPlus.udemaesPull }
+                          }),
+                          _vm._v(
+                            "\n                            ウデマエ\n                        "
+                          )
+                        ],
+                        1
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _vm.showUdemaesPull
+                      ? _c(
+                          "span",
+                          [
+                            _c(
+                              "select",
+                              {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.filterOptions.udemaes_pull,
+                                    expression: "filterOptions.udemaes_pull"
+                                  }
+                                ],
+                                attrs: { name: "udemae_id" },
+                                on: {
+                                  change: function($event) {
+                                    var $$selectedVal = Array.prototype.filter
+                                      .call($event.target.options, function(o) {
+                                        return o.selected
+                                      })
+                                      .map(function(o) {
+                                        var val =
+                                          "_value" in o ? o._value : o.value
+                                        return val
+                                      })
+                                    _vm.$set(
+                                      _vm.filterOptions,
+                                      "udemaes_pull",
+                                      $event.target.multiple
+                                        ? $$selectedVal
+                                        : $$selectedVal[0]
+                                    )
+                                  }
+                                }
+                              },
+                              _vm._l(_vm.udemaes, function(udemae) {
+                                return _c(
+                                  "option",
+                                  {
+                                    key: udemae.id,
+                                    domProps: { value: udemae.udemae_id }
+                                  },
+                                  [_vm._v(_vm._s(udemae.udemae_name))]
+                                )
+                              }),
+                              0
+                            ),
+                            _vm._v(" "),
+                            _vm.filterOptions.udemaes_pull == "21"
+                              ? _c("label", [
+                                  _vm._v("XP"),
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.filterOptions.xp_text,
+                                        expression: "filterOptions.xp_text"
+                                      }
+                                    ],
+                                    attrs: { type: "text" },
+                                    domProps: {
+                                      value: _vm.filterOptions.xp_text
+                                    },
+                                    on: {
+                                      input: function($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.$set(
+                                          _vm.filterOptions,
+                                          "xp_text",
+                                          $event.target.value
+                                        )
+                                      }
+                                    }
+                                  })
+                                ])
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _vm._l(_vm.errors.xp, function(error) {
+                              return _c(
+                                "p",
+                                { key: error.xp, staticClass: "errors" },
+                                [_vm._v(_vm._s(error))]
+                              )
+                            }),
+                            _vm._v(" "),
+                            _c("span", [
+                              _c("label", [
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value:
+                                        _vm.filterOptions.udemae_relation_radio,
+                                      expression:
+                                        "filterOptions.udemae_relation_radio"
+                                    }
+                                  ],
+                                  attrs: { type: "radio", value: ">=" },
+                                  domProps: {
+                                    checked: _vm._q(
+                                      _vm.filterOptions.udemae_relation_radio,
+                                      ">="
+                                    )
+                                  },
+                                  on: {
+                                    change: function($event) {
+                                      return _vm.$set(
+                                        _vm.filterOptions,
+                                        "udemae_relation_radio",
+                                        ">="
+                                      )
+                                    }
+                                  }
+                                }),
+                                _vm._v(
+                                  "\n                                以上\n                            "
+                                )
+                              ]),
+                              _vm._v(" "),
+                              _c("label", [
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value:
+                                        _vm.filterOptions.udemae_relation_radio,
+                                      expression:
+                                        "filterOptions.udemae_relation_radio"
+                                    }
+                                  ],
+                                  attrs: { type: "radio", value: "<=" },
+                                  domProps: {
+                                    checked: _vm._q(
+                                      _vm.filterOptions.udemae_relation_radio,
+                                      "<="
+                                    )
+                                  },
+                                  on: {
+                                    change: function($event) {
+                                      return _vm.$set(
+                                        _vm.filterOptions,
+                                        "udemae_relation_radio",
+                                        "<="
+                                      )
+                                    }
+                                  }
+                                }),
+                                _vm._v(
+                                  "\n                                以下\n                            "
+                                )
+                              ])
+                            ])
+                          ],
+                          2
+                        )
+                      : _vm._e()
+                  ])
+                : _vm._e()
+            ])
+          : _vm._e()
+      ]),
       _vm._v(" "),
       _c(
         "button",
@@ -40826,24 +41193,7 @@ var render = function() {
     ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("span", [
-      _c("label", [
-        _c("input", { attrs: { type: "radio", name: "udemae_radio" } }),
-        _vm._v("\n                        以上\n                    ")
-      ]),
-      _vm._v(" "),
-      _c("label", [
-        _c("input", { attrs: { type: "radio", name: "udemae_radio" } }),
-        _vm._v("\n                        以下\n                    ")
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -53043,6 +53393,7 @@ Vue.component('pagination', __webpack_require__(/*! ./components/PaginationCompo
 Vue.component('search-menu', __webpack_require__(/*! ./components/SearchMenuComponent.vue */ "./resources/js/components/SearchMenuComponent.vue")["default"]);
 Vue.component('gachi-list', __webpack_require__(/*! ./components/GachiListComponent.vue */ "./resources/js/components/GachiListComponent.vue")["default"]);
 Vue.component('gachi-list-child', __webpack_require__(/*! ./components/GachiListChildComponent.vue */ "./resources/js/components/GachiListChildComponent.vue")["default"]);
+Vue.component('plus-minus', __webpack_require__(/*! ./components/PlusMinusComponent.vue */ "./resources/js/components/PlusMinusComponent.vue")["default"]);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -53496,6 +53847,93 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PaginationComponent_vue_vue_type_template_id_5cc156e8___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PaginationComponent_vue_vue_type_template_id_5cc156e8___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/PlusMinusComponent.vue":
+/*!********************************************************!*\
+  !*** ./resources/js/components/PlusMinusComponent.vue ***!
+  \********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _PlusMinusComponent_vue_vue_type_template_id_3a1f14d2___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./PlusMinusComponent.vue?vue&type=template&id=3a1f14d2& */ "./resources/js/components/PlusMinusComponent.vue?vue&type=template&id=3a1f14d2&");
+/* harmony import */ var _PlusMinusComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./PlusMinusComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/PlusMinusComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _PlusMinusComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./PlusMinusComponent.vue?vue&type=style&index=0&lang=css& */ "./resources/js/components/PlusMinusComponent.vue?vue&type=style&index=0&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+  _PlusMinusComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _PlusMinusComponent_vue_vue_type_template_id_3a1f14d2___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _PlusMinusComponent_vue_vue_type_template_id_3a1f14d2___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/PlusMinusComponent.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/PlusMinusComponent.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************!*\
+  !*** ./resources/js/components/PlusMinusComponent.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PlusMinusComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./PlusMinusComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PlusMinusComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PlusMinusComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/PlusMinusComponent.vue?vue&type=style&index=0&lang=css&":
+/*!*****************************************************************************************!*\
+  !*** ./resources/js/components/PlusMinusComponent.vue?vue&type=style&index=0&lang=css& ***!
+  \*****************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_PlusMinusComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/style-loader!../../../node_modules/css-loader??ref--6-1!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/src??ref--6-2!../../../node_modules/vue-loader/lib??vue-loader-options!./PlusMinusComponent.vue?vue&type=style&index=0&lang=css& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PlusMinusComponent.vue?vue&type=style&index=0&lang=css&");
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_PlusMinusComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_PlusMinusComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_PlusMinusComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_PlusMinusComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_PlusMinusComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
+
+/***/ }),
+
+/***/ "./resources/js/components/PlusMinusComponent.vue?vue&type=template&id=3a1f14d2&":
+/*!***************************************************************************************!*\
+  !*** ./resources/js/components/PlusMinusComponent.vue?vue&type=template&id=3a1f14d2& ***!
+  \***************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PlusMinusComponent_vue_vue_type_template_id_3a1f14d2___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./PlusMinusComponent.vue?vue&type=template&id=3a1f14d2& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PlusMinusComponent.vue?vue&type=template&id=3a1f14d2&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PlusMinusComponent_vue_vue_type_template_id_3a1f14d2___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PlusMinusComponent_vue_vue_type_template_id_3a1f14d2___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

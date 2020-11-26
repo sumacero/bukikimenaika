@@ -2,9 +2,14 @@
     <div class="filter-option">
         <form>
             <button type="button" class="btn btn-info" v-on:click="filterClick">絞り込み</button>
-            <fieldset style="border: 1px solid #000000; padding: 10px;">
-                <legend>日時</legend>
-                <span>
+            <div class="border rounded">
+                <span v-on:click="switchShowDateRadio">
+                    <span style="display: flex">
+                        <plus-minus v-bind:iconPlus="iconPlus.dateRadio"></plus-minus>
+                    日付
+                    </span>
+                </span>
+                <span v-if="showDateRadio">
                     <label>
                         <input type="radio" value="3day" v-model="filterOptions.date_radio">
                         3日分
@@ -25,29 +30,51 @@
                         <input type="radio" value="allTime" v-model="filterOptions.date_radio">
                         全期間
                     </label>
+                    <br>
                 </span>
-            </fieldset>
-            <fieldset style="border: 1px solid #000000; padding: 10px;">
-                <legend>ルール</legend>
-                <span v-for="rule in rules" :key="rule.id">
-                    <label>
-                        <input type="checkbox" v-bind:id=rule.rule_id v-bind:value=rule.rule_id v-model="filterOptions.rules_checkbox">
-                        {{rule.rule_name}}
-                    </label>
+            </div>
+            <div class="border rounded">
+                <div v-on:click="switchShowRulesCheckbox">
+                    <span style="display: flex">
+                        <plus-minus v-bind:iconPlus="iconPlus.rulesCheckbox"></plus-minus>
+                        ルール
+                    </span>
+                </div>
+                <span v-if="showRulesCheckbox">
+                    <span v-for="rule in rules" :key="rule.id">
+                        <label>
+                            <input type="checkbox" v-bind:id=rule.rule_id v-bind:value=rule.rule_id v-model="filterOptions.rules_checkbox">
+                            {{rule.rule_name}}
+                        </label>
+                    </span>
+                    <br>
                 </span>
-            </fieldset>
-            <fieldset style="border: 1px solid #000000; padding: 10px;">
-                <legend>ステージ</legend>
-                <span v-for="stage in stages" :key="stage.id">
-                    <label>
-                        <input type="checkbox" v-bind:id=stage.stage_id v-bind:value=stage.stage_id v-model="filterOptions.stages_checkbox">
-                        {{stage.stage_name}}
-                    </label>
+            </div>
+            <div class="border rounded">
+                <div v-on:click="switchShowStagesCheckbox">
+                    <span style="display: flex">
+                        <plus-minus v-bind:iconPlus="iconPlus.stagesCheckbox"></plus-minus>
+                        ステージ
+                    </span>
+                </div>
+                <span v-if="showStagesCheckbox">
+                    <span v-for="stage in stages" :key="stage.id">
+                        <label>
+                            <input type="checkbox" v-bind:id=stage.stage_id v-bind:value=stage.stage_id v-model="filterOptions.stages_checkbox">
+                            {{stage.stage_name}}
+                        </label>
+                    </span>
+                    <br>
                 </span>
-            </fieldset>
-            <fieldset style="border: 1px solid #000000; padding: 10px;">
-                <legend>あなたの記録</legend>
-                <span>
+            </div>
+            <div class="border rounded">
+                <div v-on:click="switchShowInputDataRadio">
+                    <span style="display: flex">
+                        <plus-minus v-bind:iconPlus="iconPlus.inputDataRadio"></plus-minus>
+                        戦績
+                    </span>
+                </div>
+                <span v-if="showInputDataRadio">
                     <label>
                         <input type="radio" value="all" v-model="filterOptions.input_data_radio">
                         入力済/未入力
@@ -60,46 +87,49 @@
                         <input type="radio" value="uninserted" v-model="filterOptions.input_data_radio">
                         未入力
                     </label>
+                    <div v-if="!fieldsetDisable" class="border rounded">
+                        <div v-on:click="switchShowBukisCheckbox">
+                            <span style="display: flex">
+                                <plus-minus v-bind:iconPlus="iconPlus.bukisCheckbox"></plus-minus>
+                                ブキ
+                            </span>
+                        </div>
+                        <span v-if="showBukisCheckbox">
+                            <span v-for="buki in bukis" :key="buki.id">
+                                <label>
+                                    <input type="checkbox" v-bind:id=buki.buki_id v-bind:value=buki.buki_id v-model="filterOptions.bukis_checkbox">
+                                    {{buki.buki_name}}
+                                </label>
+                            </span>
+                        </span>
+                    </div>
+                    <div v-if="!fieldsetDisable" class="border rounded">
+                        <div v-on:click="switchShowUdemaesPull">
+                            <span style="display: flex">
+                                <plus-minus v-bind:iconPlus="iconPlus.udemaesPull"></plus-minus>
+                                ウデマエ
+                            </span>
+                        </div>
+                        <span v-if="showUdemaesPull">
+                            <select v-model="filterOptions.udemaes_pull" name="udemae_id">
+                                <option v-for="udemae in udemaes" :key="udemae.id" v-bind:value="udemae.udemae_id" >{{ udemae.udemae_name }}</option>
+                            </select>
+                            <label v-if="filterOptions.udemaes_pull=='21'">XP<input v-model="filterOptions.xp_text" type="text"></label>
+                            <p class="errors" v-for="error in errors.xp" :key="error.xp">{{error}}</p>
+                            <span>
+                                <label>
+                                    <input type="radio" value=">=" v-model="filterOptions.udemae_relation_radio">
+                                    以上
+                                </label>
+                                <label>
+                                    <input type="radio" value="<=" v-model="filterOptions.udemae_relation_radio">
+                                    以下
+                                </label>
+                            </span>
+                        </span>
+                    </div>
                 </span>
-                <fieldset v-bind:disabled="fieldsetDisable" style="border: 1px solid #000000; padding: 10px;">
-                    <legend>ブキ</legend>
-                    <span v-for="buki in bukis" :key="buki.id">
-                        <label>
-                            <input type="checkbox" v-bind:id=buki.buki_id v-bind:value=buki.buki_id v-model="filterOptions.bukis_checkbox">
-                            {{buki.buki_name}}
-                        </label>
-                    </span>
-                </fieldset>
-                <fieldset v-bind:disabled="fieldsetDisable" style="border: 1px solid #000000; padding: 10px;">
-                    <legend>ウデマエ</legend>
-                    <select v-model="udemae_id" name="udemae_id">
-                        <option v-for="udemae in udemaes" :key="udemae.id" v-bind:value="udemae.udemae_id" >{{ udemae.udemae_name }}</option>
-                    </select>
-                    <label for="xp">XP<input v-model="xp" type="text" name="xp"></label>
-                    <span>
-                        <label>
-                            <input type="radio" name="udemae_radio">
-                            以上
-                        </label>
-                        <label>
-                            <input type="radio" name="udemae_radio">
-                            以下
-                        </label>
-                    </span>
-                </fieldset>
-            </fieldset>
-
-            <!--
-            <div>
-            <label>ブキ</label><br>
-            <span v-for="buki in bukis" :key="buki.id">
-                <label>
-                    <input type="checkbox" v-bind:id=buki.buki_id v-bind:value=buki.buki_id v-model="filterOptions.bukis_checkbox">
-                    {{buki.buki_name}}
-                </label>
-            </span>
             </div>
-            -->
             <button type="button" class="btn btn-info" v-on:click="filterClick">絞り込み</button>
         </form>
     </div>
@@ -110,37 +140,72 @@
         props:["rules", "stages", "bukis", "udemaes", "filterOptions"],
         data:function(){
             return{
-                input_data_id:null,
-                rule_id:null,
-                stage1_id:null,
-                stage2_id:null,
-                buki_id:null,
-                udemae_id:null,
-                xp:null,
                 fieldsetDisable:null,
+                showDateRadio:false,
+                showRulesCheckbox:false,
+                showStagesCheckbox:false,
+                showBukisCheckbox:false,
+                showInputDataRadio:false,
+                showUdemaesPull:false,
                 errors:{
-                    rule:[],
-                    stage1:[],
-                    stage2:[],
-                    buki:[],
                     xp:[]
                 },
-                error:false
+                error:false,
+                iconPlus:{
+                    dateRadio:true,
+                    rulesCheckbox:true,
+                    stagesCheckbox:true,
+                    inputDataRadio:true,
+                    bukisCheckbox:true,
+                    udemaesPull:true,
+                },
             }
         },
         methods:{
             filterClick:function(){
-                this.$emit('click-filter-btn');
-            },
-            /*
-            switchFieldset:function(){
-                if(this.filterOptions.input_data_radio == "inserted"){
-                    this.fieldsetDisable=true;
-                }else{
-                    this.fieldsetDisable=false;
+                this.validator();
+                if(!this.error){
+                    this.$emit('click-filter-btn');
                 }
-            }
-            */
+            },
+            switchShowDateRadio:function(){
+                this.showDateRadio = !this.showDateRadio;
+                this.iconPlus.dateRadio = !this.iconPlus.dateRadio;
+            },
+            switchShowRulesCheckbox:function(){
+                this.showRulesCheckbox = !this.showRulesCheckbox;
+                this.iconPlus.rulesCheckbox = !this.iconPlus.rulesCheckbox;
+            },
+            switchShowStagesCheckbox:function(){
+                this.showStagesCheckbox = !this.showStagesCheckbox;
+                this.iconPlus.stagesCheckbox = !this.iconPlus.stagesCheckbox;
+            },
+            switchShowInputDataRadio:function(){
+                this.showInputDataRadio = !this.showInputDataRadio;
+                this.iconPlus.inputDataRadio = !this.iconPlus.inputDataRadio;
+            },
+            switchShowBukisCheckbox:function(){
+                this.showBukisCheckbox = !this.showBukisCheckbox;
+                this.iconPlus.bukisCheckbox = !this.iconPlus.bukisCheckbox;
+            },
+            switchShowUdemaesPull:function(){
+                this.showUdemaesPull = !this.showUdemaesPull;
+                this.iconPlus.udemaesPull = !this.iconPlus.udemaesPull;
+            },
+            validator: function(){
+                let xp = [];
+                let message = '';
+                this.error = false;
+                //ウデマエXの場合
+                if(this.filterOptions.udemaes_pull == '21'){
+                    if(!(this.filterOptions.xp_text>=0 && this.filterOptions.xp_text<=9999) && this.filterOptions.xp_text!=null ){
+                        message = 'XPは0～9999の半角数字で入力してください。';
+                        xp.push(message);
+                        this.error = true;
+                    }
+                }
+                this.errors.xp = xp;
+            },
         },
         watch:{
             filterOptions:{
