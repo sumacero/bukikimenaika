@@ -54,21 +54,32 @@ class AjaxController extends Controller
     */
     public function getGachis(Request $request){
         $initFlag = request('init_flag');
-        $detaRadio = request('date_radio');
-        $rulesCheckbox = request('rules_checkbox');
-        $stagesCheckbox = request('stages_checkbox');
-        $bukisCheckbox = request('bukis_checkbox');
-        $inputDataRadio = request('input_data_radio');
-        $udemaesPull = request('udemaes_pull');
-        $xpText = request('xp_text');
-        $udemaeRelationRadio = request('udemae_relation_radio');
-        $loginUserId = Auth::user()->id;
-        
         //初回アクセス時
         if($initFlag == "true"){
             $gachis = Gachi::with('rule','stage1','stage2')->paginate(10);
         //絞り込み実行時
         }else{
+            $dateCheckbox = request('date_checkbox');
+            if($dateCheckbox==null){
+                $dateCheckbox = array();
+            }
+            $rulesCheckbox = request('rules_checkbox');
+            if($rulesCheckbox==null){
+                $rulesCheckbox = array();
+            }
+            $stagesCheckbox = request('stages_checkbox');
+            if($stagesCheckbox==null){
+                $stagesCheckbox = array();
+            }
+            $bukisCheckbox = request('bukis_checkbox');
+            if($bukisCheckbox==null){
+                $bukisCheckbox = array();
+            }
+            $inputDataRadio = request('input_data_radio');
+            $udemaesPull = request('udemaes_pull');
+            $xpText = request('xp_text');
+            $udemaeRelationRadio = request('udemae_relation_radio');
+            $loginUserId = Auth::user()->id;
             //ルール、ステージフィルタ
             $gachis = Gachi::with('rule','stage1','stage2')
             ->where(function($gachis) use($rulesCheckbox){
@@ -77,30 +88,44 @@ class AjaxController extends Controller
                 $gachis->orwhereIn('stage1_id',$stagesCheckbox)
                       ->orWhereIn('stage2_id',$stagesCheckbox);
             });
+
+            //オブジェクトのコピー
+            $futureGachis = clone $gachis;
+            $currentGachis = clone $gachis;
+            $pastGachis = clone $gachis;
             //日付フィルタ
-            $targetTimeStamp = null;
             $nowTimeStamp = Carbon::now();
-            switch($detaRadio){
-                case 'allTime':
-                    $targetTimeStamp = Carbon::parse('2000-01-01 00:00:00');
-                break;
-                case '1year':
-                    $targetTimeStamp = $nowTimeStamp->subYear(1);
-                break;
-                case '1month':
-                    $targetTimeStamp = $nowTimeStamp->subMonth(1);
-                break;
-                case '1week':
-                    $targetTimeStamp = $nowTimeStamp->subDay(7);
-                break;
-                case '3day':
-                    $targetTimeStamp = $nowTimeStamp->subDay(3);
-                break;            
-            }
-            $gachis = $gachis->where('start_t', '>=', $targetTimeStamp);
+                $gachisGachiIds=array();
+                if(count($dateCheckbox)>=1){
+                    foreach($dateCheckbox As $state){
+                        switch($state){
+                            case "future":
+                                $futureGachis = $futureGachis->where('start_t', '>', $nowTimeStamp)->pluck('gachi_id');
+                                foreach($futureGachis As $gachiId){
+                                    $gachisGachiIds[] = $gachiId;
+                                }
+                            break;
+
+                            case "current":
+                                $currentGachis = $currentGachis->where('start_t', '<=', $nowTimeStamp)->where('end_t', '>=', $nowTimeStamp)->pluck('gachi_id');
+                                foreach($currentGachis As $gachiId){
+                                    $gachisGachiIds[] = $gachiId;
+                                }
+                            break;
+                            case "past":
+                                $pastGachis = $pastGachis->where('end_t', '<', $nowTimeStamp)->pluck('gachi_id');
+                                foreach($pastGachis As $gachiId){
+                                    $gachisGachiIds[] = $gachiId;
+                                }
+                            break;       
+                        }
+                    }
+                }
+                $gachis = $gachis->whereIn('gachi_id', $gachisGachiIds);
+
             //戦績有無フィルタ
             $inputDatas = Input_data::where('user_id',$loginUserId)->get();
-            $inputDataGachiIds=[];
+            $inputDataGachiIds=array();
             foreach($inputDatas As $inputData){
                 array_push($inputDataGachiIds, $inputData->gachi_id);
             }
@@ -111,17 +136,17 @@ class AjaxController extends Controller
                 //戦績有りのみ
                 case 'inserted':
                     //ブキフィルタ
-                    $inputDataGachiIds=[];
-                    if(count((array)$bukisCheckbox)!=null){
+                    $inputDataGachiIds=array();
+                    if(count($bukisCheckbox)>=1){
                         foreach($inputDatas As $inputData){
                             if(in_array($inputData->buki_id, $bukisCheckbox)){
                                 array_push($inputDataGachiIds, $inputData->gachi_id);
                             }
                         }
-                        $gachis = $gachis->whereIn('gachi_id', $inputDataGachiIds);
                     }
+                    $gachis = $gachis->whereIn('gachi_id', $inputDataGachiIds);
                     //ウデマエフィルタ
-                    $inputDataGachiIds=[];
+                    $inputDataGachiIds=array();
                     if($udemaesPull != null){
                         switch($udemaeRelationRadio){
                             case '>=':

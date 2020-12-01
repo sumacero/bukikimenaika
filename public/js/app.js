@@ -2255,6 +2255,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       gachiStartTimeStamp: null,
       gachiEndTimeStamp: null,
       gachiState: null,
+      gachiStateMsg: null,
       customizedClass: null,
       activeMsg: null
     };
@@ -2265,11 +2266,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     this.gachiEndTimeStamp = new Date(this.gachi.end_t);
 
     if (this.nowTimeStamp.getTime() > this.gachiEndTimeStamp.getTime()) {
-      this.gachiState = "過去のガチマッチ";
+      this.gachiState = "past";
+      this.gachiStateMsg = "終了";
     } else if (this.nowTimeStamp.getTime() > this.gachiStartTimeStamp) {
-      this.gachiState = "現在のガチマッチ";
+      this.gachiState = "currrent";
+      this.gachiStateMsg = "現在のルール";
     } else {
-      this.gachiState = "未来のガチマッチ";
+      this.gachiState = "future";
+      this.gachiStateMsg = "開催予定";
     }
   },
   methods: {
@@ -2336,10 +2340,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     active: function active(value) {
       if (value) {
         this.customizedClass = "active";
-        this.activeMsg = "編集中";
       } else {
         this.customizedClass = "";
-        this.activeMsg = "";
       }
     }
   }
@@ -2627,26 +2629,35 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["rules", "stages", "bukis", "udemaes", "filterOptions"],
   data: function data() {
     return {
-      fieldsetDisable: null,
-      showDateRadio: false,
+      showDateCheckbox: false,
       showRulesCheckbox: false,
       showStagesCheckbox: false,
+      showInputDataArea: false,
       showBukisCheckbox: false,
-      showInputDataRadio: false,
       showUdemaesPull: false,
+      allCheckStagesFlag: false,
+      allCheckBukisFlag: false,
       errors: {
+        date: [],
+        rules: [],
+        stages: [],
+        bukis: [],
         xp: []
       },
       error: false,
       iconPlus: {
-        dateRadio: true,
+        dateCheckbox: true,
         rulesCheckbox: true,
         stagesCheckbox: true,
-        inputDataRadio: true,
+        inputDataArea: true,
         bukisCheckbox: true,
         udemaesPull: true
       }
@@ -2660,9 +2671,9 @@ __webpack_require__.r(__webpack_exports__);
         this.$emit('click-filter-btn');
       }
     },
-    switchShowDateRadio: function switchShowDateRadio() {
-      this.showDateRadio = !this.showDateRadio;
-      this.iconPlus.dateRadio = !this.iconPlus.dateRadio;
+    switchShowDateCheckbox: function switchShowDateCheckbox() {
+      this.showDateCheckbox = !this.showDateCheckbox;
+      this.iconPlus.dateCheckbox = !this.iconPlus.dateCheckbox;
     },
     switchShowRulesCheckbox: function switchShowRulesCheckbox() {
       this.showRulesCheckbox = !this.showRulesCheckbox;
@@ -2672,9 +2683,9 @@ __webpack_require__.r(__webpack_exports__);
       this.showStagesCheckbox = !this.showStagesCheckbox;
       this.iconPlus.stagesCheckbox = !this.iconPlus.stagesCheckbox;
     },
-    switchShowInputDataRadio: function switchShowInputDataRadio() {
-      this.showInputDataRadio = !this.showInputDataRadio;
-      this.iconPlus.inputDataRadio = !this.iconPlus.inputDataRadio;
+    switchShowInputDataArea: function switchShowInputDataArea() {
+      this.showInputDataArea = !this.showInputDataArea;
+      this.iconPlus.inputDataArea = !this.iconPlus.inputDataArea;
     },
     switchShowBukisCheckbox: function switchShowBukisCheckbox() {
       this.showBukisCheckbox = !this.showBukisCheckbox;
@@ -2684,10 +2695,88 @@ __webpack_require__.r(__webpack_exports__);
       this.showUdemaesPull = !this.showUdemaesPull;
       this.iconPlus.udemaesPull = !this.iconPlus.udemaesPull;
     },
+    allCheckStages: function allCheckStages() {
+      this.filterOptions.stages_checkbox = [];
+
+      if (this.allCheckStagesFlag) {
+        for (var i = 0; i < this.stages.length; i++) {
+          this.filterOptions.stages_checkbox.push(this.stages[i].stage_id);
+        }
+      }
+
+      this.allCheckStagesFlag = !this.allCheckStagesFlag;
+    },
+    allCheckBukis: function allCheckBukis() {
+      this.filterOptions.bukis_checkbox = [];
+
+      if (this.allCheckBukisFlag) {
+        for (var i = 0; i < this.bukis.length; i++) {
+          this.filterOptions.bukis_checkbox.push(this.bukis[i].buki_id);
+        }
+      }
+
+      this.allCheckBukisFlag = !this.allCheckBukisFlag;
+    },
     validator: function validator() {
+      var date = [];
+      var rules = [];
+      var stages = [];
+      var bukis = [];
       var xp = [];
       var message = '';
-      this.error = false; //ウデマエXの場合
+      this.error = false; //日付チェックボックスが空の場合
+
+      if (this.filterOptions.date_checkbox.length == 0) {
+        if (!this.showDateCheckbox) {
+          this.switchShowDateCheckbox();
+        }
+
+        message = '1つ以上選択してください。';
+        date.push(message);
+        this.error = true;
+      }
+
+      this.errors.date = date; //ルールチェックボックスが空の場合
+
+      if (this.filterOptions.rules_checkbox.length == 0) {
+        if (!this.showRulesCheckbox) {
+          this.switchShowRulesCheckbox();
+        }
+
+        message = '1つ以上選択してください。';
+        rules.push(message);
+        this.error = true;
+      }
+
+      this.errors.rules = rules; //ステージチェックボックスが空の場合
+
+      if (this.filterOptions.stages_checkbox.length == 0) {
+        if (!this.showStagesCheckbox) {
+          this.switchShowStagesCheckbox();
+        }
+
+        message = '1つ以上選択してください。';
+        stages.push(message);
+        this.error = true;
+      }
+
+      this.errors.stages = stages; //戦績あり かつ ブキチェックボックスが空の場合
+
+      if (this.filterOptions.input_data_radio == "inserted" && this.filterOptions.bukis_checkbox.length == 0) {
+        if (!this.showInputDataArea) {
+          this.switchShowInputDataArea();
+        }
+
+        if (!this.showBukisCheckbox) {
+          this.switchShowBukisCheckbox();
+        }
+
+        message = '1つ以上選択してください。';
+        bukis.push(message);
+        this.error = true;
+      }
+
+      this.errors.bukis = bukis; //ウデマエXの場合
 
       if (this.filterOptions.udemaes_pull == '21') {
         if (!(this.filterOptions.xp_text >= 0 && this.filterOptions.xp_text <= 9999) && this.filterOptions.xp_text != null) {
@@ -2698,18 +2787,6 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       this.errors.xp = xp;
-    }
-  },
-  watch: {
-    filterOptions: {
-      handler: function handler(value) {
-        if (value.input_data_radio == "inserted") {
-          this.fieldsetDisable = false;
-        } else {
-          this.fieldsetDisable = true;
-        }
-      },
-      deep: true
     }
   }
 });
@@ -40100,7 +40177,9 @@ var render = function() {
         _vm._v(
           _vm._s(_vm.formatTimeStamp(_vm.gachi.start_t)) +
             "～" +
-            _vm._s(_vm.formatTimeStamp(_vm.gachi.end_t))
+            _vm._s(_vm.formatTimeStamp(_vm.gachi.end_t)) +
+            "　◆" +
+            _vm._s(_vm.gachiStateMsg)
         )
       ]),
       _vm._v(" "),
@@ -40144,78 +40223,82 @@ var render = function() {
         ]
       ),
       _vm._v(" "),
-      _c(
-        "fieldset",
-        { staticStyle: { border: "1px solid #000000", padding: "10px" } },
-        [
-          _c("legend", [_vm._v("あなたの記録")]),
-          _vm._v(" "),
-          _vm.input_data
-            ? _c("div", [
-                _c("div", [
-                  _vm._v("ブキ：" + _vm._s(_vm.input_data.buki.buki_name))
-                ]),
-                _vm._v(" "),
-                _c("div", [
-                  _vm._v(
-                    "ウデマエ：" + _vm._s(_vm.input_data.udemae.udemae_name)
-                  )
-                ]),
-                _vm._v(" "),
-                _c("div", [_vm._v("XP：" + _vm._s(_vm.input_data.xp))])
-              ])
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.input_data
-            ? _c("div", [
-                _c(
-                  "button",
-                  {
-                    staticClass: "editBtn btn btn-info",
-                    attrs: { type: "button" },
-                    on: {
-                      click: function($event) {
-                        $event.preventDefault()
-                        return _vm.switchEditRecord(_vm.input_data)
-                      }
-                    }
-                  },
-                  [_vm._v("戦績を編集")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    staticClass: "deleteBtn btn btn-info",
-                    attrs: { type: "button" },
-                    on: {
-                      click: function($event) {
-                        $event.preventDefault()
-                        return _vm.deleteRecord(_vm.input_data.input_data_id)
-                      }
-                    }
-                  },
-                  [_vm._v("削除")]
-                )
-              ])
-            : _c("div", [
-                _c(
-                  "button",
-                  {
-                    staticClass: "editBtn btn btn-info",
-                    attrs: { type: "button" },
-                    on: {
-                      click: function($event) {
-                        $event.preventDefault()
-                        return _vm.switchEditRecord(_vm.input_data)
-                      }
-                    }
-                  },
-                  [_vm._v("戦績を入力")]
-                )
-              ])
-        ]
-      )
+      _vm.gachiState != "future"
+        ? _c(
+            "fieldset",
+            { staticStyle: { border: "1px solid #000000", padding: "10px" } },
+            [
+              _c("legend", [_vm._v("あなたの記録")]),
+              _vm._v(" "),
+              _vm.input_data
+                ? _c("div", [
+                    _c("div", [
+                      _vm._v("ブキ：" + _vm._s(_vm.input_data.buki.buki_name))
+                    ]),
+                    _vm._v(" "),
+                    _c("div", [
+                      _vm._v(
+                        "ウデマエ：" + _vm._s(_vm.input_data.udemae.udemae_name)
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", [_vm._v("XP：" + _vm._s(_vm.input_data.xp))])
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.input_data
+                ? _c("div", [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "editBtn btn btn-info",
+                        attrs: { type: "button" },
+                        on: {
+                          click: function($event) {
+                            $event.preventDefault()
+                            return _vm.switchEditRecord(_vm.input_data)
+                          }
+                        }
+                      },
+                      [_vm._v("戦績を編集")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "deleteBtn btn btn-info",
+                        attrs: { type: "button" },
+                        on: {
+                          click: function($event) {
+                            $event.preventDefault()
+                            return _vm.deleteRecord(
+                              _vm.input_data.input_data_id
+                            )
+                          }
+                        }
+                      },
+                      [_vm._v("削除")]
+                    )
+                  ])
+                : _c("div", [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "editBtn btn btn-info",
+                        attrs: { type: "button" },
+                        on: {
+                          click: function($event) {
+                            $event.preventDefault()
+                            return _vm.switchEditRecord(_vm.input_data)
+                          }
+                        }
+                      },
+                      [_vm._v("戦績を入力")]
+                    )
+                  ])
+            ]
+          )
+        : _vm._e()
     ]
   )
 }
@@ -40477,142 +40560,187 @@ var render = function() {
       ),
       _vm._v(" "),
       _c("div", { staticClass: "border rounded" }, [
-        _c("span", { on: { click: _vm.switchShowDateRadio } }, [
+        _c("span", { on: { click: _vm.switchShowDateCheckbox } }, [
           _c(
             "span",
             { staticStyle: { display: "flex" } },
             [
-              _c("plus-minus", { attrs: { iconPlus: _vm.iconPlus.dateRadio } }),
+              _c("plus-minus", {
+                attrs: { iconPlus: _vm.iconPlus.dateCheckbox }
+              }),
               _vm._v("\n                日付\n                ")
             ],
             1
           )
         ]),
         _vm._v(" "),
-        _vm.showDateRadio
-          ? _c("span", [
-              _c("label", [
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.filterOptions.date_radio,
-                      expression: "filterOptions.date_radio"
-                    }
-                  ],
-                  attrs: { type: "radio", value: "3day" },
-                  domProps: {
-                    checked: _vm._q(_vm.filterOptions.date_radio, "3day")
-                  },
-                  on: {
-                    change: function($event) {
-                      return _vm.$set(_vm.filterOptions, "date_radio", "3day")
+        _c(
+          "span",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.showDateCheckbox,
+                expression: "showDateCheckbox"
+              }
+            ]
+          },
+          [
+            _c("label", [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.filterOptions.date_checkbox,
+                    expression: "filterOptions.date_checkbox"
+                  }
+                ],
+                attrs: { type: "checkbox", value: "future" },
+                domProps: {
+                  checked: Array.isArray(_vm.filterOptions.date_checkbox)
+                    ? _vm._i(_vm.filterOptions.date_checkbox, "future") > -1
+                    : _vm.filterOptions.date_checkbox
+                },
+                on: {
+                  change: function($event) {
+                    var $$a = _vm.filterOptions.date_checkbox,
+                      $$el = $event.target,
+                      $$c = $$el.checked ? true : false
+                    if (Array.isArray($$a)) {
+                      var $$v = "future",
+                        $$i = _vm._i($$a, $$v)
+                      if ($$el.checked) {
+                        $$i < 0 &&
+                          _vm.$set(
+                            _vm.filterOptions,
+                            "date_checkbox",
+                            $$a.concat([$$v])
+                          )
+                      } else {
+                        $$i > -1 &&
+                          _vm.$set(
+                            _vm.filterOptions,
+                            "date_checkbox",
+                            $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                          )
+                      }
+                    } else {
+                      _vm.$set(_vm.filterOptions, "date_checkbox", $$c)
                     }
                   }
-                }),
-                _vm._v("\n                    3日分\n                ")
-              ]),
-              _vm._v(" "),
-              _c("label", [
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.filterOptions.date_radio,
-                      expression: "filterOptions.date_radio"
-                    }
-                  ],
-                  attrs: { type: "radio", value: "1week" },
-                  domProps: {
-                    checked: _vm._q(_vm.filterOptions.date_radio, "1week")
-                  },
-                  on: {
-                    change: function($event) {
-                      return _vm.$set(_vm.filterOptions, "date_radio", "1week")
+                }
+              }),
+              _vm._v("\n                    未来のガチマッチ\n                ")
+            ]),
+            _vm._v(" "),
+            _c("label", [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.filterOptions.date_checkbox,
+                    expression: "filterOptions.date_checkbox"
+                  }
+                ],
+                attrs: { type: "checkbox", value: "current" },
+                domProps: {
+                  checked: Array.isArray(_vm.filterOptions.date_checkbox)
+                    ? _vm._i(_vm.filterOptions.date_checkbox, "current") > -1
+                    : _vm.filterOptions.date_checkbox
+                },
+                on: {
+                  change: function($event) {
+                    var $$a = _vm.filterOptions.date_checkbox,
+                      $$el = $event.target,
+                      $$c = $$el.checked ? true : false
+                    if (Array.isArray($$a)) {
+                      var $$v = "current",
+                        $$i = _vm._i($$a, $$v)
+                      if ($$el.checked) {
+                        $$i < 0 &&
+                          _vm.$set(
+                            _vm.filterOptions,
+                            "date_checkbox",
+                            $$a.concat([$$v])
+                          )
+                      } else {
+                        $$i > -1 &&
+                          _vm.$set(
+                            _vm.filterOptions,
+                            "date_checkbox",
+                            $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                          )
+                      }
+                    } else {
+                      _vm.$set(_vm.filterOptions, "date_checkbox", $$c)
                     }
                   }
-                }),
-                _vm._v("\n                    1週間分\n                ")
-              ]),
-              _vm._v(" "),
-              _c("label", [
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.filterOptions.date_radio,
-                      expression: "filterOptions.date_radio"
-                    }
-                  ],
-                  attrs: { type: "radio", value: "1month" },
-                  domProps: {
-                    checked: _vm._q(_vm.filterOptions.date_radio, "1month")
-                  },
-                  on: {
-                    change: function($event) {
-                      return _vm.$set(_vm.filterOptions, "date_radio", "1month")
+                }
+              }),
+              _vm._v("\n                    現在のガチマッチ\n                ")
+            ]),
+            _vm._v(" "),
+            _c("label", [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.filterOptions.date_checkbox,
+                    expression: "filterOptions.date_checkbox"
+                  }
+                ],
+                attrs: { type: "checkbox", value: "past" },
+                domProps: {
+                  checked: Array.isArray(_vm.filterOptions.date_checkbox)
+                    ? _vm._i(_vm.filterOptions.date_checkbox, "past") > -1
+                    : _vm.filterOptions.date_checkbox
+                },
+                on: {
+                  change: function($event) {
+                    var $$a = _vm.filterOptions.date_checkbox,
+                      $$el = $event.target,
+                      $$c = $$el.checked ? true : false
+                    if (Array.isArray($$a)) {
+                      var $$v = "past",
+                        $$i = _vm._i($$a, $$v)
+                      if ($$el.checked) {
+                        $$i < 0 &&
+                          _vm.$set(
+                            _vm.filterOptions,
+                            "date_checkbox",
+                            $$a.concat([$$v])
+                          )
+                      } else {
+                        $$i > -1 &&
+                          _vm.$set(
+                            _vm.filterOptions,
+                            "date_checkbox",
+                            $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                          )
+                      }
+                    } else {
+                      _vm.$set(_vm.filterOptions, "date_checkbox", $$c)
                     }
                   }
-                }),
-                _vm._v("\n                    1カ月分\n                ")
-              ]),
-              _vm._v(" "),
-              _c("label", [
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.filterOptions.date_radio,
-                      expression: "filterOptions.date_radio"
-                    }
-                  ],
-                  attrs: { type: "radio", value: "1year" },
-                  domProps: {
-                    checked: _vm._q(_vm.filterOptions.date_radio, "1year")
-                  },
-                  on: {
-                    change: function($event) {
-                      return _vm.$set(_vm.filterOptions, "date_radio", "1year")
-                    }
-                  }
-                }),
-                _vm._v("\n                    1年分\n                ")
-              ]),
-              _vm._v(" "),
-              _c("label", [
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.filterOptions.date_radio,
-                      expression: "filterOptions.date_radio"
-                    }
-                  ],
-                  attrs: { type: "radio", value: "allTime" },
-                  domProps: {
-                    checked: _vm._q(_vm.filterOptions.date_radio, "allTime")
-                  },
-                  on: {
-                    change: function($event) {
-                      return _vm.$set(
-                        _vm.filterOptions,
-                        "date_radio",
-                        "allTime"
-                      )
-                    }
-                  }
-                }),
-                _vm._v("\n                    全期間\n                ")
-              ]),
-              _vm._v(" "),
-              _c("br")
-            ])
-          : _vm._e()
+                }
+              }),
+              _vm._v("\n                    過去のガチマッチ\n                ")
+            ]),
+            _vm._v(" "),
+            _vm._l(_vm.errors.date, function(error) {
+              return _c("p", { key: error.date, staticClass: "errors" }, [
+                _vm._v(_vm._s(error))
+              ])
+            }),
+            _vm._v(" "),
+            _c("br")
+          ],
+          2
+        )
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "border rounded" }, [
@@ -40630,77 +40758,89 @@ var render = function() {
           )
         ]),
         _vm._v(" "),
-        _vm.showRulesCheckbox
-          ? _c(
-              "span",
-              [
-                _vm._l(_vm.rules, function(rule) {
-                  return _c("span", { key: rule.id }, [
-                    _c("label", [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.filterOptions.rules_checkbox,
-                            expression: "filterOptions.rules_checkbox"
+        _c(
+          "span",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.showRulesCheckbox,
+                expression: "showRulesCheckbox"
+              }
+            ]
+          },
+          [
+            _vm._l(_vm.rules, function(rule) {
+              return _c("span", { key: rule.id }, [
+                _c("label", [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.filterOptions.rules_checkbox,
+                        expression: "filterOptions.rules_checkbox"
+                      }
+                    ],
+                    attrs: { type: "checkbox", id: rule.rule_id },
+                    domProps: {
+                      value: rule.rule_id,
+                      checked: Array.isArray(_vm.filterOptions.rules_checkbox)
+                        ? _vm._i(
+                            _vm.filterOptions.rules_checkbox,
+                            rule.rule_id
+                          ) > -1
+                        : _vm.filterOptions.rules_checkbox
+                    },
+                    on: {
+                      change: function($event) {
+                        var $$a = _vm.filterOptions.rules_checkbox,
+                          $$el = $event.target,
+                          $$c = $$el.checked ? true : false
+                        if (Array.isArray($$a)) {
+                          var $$v = rule.rule_id,
+                            $$i = _vm._i($$a, $$v)
+                          if ($$el.checked) {
+                            $$i < 0 &&
+                              _vm.$set(
+                                _vm.filterOptions,
+                                "rules_checkbox",
+                                $$a.concat([$$v])
+                              )
+                          } else {
+                            $$i > -1 &&
+                              _vm.$set(
+                                _vm.filterOptions,
+                                "rules_checkbox",
+                                $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                              )
                           }
-                        ],
-                        attrs: { type: "checkbox", id: rule.rule_id },
-                        domProps: {
-                          value: rule.rule_id,
-                          checked: Array.isArray(
-                            _vm.filterOptions.rules_checkbox
-                          )
-                            ? _vm._i(
-                                _vm.filterOptions.rules_checkbox,
-                                rule.rule_id
-                              ) > -1
-                            : _vm.filterOptions.rules_checkbox
-                        },
-                        on: {
-                          change: function($event) {
-                            var $$a = _vm.filterOptions.rules_checkbox,
-                              $$el = $event.target,
-                              $$c = $$el.checked ? true : false
-                            if (Array.isArray($$a)) {
-                              var $$v = rule.rule_id,
-                                $$i = _vm._i($$a, $$v)
-                              if ($$el.checked) {
-                                $$i < 0 &&
-                                  _vm.$set(
-                                    _vm.filterOptions,
-                                    "rules_checkbox",
-                                    $$a.concat([$$v])
-                                  )
-                              } else {
-                                $$i > -1 &&
-                                  _vm.$set(
-                                    _vm.filterOptions,
-                                    "rules_checkbox",
-                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                                  )
-                              }
-                            } else {
-                              _vm.$set(_vm.filterOptions, "rules_checkbox", $$c)
-                            }
-                          }
+                        } else {
+                          _vm.$set(_vm.filterOptions, "rules_checkbox", $$c)
                         }
-                      }),
-                      _vm._v(
-                        "\n                        " +
-                          _vm._s(rule.rule_name) +
-                          "\n                    "
-                      )
-                    ])
-                  ])
-                }),
-                _vm._v(" "),
-                _c("br")
-              ],
-              2
-            )
-          : _vm._e()
+                      }
+                    }
+                  }),
+                  _vm._v(
+                    "\n                        " +
+                      _vm._s(rule.rule_name) +
+                      "\n                    "
+                  )
+                ])
+              ])
+            }),
+            _vm._v(" "),
+            _vm._l(_vm.errors.rules, function(error) {
+              return _c("p", { key: error.rules, staticClass: "errors" }, [
+                _vm._v(_vm._s(error))
+              ])
+            }),
+            _vm._v(" "),
+            _c("br")
+          ],
+          2
+        )
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "border rounded" }, [
@@ -40718,91 +40858,125 @@ var render = function() {
           )
         ]),
         _vm._v(" "),
-        _vm.showStagesCheckbox
-          ? _c(
-              "span",
-              [
-                _vm._l(_vm.stages, function(stage) {
-                  return _c("span", { key: stage.id }, [
-                    _c("label", [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.filterOptions.stages_checkbox,
-                            expression: "filterOptions.stages_checkbox"
-                          }
-                        ],
-                        attrs: { type: "checkbox", id: stage.stage_id },
-                        domProps: {
-                          value: stage.stage_id,
-                          checked: Array.isArray(
-                            _vm.filterOptions.stages_checkbox
-                          )
-                            ? _vm._i(
-                                _vm.filterOptions.stages_checkbox,
-                                stage.stage_id
-                              ) > -1
-                            : _vm.filterOptions.stages_checkbox
-                        },
-                        on: {
-                          change: function($event) {
-                            var $$a = _vm.filterOptions.stages_checkbox,
-                              $$el = $event.target,
-                              $$c = $$el.checked ? true : false
-                            if (Array.isArray($$a)) {
-                              var $$v = stage.stage_id,
-                                $$i = _vm._i($$a, $$v)
-                              if ($$el.checked) {
-                                $$i < 0 &&
-                                  _vm.$set(
-                                    _vm.filterOptions,
-                                    "stages_checkbox",
-                                    $$a.concat([$$v])
-                                  )
-                              } else {
-                                $$i > -1 &&
-                                  _vm.$set(
-                                    _vm.filterOptions,
-                                    "stages_checkbox",
-                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                                  )
-                              }
-                            } else {
+        _c(
+          "span",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.showStagesCheckbox,
+                expression: "showStagesCheckbox"
+              }
+            ]
+          },
+          [
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-info",
+                attrs: { type: "button" },
+                on: { click: _vm.allCheckStages }
+              },
+              [_vm._v("ALL ON/OFF")]
+            ),
+            _vm._v(" "),
+            _vm._l(_vm.errors.stages, function(error) {
+              return _c("p", { key: error.stages, staticClass: "errors" }, [
+                _vm._v(_vm._s(error))
+              ])
+            }),
+            _vm._v(" "),
+            _vm._l(_vm.stages, function(stage) {
+              return _c("span", { key: stage.id }, [
+                _c("label", [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.filterOptions.stages_checkbox,
+                        expression: "filterOptions.stages_checkbox"
+                      }
+                    ],
+                    attrs: { type: "checkbox", id: stage.stage_id },
+                    domProps: {
+                      value: stage.stage_id,
+                      checked: Array.isArray(_vm.filterOptions.stages_checkbox)
+                        ? _vm._i(
+                            _vm.filterOptions.stages_checkbox,
+                            stage.stage_id
+                          ) > -1
+                        : _vm.filterOptions.stages_checkbox
+                    },
+                    on: {
+                      change: function($event) {
+                        var $$a = _vm.filterOptions.stages_checkbox,
+                          $$el = $event.target,
+                          $$c = $$el.checked ? true : false
+                        if (Array.isArray($$a)) {
+                          var $$v = stage.stage_id,
+                            $$i = _vm._i($$a, $$v)
+                          if ($$el.checked) {
+                            $$i < 0 &&
                               _vm.$set(
                                 _vm.filterOptions,
                                 "stages_checkbox",
-                                $$c
+                                $$a.concat([$$v])
                               )
-                            }
+                          } else {
+                            $$i > -1 &&
+                              _vm.$set(
+                                _vm.filterOptions,
+                                "stages_checkbox",
+                                $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                              )
                           }
+                        } else {
+                          _vm.$set(_vm.filterOptions, "stages_checkbox", $$c)
                         }
-                      }),
-                      _vm._v(
-                        "\n                        " +
-                          _vm._s(stage.stage_name) +
-                          "\n                    "
-                      )
-                    ])
-                  ])
-                }),
-                _vm._v(" "),
-                _c("br")
-              ],
-              2
-            )
-          : _vm._e()
+                      }
+                    }
+                  }),
+                  _vm._v(
+                    "\n                        " +
+                      _vm._s(stage.stage_name) +
+                      "\n                    "
+                  )
+                ])
+              ])
+            }),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-info",
+                attrs: { type: "button" },
+                on: { click: _vm.allCheckStages }
+              },
+              [_vm._v("ALL ON/OFF")]
+            ),
+            _vm._v(" "),
+            _vm._l(_vm.errors.stages, function(error) {
+              return _c("p", { key: error.stages, staticClass: "errors" }, [
+                _vm._v(_vm._s(error))
+              ])
+            }),
+            _vm._v(" "),
+            _c("br")
+          ],
+          2
+        )
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "border rounded" }, [
-        _c("div", { on: { click: _vm.switchShowInputDataRadio } }, [
+        _c("div", { on: { click: _vm.switchShowInputDataArea } }, [
           _c(
             "span",
             { staticStyle: { display: "flex" } },
             [
               _c("plus-minus", {
-                attrs: { iconPlus: _vm.iconPlus.inputDataRadio }
+                attrs: { iconPlus: _vm.iconPlus.inputDataArea }
               }),
               _vm._v("\n                    戦績\n                ")
             ],
@@ -40810,375 +40984,473 @@ var render = function() {
           )
         ]),
         _vm._v(" "),
-        _vm.showInputDataRadio
-          ? _c("span", [
-              _c("label", [
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.filterOptions.input_data_radio,
-                      expression: "filterOptions.input_data_radio"
-                    }
-                  ],
-                  attrs: { type: "radio", value: "all" },
-                  domProps: {
-                    checked: _vm._q(_vm.filterOptions.input_data_radio, "all")
-                  },
-                  on: {
-                    change: function($event) {
-                      return _vm.$set(
-                        _vm.filterOptions,
-                        "input_data_radio",
-                        "all"
-                      )
-                    }
+        _c(
+          "span",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.showInputDataArea,
+                expression: "showInputDataArea"
+              }
+            ]
+          },
+          [
+            _c("label", [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.filterOptions.input_data_radio,
+                    expression: "filterOptions.input_data_radio"
                   }
-                }),
-                _vm._v("\n                    入力済/未入力\n                ")
-              ]),
-              _vm._v(" "),
-              _c("label", [
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.filterOptions.input_data_radio,
-                      expression: "filterOptions.input_data_radio"
-                    }
-                  ],
-                  attrs: { type: "radio", value: "inserted" },
-                  domProps: {
-                    checked: _vm._q(
-                      _vm.filterOptions.input_data_radio,
+                ],
+                attrs: { type: "radio", value: "all" },
+                domProps: {
+                  checked: _vm._q(_vm.filterOptions.input_data_radio, "all")
+                },
+                on: {
+                  change: function($event) {
+                    return _vm.$set(
+                      _vm.filterOptions,
+                      "input_data_radio",
+                      "all"
+                    )
+                  }
+                }
+              }),
+              _vm._v("\n                    入力済/未入力\n                ")
+            ]),
+            _vm._v(" "),
+            _c("label", [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.filterOptions.input_data_radio,
+                    expression: "filterOptions.input_data_radio"
+                  }
+                ],
+                attrs: { type: "radio", value: "inserted" },
+                domProps: {
+                  checked: _vm._q(
+                    _vm.filterOptions.input_data_radio,
+                    "inserted"
+                  )
+                },
+                on: {
+                  change: function($event) {
+                    return _vm.$set(
+                      _vm.filterOptions,
+                      "input_data_radio",
                       "inserted"
                     )
-                  },
-                  on: {
-                    change: function($event) {
-                      return _vm.$set(
-                        _vm.filterOptions,
-                        "input_data_radio",
-                        "inserted"
-                      )
-                    }
                   }
-                }),
-                _vm._v("\n                    入力済\n                ")
-              ]),
-              _vm._v(" "),
-              _c("label", [
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.filterOptions.input_data_radio,
-                      expression: "filterOptions.input_data_radio"
-                    }
-                  ],
-                  attrs: { type: "radio", value: "uninserted" },
-                  domProps: {
-                    checked: _vm._q(
-                      _vm.filterOptions.input_data_radio,
+                }
+              }),
+              _vm._v("\n                    入力済\n                ")
+            ]),
+            _vm._v(" "),
+            _c("label", [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.filterOptions.input_data_radio,
+                    expression: "filterOptions.input_data_radio"
+                  }
+                ],
+                attrs: { type: "radio", value: "uninserted" },
+                domProps: {
+                  checked: _vm._q(
+                    _vm.filterOptions.input_data_radio,
+                    "uninserted"
+                  )
+                },
+                on: {
+                  change: function($event) {
+                    return _vm.$set(
+                      _vm.filterOptions,
+                      "input_data_radio",
                       "uninserted"
                     )
-                  },
-                  on: {
-                    change: function($event) {
-                      return _vm.$set(
-                        _vm.filterOptions,
-                        "input_data_radio",
-                        "uninserted"
-                      )
-                    }
                   }
-                }),
-                _vm._v("\n                    未入力\n                ")
-              ]),
-              _vm._v(" "),
-              !_vm.fieldsetDisable
-                ? _c("div", { staticClass: "border rounded" }, [
-                    _c("div", { on: { click: _vm.switchShowBukisCheckbox } }, [
+                }
+              }),
+              _vm._v("\n                    未入力\n                ")
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "container" }, [
+              _c(
+                "div",
+                {
+                  directives: [
+                    {
+                      name: "show",
+                      rawName: "v-show",
+                      value: _vm.filterOptions.input_data_radio == "inserted",
+                      expression: "filterOptions.input_data_radio=='inserted'"
+                    }
+                  ],
+                  staticClass: "border rounded col-md-offset-1"
+                },
+                [
+                  _c("div", { on: { click: _vm.switchShowBukisCheckbox } }, [
+                    _c(
+                      "span",
+                      { staticStyle: { display: "flex" } },
+                      [
+                        _c("plus-minus", {
+                          attrs: { iconPlus: _vm.iconPlus.bukisCheckbox }
+                        }),
+                        _vm._v(
+                          "\n                                ブキ\n                            "
+                        )
+                      ],
+                      1
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "span",
+                    {
+                      directives: [
+                        {
+                          name: "show",
+                          rawName: "v-show",
+                          value: _vm.showBukisCheckbox,
+                          expression: "showBukisCheckbox"
+                        }
+                      ]
+                    },
+                    [
+                      _vm._l(_vm.errors.bukis, function(error) {
+                        return _c(
+                          "p",
+                          { key: error.bukis, staticClass: "errors" },
+                          [_vm._v(_vm._s(error))]
+                        )
+                      }),
+                      _vm._v(" "),
                       _c(
-                        "span",
-                        { staticStyle: { display: "flex" } },
-                        [
-                          _c("plus-minus", {
-                            attrs: { iconPlus: _vm.iconPlus.bukisCheckbox }
-                          }),
-                          _vm._v(
-                            "\n                            ブキ\n                        "
-                          )
-                        ],
-                        1
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _vm.showBukisCheckbox
-                      ? _c(
-                          "span",
-                          _vm._l(_vm.bukis, function(buki) {
-                            return _c("span", { key: buki.id }, [
-                              _c("label", [
-                                _c("input", {
-                                  directives: [
-                                    {
-                                      name: "model",
-                                      rawName: "v-model",
-                                      value: _vm.filterOptions.bukis_checkbox,
-                                      expression: "filterOptions.bukis_checkbox"
-                                    }
-                                  ],
-                                  attrs: { type: "checkbox", id: buki.buki_id },
-                                  domProps: {
-                                    value: buki.buki_id,
-                                    checked: Array.isArray(
-                                      _vm.filterOptions.bukis_checkbox
-                                    )
-                                      ? _vm._i(
-                                          _vm.filterOptions.bukis_checkbox,
-                                          buki.buki_id
-                                        ) > -1
-                                      : _vm.filterOptions.bukis_checkbox
-                                  },
-                                  on: {
-                                    change: function($event) {
-                                      var $$a =
-                                          _vm.filterOptions.bukis_checkbox,
-                                        $$el = $event.target,
-                                        $$c = $$el.checked ? true : false
-                                      if (Array.isArray($$a)) {
-                                        var $$v = buki.buki_id,
-                                          $$i = _vm._i($$a, $$v)
-                                        if ($$el.checked) {
-                                          $$i < 0 &&
-                                            _vm.$set(
-                                              _vm.filterOptions,
-                                              "bukis_checkbox",
-                                              $$a.concat([$$v])
-                                            )
-                                        } else {
-                                          $$i > -1 &&
-                                            _vm.$set(
-                                              _vm.filterOptions,
-                                              "bukis_checkbox",
-                                              $$a
-                                                .slice(0, $$i)
-                                                .concat($$a.slice($$i + 1))
-                                            )
-                                        }
-                                      } else {
+                        "button",
+                        {
+                          staticClass: "btn btn-info",
+                          attrs: { type: "button" },
+                          on: { click: _vm.allCheckBukis }
+                        },
+                        [_vm._v("ALL ON/OFF")]
+                      ),
+                      _vm._v(" "),
+                      _vm._l(_vm.bukis, function(buki) {
+                        return _c("span", { key: buki.id }, [
+                          _c("label", [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.filterOptions.bukis_checkbox,
+                                  expression: "filterOptions.bukis_checkbox"
+                                }
+                              ],
+                              attrs: { type: "checkbox", id: buki.buki_id },
+                              domProps: {
+                                value: buki.buki_id,
+                                checked: Array.isArray(
+                                  _vm.filterOptions.bukis_checkbox
+                                )
+                                  ? _vm._i(
+                                      _vm.filterOptions.bukis_checkbox,
+                                      buki.buki_id
+                                    ) > -1
+                                  : _vm.filterOptions.bukis_checkbox
+                              },
+                              on: {
+                                change: function($event) {
+                                  var $$a = _vm.filterOptions.bukis_checkbox,
+                                    $$el = $event.target,
+                                    $$c = $$el.checked ? true : false
+                                  if (Array.isArray($$a)) {
+                                    var $$v = buki.buki_id,
+                                      $$i = _vm._i($$a, $$v)
+                                    if ($$el.checked) {
+                                      $$i < 0 &&
                                         _vm.$set(
                                           _vm.filterOptions,
                                           "bukis_checkbox",
-                                          $$c
+                                          $$a.concat([$$v])
                                         )
-                                      }
+                                    } else {
+                                      $$i > -1 &&
+                                        _vm.$set(
+                                          _vm.filterOptions,
+                                          "bukis_checkbox",
+                                          $$a
+                                            .slice(0, $$i)
+                                            .concat($$a.slice($$i + 1))
+                                        )
                                     }
-                                  }
-                                }),
-                                _vm._v(
-                                  "\n                                " +
-                                    _vm._s(buki.buki_name) +
-                                    "\n                            "
-                                )
-                              ])
-                            ])
-                          }),
-                          0
-                        )
-                      : _vm._e()
-                  ])
-                : _vm._e(),
-              _vm._v(" "),
-              !_vm.fieldsetDisable
-                ? _c("div", { staticClass: "border rounded" }, [
-                    _c("div", { on: { click: _vm.switchShowUdemaesPull } }, [
-                      _c(
-                        "span",
-                        { staticStyle: { display: "flex" } },
-                        [
-                          _c("plus-minus", {
-                            attrs: { iconPlus: _vm.iconPlus.udemaesPull }
-                          }),
-                          _vm._v(
-                            "\n                            ウデマエ\n                        "
-                          )
-                        ],
-                        1
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _vm.showUdemaesPull
-                      ? _c(
-                          "span",
-                          [
-                            _c(
-                              "select",
-                              {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.filterOptions.udemaes_pull,
-                                    expression: "filterOptions.udemaes_pull"
-                                  }
-                                ],
-                                attrs: { name: "udemae_id" },
-                                on: {
-                                  change: function($event) {
-                                    var $$selectedVal = Array.prototype.filter
-                                      .call($event.target.options, function(o) {
-                                        return o.selected
-                                      })
-                                      .map(function(o) {
-                                        var val =
-                                          "_value" in o ? o._value : o.value
-                                        return val
-                                      })
+                                  } else {
                                     _vm.$set(
                                       _vm.filterOptions,
-                                      "udemaes_pull",
-                                      $event.target.multiple
-                                        ? $$selectedVal
-                                        : $$selectedVal[0]
+                                      "bukis_checkbox",
+                                      $$c
                                     )
                                   }
                                 }
-                              },
-                              _vm._l(_vm.udemaes, function(udemae) {
-                                return _c(
-                                  "option",
-                                  {
-                                    key: udemae.id,
-                                    domProps: { value: udemae.udemae_id }
-                                  },
-                                  [_vm._v(_vm._s(udemae.udemae_name))]
-                                )
-                              }),
-                              0
-                            ),
-                            _vm._v(" "),
-                            _vm.filterOptions.udemaes_pull == "21"
-                              ? _c("label", [
-                                  _vm._v("XP"),
-                                  _c("input", {
-                                    directives: [
-                                      {
-                                        name: "model",
-                                        rawName: "v-model",
-                                        value: _vm.filterOptions.xp_text,
-                                        expression: "filterOptions.xp_text"
-                                      }
-                                    ],
-                                    attrs: { type: "text" },
-                                    domProps: {
-                                      value: _vm.filterOptions.xp_text
-                                    },
-                                    on: {
-                                      input: function($event) {
-                                        if ($event.target.composing) {
-                                          return
-                                        }
-                                        _vm.$set(
-                                          _vm.filterOptions,
-                                          "xp_text",
-                                          $event.target.value
-                                        )
-                                      }
-                                    }
-                                  })
-                                ])
-                              : _vm._e(),
-                            _vm._v(" "),
-                            _vm._l(_vm.errors.xp, function(error) {
-                              return _c(
-                                "p",
-                                { key: error.xp, staticClass: "errors" },
-                                [_vm._v(_vm._s(error))]
-                              )
+                              }
                             }),
-                            _vm._v(" "),
-                            _c("span", [
-                              _c("label", [
-                                _c("input", {
-                                  directives: [
-                                    {
-                                      name: "model",
-                                      rawName: "v-model",
-                                      value:
-                                        _vm.filterOptions.udemae_relation_radio,
-                                      expression:
-                                        "filterOptions.udemae_relation_radio"
-                                    }
-                                  ],
-                                  attrs: { type: "radio", value: ">=" },
-                                  domProps: {
-                                    checked: _vm._q(
-                                      _vm.filterOptions.udemae_relation_radio,
-                                      ">="
-                                    )
-                                  },
-                                  on: {
-                                    change: function($event) {
-                                      return _vm.$set(
-                                        _vm.filterOptions,
-                                        "udemae_relation_radio",
-                                        ">="
-                                      )
-                                    }
-                                  }
-                                }),
-                                _vm._v(
-                                  "\n                                以上\n                            "
-                                )
-                              ]),
-                              _vm._v(" "),
-                              _c("label", [
-                                _c("input", {
-                                  directives: [
-                                    {
-                                      name: "model",
-                                      rawName: "v-model",
-                                      value:
-                                        _vm.filterOptions.udemae_relation_radio,
-                                      expression:
-                                        "filterOptions.udemae_relation_radio"
-                                    }
-                                  ],
-                                  attrs: { type: "radio", value: "<=" },
-                                  domProps: {
-                                    checked: _vm._q(
-                                      _vm.filterOptions.udemae_relation_radio,
-                                      "<="
-                                    )
-                                  },
-                                  on: {
-                                    change: function($event) {
-                                      return _vm.$set(
-                                        _vm.filterOptions,
-                                        "udemae_relation_radio",
-                                        "<="
-                                      )
-                                    }
-                                  }
-                                }),
-                                _vm._v(
-                                  "\n                                以下\n                            "
-                                )
-                              ])
-                            ])
-                          ],
-                          2
+                            _vm._v(
+                              "\n                                    " +
+                                _vm._s(buki.buki_name) +
+                                "\n                                "
+                            )
+                          ])
+                        ])
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-info",
+                          attrs: { type: "button" },
+                          on: { click: _vm.allCheckBukis }
+                        },
+                        [_vm._v("ALL ON/OFF")]
+                      ),
+                      _vm._v(" "),
+                      _vm._l(_vm.errors.bukis, function(error) {
+                        return _c(
+                          "p",
+                          { key: error.bukis, staticClass: "errors" },
+                          [_vm._v(_vm._s(error))]
                         )
-                      : _vm._e()
-                  ])
-                : _vm._e()
+                      })
+                    ],
+                    2
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  directives: [
+                    {
+                      name: "show",
+                      rawName: "v-show",
+                      value: _vm.filterOptions.input_data_radio == "inserted",
+                      expression: "filterOptions.input_data_radio=='inserted'"
+                    }
+                  ],
+                  staticClass: "border rounded"
+                },
+                [
+                  _c("div", { on: { click: _vm.switchShowUdemaesPull } }, [
+                    _c(
+                      "span",
+                      { staticStyle: { display: "flex" } },
+                      [
+                        _c("plus-minus", {
+                          attrs: { iconPlus: _vm.iconPlus.udemaesPull }
+                        }),
+                        _vm._v(
+                          "\n                                ウデマエ\n                            "
+                        )
+                      ],
+                      1
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      directives: [
+                        {
+                          name: "show",
+                          rawName: "v-show",
+                          value: _vm.showUdemaesPull,
+                          expression: "showUdemaesPull"
+                        }
+                      ]
+                    },
+                    [
+                      _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.filterOptions.udemaes_pull,
+                              expression: "filterOptions.udemaes_pull"
+                            }
+                          ],
+                          attrs: { name: "udemae_id" },
+                          on: {
+                            change: function($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function(o) {
+                                  return o.selected
+                                })
+                                .map(function(o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.$set(
+                                _vm.filterOptions,
+                                "udemaes_pull",
+                                $event.target.multiple
+                                  ? $$selectedVal
+                                  : $$selectedVal[0]
+                              )
+                            }
+                          }
+                        },
+                        _vm._l(_vm.udemaes, function(udemae) {
+                          return _c(
+                            "option",
+                            {
+                              key: udemae.id,
+                              domProps: { value: udemae.udemae_id }
+                            },
+                            [_vm._v(_vm._s(udemae.udemae_name))]
+                          )
+                        }),
+                        0
+                      ),
+                      _vm._v(" "),
+                      _c("div", [
+                        _c(
+                          "label",
+                          {
+                            directives: [
+                              {
+                                name: "show",
+                                rawName: "v-show",
+                                value: _vm.filterOptions.udemaes_pull == "21",
+                                expression: "filterOptions.udemaes_pull=='21'"
+                              }
+                            ]
+                          },
+                          [
+                            _vm._v("XP"),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.filterOptions.xp_text,
+                                  expression: "filterOptions.xp_text"
+                                }
+                              ],
+                              attrs: { type: "text" },
+                              domProps: { value: _vm.filterOptions.xp_text },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.filterOptions,
+                                    "xp_text",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            })
+                          ]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _vm._l(_vm.errors.xp, function(error) {
+                        return _c(
+                          "p",
+                          { key: error.xp, staticClass: "errors" },
+                          [_vm._v(_vm._s(error))]
+                        )
+                      }),
+                      _vm._v(" "),
+                      _c("div", [
+                        _c("label", [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.filterOptions.udemae_relation_radio,
+                                expression:
+                                  "filterOptions.udemae_relation_radio"
+                              }
+                            ],
+                            attrs: { type: "radio", value: ">=" },
+                            domProps: {
+                              checked: _vm._q(
+                                _vm.filterOptions.udemae_relation_radio,
+                                ">="
+                              )
+                            },
+                            on: {
+                              change: function($event) {
+                                return _vm.$set(
+                                  _vm.filterOptions,
+                                  "udemae_relation_radio",
+                                  ">="
+                                )
+                              }
+                            }
+                          }),
+                          _vm._v(
+                            "\n                                    以上\n                                "
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("label", [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.filterOptions.udemae_relation_radio,
+                                expression:
+                                  "filterOptions.udemae_relation_radio"
+                              }
+                            ],
+                            attrs: { type: "radio", value: "<=" },
+                            domProps: {
+                              checked: _vm._q(
+                                _vm.filterOptions.udemae_relation_radio,
+                                "<="
+                              )
+                            },
+                            on: {
+                              change: function($event) {
+                                return _vm.$set(
+                                  _vm.filterOptions,
+                                  "udemae_relation_radio",
+                                  "<="
+                                )
+                              }
+                            }
+                          }),
+                          _vm._v(
+                            "\n                                    以下\n                                "
+                          )
+                        ])
+                      ])
+                    ],
+                    2
+                  )
+                ]
+              )
             ])
-          : _vm._e()
+          ]
+        )
       ]),
       _vm._v(" "),
       _c(

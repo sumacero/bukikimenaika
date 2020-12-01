@@ -50,7 +50,7 @@ new Vue({
             total: null,
         },
         filterOptions:{
-            date_radio:"allTime",
+            date_checkbox:["future","current","past"],
             rules_checkbox:[],
             stages_checkbox:[],
             bukis_checkbox:[],
@@ -110,7 +110,7 @@ new Vue({
                         params:{
                             init_flag:this.initFlag,
                             page:targetPage,
-                            date_radio:this.filterOptions.date_radio,
+                            date_checkbox:this.filterOptions.date_checkbox,
                             rules_checkbox:this.filterOptions.rules_checkbox,
                             stages_checkbox:this.filterOptions.stages_checkbox,
                             bukis_checkbox:this.filterOptions.bukis_checkbox,

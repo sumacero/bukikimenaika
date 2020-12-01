@@ -1,6 +1,6 @@
 <template> 
     <fieldset v-bind:class="customizedClass" style="border: 1px solid #000000; padding: 10px;">
-        <legend>{{ formatTimeStamp(gachi.start_t) }}～{{ formatTimeStamp(gachi.end_t) }}</legend>
+        <legend>{{ formatTimeStamp(gachi.start_t) }}～{{ formatTimeStamp(gachi.end_t) }}　◆{{gachiStateMsg}}</legend>
         <fieldset style="border: 1px solid #000000; padding: 10px;">
             <div class="col-md-3">ルール：{{ gachi.rule.rule_name }}</div>
             <span style="display: flex">
@@ -13,7 +13,7 @@
             </span>
         </fieldset>
          
-        <fieldset style="border: 1px solid #000000; padding: 10px;">
+        <fieldset v-if="gachiState!='future'" style="border: 1px solid #000000; padding: 10px;">
             <legend>あなたの記録</legend>
             <div v-if="input_data">
                 <div>ブキ：{{ input_data.buki.buki_name }}</div>
@@ -42,6 +42,7 @@
                 gachiStartTimeStamp: null,
                 gachiEndTimeStamp: null,
                 gachiState: null,
+                gachiStateMsg: null,
                 customizedClass: null,
                 activeMsg: null,
             }
@@ -51,11 +52,14 @@
             this.gachiStartTimeStamp = new Date(this.gachi.start_t);
             this.gachiEndTimeStamp = new Date(this.gachi.end_t);
             if(this.nowTimeStamp.getTime() > this.gachiEndTimeStamp.getTime()){
-                this.gachiState = "過去のガチマッチ";
+                this.gachiState = "past";
+                this.gachiStateMsg = "終了";
             }else if(this.nowTimeStamp.getTime() > this.gachiStartTimeStamp){
-                this.gachiState = "現在のガチマッチ";
+                this.gachiState = "currrent";
+                this.gachiStateMsg = "現在のルール";
             }else{
-                this.gachiState = "未来のガチマッチ";
+                this.gachiState = "future";
+                this.gachiStateMsg = "開催予定";
             }
         },
         methods: {
@@ -91,10 +95,8 @@
             active(value){
                 if(value){
                     this.customizedClass="active";
-                    this.activeMsg="編集中";
                 }else{
                     this.customizedClass="";
-                    this.activeMsg="";
                 }
             }
         }
