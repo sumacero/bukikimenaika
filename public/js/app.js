@@ -1957,6 +1957,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["bukis", "udemaes", "editData", "gachi_id"],
   data: function data() {
@@ -1965,11 +1976,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       buki_id: null,
       udemae_id: null,
       xp: null,
+      win: null,
+      lose: null,
+      comment: null,
       insertFlag: false,
       errors: {
         buki: [],
         udemae: [],
-        xp: []
+        xp: [],
+        win: [],
+        lose: [],
+        comment: []
       },
       error: false
     };
@@ -1981,6 +1998,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.buki_id = this.editData.buki_id;
       this.udemae_id = this.editData.udemae_id;
       this.xp = this.editData.xp;
+      this.win = this.editData.win;
+      this.lose = this.editData.lose;
+      this.comment = this.editData.comment;
     } else {
       this.insertFlag = true;
     }
@@ -2010,7 +2030,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           'gachi_id': this.gachi_id,
           'buki_id': this.buki_id,
           'udemae_id': this.udemae_id,
-          'xp': this.xp
+          'xp': this.xp,
+          'win': this.win,
+          'lose': this.lose,
+          'commnet': this.comment
         };
 
         var func = /*#__PURE__*/function () {
@@ -2072,7 +2095,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           'input_data_id': this.input_data_id,
           'buki_id': this.buki_id,
           'udemae_id': this.udemae_id,
-          'xp': this.xp
+          'xp': this.xp,
+          'win': this.win,
+          'lose': this.lose,
+          'comment': this.comment
         };
 
         var func = /*#__PURE__*/function () {
@@ -2125,6 +2151,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var buki = [];
       var udemae = [];
       var xp = [];
+      var win = [];
+      var lose = [];
+      var comment = [];
       var message = '';
       this.error = false;
 
@@ -2153,9 +2182,48 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }
       }
 
+      if (this.win) {
+        if (!(this.win >= 0 && this.win <= 50)) {
+          message = 'WINは0～50の半角数字で入力してください。';
+          win.push(message);
+          this.error = true;
+        }
+
+        if (!this.lose) {
+          message = 'LOSEを入力してください。';
+          lose.push(message);
+          this.error = true;
+        }
+      }
+
+      if (this.lose) {
+        if (!(this.lose >= 0 && this.lose <= 50)) {
+          message = 'LOSEは0～50の半角数字で入力してください。';
+          lose.push(message);
+          this.error = true;
+        }
+
+        if (!this.win) {
+          message = 'WINを入力してください。';
+          win.push(message);
+          this.error = true;
+        }
+      }
+
+      if (this.comment) {
+        if (this.comment.length > 100) {
+          message = 'コメントは100文字以内で入力してください。';
+          comment.push(message);
+          this.error = true;
+        }
+      }
+
       this.errors.buki = buki;
       this.errors.udemae = udemae;
       this.errors.xp = xp;
+      this.errors.win = win;
+      this.errors.lose = lose;
+      this.errors.comment = comment;
     }
   }
 });
@@ -2212,6 +2280,14 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2637,10 +2713,10 @@ __webpack_require__.r(__webpack_exports__);
   props: ["rules", "stages", "bukis", "udemaes", "filterOptions"],
   data: function data() {
     return {
-      showDateCheckbox: false,
-      showRulesCheckbox: false,
-      showStagesCheckbox: false,
-      showInputDataArea: false,
+      showDateCheckbox: true,
+      showRulesCheckbox: true,
+      showStagesCheckbox: true,
+      showInputDataArea: true,
       showBukisCheckbox: false,
       showUdemaesPull: false,
       allCheckStagesFlag: false,
@@ -2654,10 +2730,10 @@ __webpack_require__.r(__webpack_exports__);
       },
       error: false,
       iconPlus: {
-        dateCheckbox: true,
-        rulesCheckbox: true,
-        stagesCheckbox: true,
-        inputDataArea: true,
+        dateCheckbox: false,
+        rulesCheckbox: false,
+        stagesCheckbox: false,
+        inputDataArea: false,
         bukisCheckbox: true,
         udemaesPull: true
       }
@@ -40056,7 +40132,100 @@ var render = function() {
                 ],
                 2
               )
-            : _vm._e()
+            : _vm._e(),
+          _vm._v(" "),
+          _c(
+            "div",
+            [
+              _c("label", { attrs: { for: "win" } }, [_vm._v("WIN")]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.win,
+                    expression: "win"
+                  }
+                ],
+                attrs: { type: "text", name: "win" },
+                domProps: { value: _vm.win },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.win = $event.target.value
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c("label", { attrs: { for: "lose" } }, [_vm._v("LOSE")]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.lose,
+                    expression: "lose"
+                  }
+                ],
+                attrs: { type: "text", name: "lose" },
+                domProps: { value: _vm.lose },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.lose = $event.target.value
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _vm._l(_vm.errors.win, function(error) {
+                return _c("p", { key: error.win, staticClass: "errors" }, [
+                  _vm._v(_vm._s(error))
+                ])
+              }),
+              _vm._v(" "),
+              _vm._l(_vm.errors.lose, function(error) {
+                return _c("p", { key: error.lose, staticClass: "errors" }, [
+                  _vm._v(_vm._s(error))
+                ])
+              })
+            ],
+            2
+          ),
+          _vm._v(" "),
+          _c("label", { attrs: { for: "comment" } }, [_vm._v("コメント")]),
+          _vm._v(" "),
+          _c("textarea", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.comment,
+                expression: "comment"
+              }
+            ],
+            attrs: { name: "comment" },
+            domProps: { value: _vm.comment },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.comment = $event.target.value
+              }
+            }
+          }),
+          _vm._v(" "),
+          _vm._l(_vm.errors.comment, function(error) {
+            return _c("p", { key: error.comment, staticClass: "errors" }, [
+              _vm._v(_vm._s(error))
+            ])
+          })
         ],
         2
       ),
@@ -40232,17 +40401,39 @@ var render = function() {
               _vm._v(" "),
               _vm.input_data
                 ? _c("div", [
-                    _c("div", [
-                      _vm._v("ブキ：" + _vm._s(_vm.input_data.buki.buki_name))
-                    ]),
-                    _vm._v(" "),
-                    _c("div", [
-                      _vm._v(
-                        "ウデマエ：" + _vm._s(_vm.input_data.udemae.udemae_name)
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("div", [_vm._v("XP：" + _vm._s(_vm.input_data.xp))])
+                    _c("span", { staticStyle: { display: "flex" } }, [
+                      _c("div", { staticClass: "col-md-3" }, [
+                        _c("div", [
+                          _vm._v(
+                            "ブキ：" + _vm._s(_vm.input_data.buki.buki_name)
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("div", [
+                          _vm._v(
+                            "ウデマエ：" +
+                              _vm._s(_vm.input_data.udemae.udemae_name)
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("div", [_vm._v("XP：" + _vm._s(_vm.input_data.xp))])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-md-3" }, [
+                        _c("div", [
+                          _vm._v(
+                            "WIN：" +
+                              _vm._s(_vm.input_data.win) +
+                              " LOSE：" +
+                              _vm._s(_vm.input_data.lose)
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("div", [
+                          _vm._v("コメント：" + _vm._s(_vm.input_data.comment))
+                        ])
+                      ])
+                    ])
                   ])
                 : _vm._e(),
               _vm._v(" "),
@@ -40558,6 +40749,7 @@ var render = function() {
         },
         [_vm._v("絞り込み")]
       ),
+      _c("br"),
       _vm._v(" "),
       _c("div", { staticClass: "border rounded" }, [
         _c("span", { on: { click: _vm.switchShowDateCheckbox } }, [
@@ -40874,12 +41066,13 @@ var render = function() {
             _c(
               "button",
               {
-                staticClass: "btn btn-info",
+                staticClass: "btn btn-outline-primary btn-sm",
                 attrs: { type: "button" },
                 on: { click: _vm.allCheckStages }
               },
               [_vm._v("ALL ON/OFF")]
             ),
+            _c("br"),
             _vm._v(" "),
             _vm._l(_vm.errors.stages, function(error) {
               return _c("p", { key: error.stages, staticClass: "errors" }, [
@@ -40950,12 +41143,13 @@ var render = function() {
             _c(
               "button",
               {
-                staticClass: "btn btn-info",
+                staticClass: "btn btn-outline-primary btn-sm",
                 attrs: { type: "button" },
                 on: { click: _vm.allCheckStages }
               },
               [_vm._v("ALL ON/OFF")]
             ),
+            _c("br"),
             _vm._v(" "),
             _vm._l(_vm.errors.stages, function(error) {
               return _c("p", { key: error.stages, staticClass: "errors" }, [
@@ -41139,12 +41333,13 @@ var render = function() {
                       _c(
                         "button",
                         {
-                          staticClass: "btn btn-info",
+                          staticClass: "btn btn-outline-primary btn-sm",
                           attrs: { type: "button" },
                           on: { click: _vm.allCheckBukis }
                         },
                         [_vm._v("ALL ON/OFF")]
                       ),
+                      _c("br"),
                       _vm._v(" "),
                       _vm._l(_vm.bukis, function(buki) {
                         return _c("span", { key: buki.id }, [
@@ -41217,12 +41412,13 @@ var render = function() {
                       _c(
                         "button",
                         {
-                          staticClass: "btn btn-info",
+                          staticClass: "btn btn-outline-primary btn-sm",
                           attrs: { type: "button" },
                           on: { click: _vm.allCheckBukis }
                         },
                         [_vm._v("ALL ON/OFF")]
                       ),
+                      _c("br"),
                       _vm._v(" "),
                       _vm._l(_vm.errors.bukis, function(error) {
                         return _c(

@@ -22,7 +22,10 @@ class Input_datasTableSeeder extends Seeder
             'udemae_id' => '1',
             'xp' => '1000',
             'created_at' => now(),
-            'updated_at' => now()
+            'updated_at' => now(),
+            'win' => null,
+            'lose' => null,
+            'comment' => null,
         ];
         DB::table('input_datas')->insert($param);
     }

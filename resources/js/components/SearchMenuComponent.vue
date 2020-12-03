@@ -1,7 +1,7 @@
 <template>
     <div class="filter-option">
         <form>
-            <button type="button" class="btn btn-info" v-on:click="filterClick">絞り込み</button>
+            <button type="button" class="btn btn-info" v-on:click="filterClick">絞り込み</button><br>
             <div class="border rounded">
                 <span v-on:click="switchShowDateCheckbox">
                     <span style="display: flex">
@@ -52,7 +52,7 @@
                     </span>
                 </div>
                 <span v-show="showStagesCheckbox">
-                    <button type="button" class="btn btn-info" v-on:click="allCheckStages">ALL ON/OFF</button>
+                    <button type="button" class="btn btn-outline-primary btn-sm" v-on:click="allCheckStages">ALL ON/OFF</button><br>
                     <p class="errors" v-for="error in errors.stages" :key="error.stages">{{error}}</p>
                     <span v-for="stage in stages" :key="stage.id">
                         <label>
@@ -60,7 +60,7 @@
                             {{stage.stage_name}}
                         </label>
                     </span>
-                    <button type="button" class="btn btn-info" v-on:click="allCheckStages">ALL ON/OFF</button>
+                    <button type="button" class="btn btn-outline-primary btn-sm" v-on:click="allCheckStages">ALL ON/OFF</button><br>
                     <p class="errors" v-for="error in errors.stages" :key="error.stages">{{error}}</p>
                     <br>
                 </span>
@@ -95,14 +95,14 @@
                             </div>
                             <span v-show="showBukisCheckbox">
                                 <p class="errors" v-for="error in errors.bukis" :key="error.bukis">{{error}}</p>
-                                <button type="button" class="btn btn-info" v-on:click="allCheckBukis">ALL ON/OFF</button>
+                                <button type="button" class="btn btn-outline-primary btn-sm" v-on:click="allCheckBukis">ALL ON/OFF</button><br>
                                 <span v-for="buki in bukis" :key="buki.id">
                                     <label>
                                         <input type="checkbox" v-bind:id=buki.buki_id v-bind:value=buki.buki_id v-model="filterOptions.bukis_checkbox">
                                         {{buki.buki_name}}
                                     </label>
                                 </span>
-                                <button type="button" class="btn btn-info" v-on:click="allCheckBukis">ALL ON/OFF</button>
+                                <button type="button" class="btn btn-outline-primary btn-sm" v-on:click="allCheckBukis">ALL ON/OFF</button><br>
                                 <p class="errors" v-for="error in errors.bukis" :key="error.bukis">{{error}}</p>
                             </span>
                         </div>
@@ -144,10 +144,10 @@
         props:["rules", "stages", "bukis", "udemaes", "filterOptions"],
         data:function(){
             return{
-                showDateCheckbox:false,
-                showRulesCheckbox:false,
-                showStagesCheckbox:false,
-                showInputDataArea:false,
+                showDateCheckbox:true,
+                showRulesCheckbox:true,
+                showStagesCheckbox:true,
+                showInputDataArea:true,
                 showBukisCheckbox:false,
                 showUdemaesPull:false,
                 allCheckStagesFlag:false,
@@ -161,10 +161,10 @@
                 },
                 error:false,
                 iconPlus:{
-                    dateCheckbox:true,
-                    rulesCheckbox:true,
-                    stagesCheckbox:true,
-                    inputDataArea:true,
+                    dateCheckbox:false,
+                    rulesCheckbox:false,
+                    stagesCheckbox:false,
+                    inputDataArea:false,
                     bukisCheckbox:true,
                     udemaesPull:true,
                 },

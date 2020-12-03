@@ -29,29 +29,7 @@ class AjaxController extends Controller
         $udemaes = Udemae::get();
         return ['db_data' => compact('rules','stages','bukis','input_datas','udemaes')];
     }
-    /*
-    public function getInputDatas(Request $request){
-        $loginUserId = Auth::user()->id;
-        $rulesCheckbox = request('rules_checkbox');
-        $stagesCheckbox = request('stages_checkbox');
-        $bukisCheckbox = request('bukis_checkbox');
-        //絞り込み実行前(初期画面)
-        if($rulesCheckbox=="" && $stagesCheckbox=="" && $bukisCheckbox=="" ){
-            $input_datas = Input_data::with('user','gachi.rule','gachi.stage1','gachi.stage2','buki','udemae')->where('user_id',$loginUserId)->paginate(10);
-        //絞り込み実行時
-        }else{
-            $input_datas = Input_data::with('user','gachi.rule','gachi.stage','buki', 'udemae')
-            ->where('user_id',$loginUserId)
-            ->whereIn('rule_id', $rulesCheckbox)->whereIn('buki_id', $bukisCheckbox)
-            ->whereIn('stage1_id', $stagesCheckbox);
-            $input_datas = Input_data::with('user','rule','stage1','stage2','buki', 'udemae')
-            ->whereIn('rule_id', $rulesCheckbox)->whereIn('buki_id', $bukisCheckbox)
-            ->whereIn('stage2_id', $stagesCheckbox)->union($input_datas)->paginate(10);
-        }
-        //$input_datas = Input_data::with('user','rule','stage1','stage2','buki')->whereIn('rule_id', [1,2,3])->paginate(3);
-        return ['db_data' => $input_datas];
-    }
-    */
+
     public function getGachis(Request $request){
         $initFlag = request('init_flag');
         //初回アクセス時
@@ -203,6 +181,9 @@ class AjaxController extends Controller
         $input_data->gachi_id = request('gachi_id');
         $input_data->buki_id = request('buki_id');
         $input_data->udemae_id = request('udemae_id');
+        $input_data->win = request('win');
+        $input_data->lose = request('lose');
+        $input_data->comment = request('comment');
         //ウデマエXの場合
         if($input_data->udemae_id==21){
             //ユーザー入力のxpを設定
@@ -225,6 +206,9 @@ class AjaxController extends Controller
         $input_data= Input_data::find(request('input_data_id'));
         $input_data->buki_id = request('buki_id');
         $input_data->udemae_id = request('udemae_id');
+        $input_data->win = request('win');
+        $input_data->lose = request('lose');
+        $input_data->comment = request('comment');
         //ウデマエXの場合
         if($input_data->udemae_id==21){
             //ユーザー入力のxpを設定

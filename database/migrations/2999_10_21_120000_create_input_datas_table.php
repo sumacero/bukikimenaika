@@ -20,6 +20,9 @@ class CreateInputDatasTable extends Migration
             $table->bigInteger('buki_id')->unsigned();
             $table->bigInteger('udemae_id')->unsigned();
             $table->double('xp');
+            $table->integer('win')->unsigned()->nullable();
+            $table->integer('lose')->unsigned()->nullable();
+            $table->string('comment',100)->nullable();
             $table->foreign('user_id')->references('id')->on('users'); // 外部キー参照
             $table->foreign('gachi_id')->references('gachi_id')->on('gachis'); // 外部キー参照
             $table->foreign('buki_id')->references('buki_id')->on('bukis'); // 外部キー参照

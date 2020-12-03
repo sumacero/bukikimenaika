@@ -4,22 +4,30 @@
         <fieldset style="border: 1px solid #000000; padding: 10px;">
             <div class="col-md-3">ルール：{{ gachi.rule.rule_name }}</div>
             <span style="display: flex">
-            <div class="col-md-3">ステージ1：{{ gachi.stage1.stage_name }}<br>
-                <img v-bind:src="'images/'+gachi.stage1.stage_name+'.png'" v-bind:alt="gachi.stage1.stage_name+'.png'" width="200" height="100">
-            </div>
-            <div class="col-md-3">ステージ2：{{ gachi.stage2.stage_name }}<br>
-                <img v-bind:src="'images/'+gachi.stage2.stage_name+'.png'" v-bind:alt="gachi.stage2.stage_name+'.png'" width="200" height="100">
-            </div>
+                <div class="col-md-3">ステージ1：{{ gachi.stage1.stage_name }}<br>
+                    <img v-bind:src="'images/'+gachi.stage1.stage_name+'.png'" v-bind:alt="gachi.stage1.stage_name+'.png'" width="200" height="100">
+                </div>
+                <div class="col-md-3">ステージ2：{{ gachi.stage2.stage_name }}<br>
+                    <img v-bind:src="'images/'+gachi.stage2.stage_name+'.png'" v-bind:alt="gachi.stage2.stage_name+'.png'" width="200" height="100">
+                </div>
             </span>
         </fieldset>
          
         <fieldset v-if="gachiState!='future'" style="border: 1px solid #000000; padding: 10px;">
             <legend>あなたの記録</legend>
-            <div v-if="input_data">
-                <div>ブキ：{{ input_data.buki.buki_name }}</div>
-                <div>ウデマエ：{{ input_data.udemae.udemae_name }}</div>
-                <div>XP：{{ input_data.xp }}</div>
-            </div>
+                <div v-if="input_data">
+                    <span style="display: flex">
+                        <div class="col-md-3">
+                            <div>ブキ：{{ input_data.buki.buki_name }}</div>
+                            <div>ウデマエ：{{ input_data.udemae.udemae_name }}</div>
+                            <div>XP：{{ input_data.xp }}</div>
+                        </div>
+                        <div class="col-md-3">
+                            <div>WIN：{{ input_data.win }} LOSE：{{ input_data.lose }}</div>
+                            <div>コメント：{{ input_data.comment }}</div>
+                        </div>
+                    </span>
+                </div>
             <div v-if="input_data">
                 <button type="button" class="editBtn btn btn-info" @click.prevent="switchEditRecord(input_data)">戦績を編集</button>
                 <button type="button" class="deleteBtn btn btn-info" @click.prevent="deleteRecord(input_data.input_data_id)">削除</button>

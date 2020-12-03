@@ -15,11 +15,22 @@
                 <p class="errors" v-for="error in errors.udemae" :key="error.udemae_id">{{error}}</p>
                 <br>
                 <span v-if="udemae_id=='21'">
-                <label for="xp">XP<span class="badge">必須</span></label>
-                <input v-model="xp" type="text" name="xp">
-                <p class="errors" v-for="error in errors.xp" :key="error.xp">{{error}}</p>
-                <br>
+                    <label for="xp">XP<span class="badge">必須</span></label>
+                    <input v-model="xp" type="text" name="xp">
+                    <p class="errors" v-for="error in errors.xp" :key="error.xp">{{error}}</p>
+                    <br>
                 </span>
+                <div>
+                    <label for="win">WIN</label>
+                    <input v-model="win" type="text" name="win">
+                    <label for="lose">LOSE</label>
+                    <input v-model="lose" type="text" name="lose">
+                    <p class="errors" v-for="error in errors.win" :key="error.win">{{error}}</p>
+                    <p class="errors" v-for="error in errors.lose" :key="error.lose">{{error}}</p>
+                </div>
+                <label for="comment">コメント</label>
+                <textarea v-model="comment" name="comment"></textarea>
+                <p class="errors" v-for="error in errors.comment" :key="error.comment">{{error}}</p>
             </form>
             <button v-on:click="comitRecord">保存</button>
             <button v-on:click="cancelEditEvent">キャンセル</button>
@@ -36,11 +47,17 @@
                 buki_id:null,
                 udemae_id:null,
                 xp:null,
+                win:null,
+                lose:null,
+                comment:null,
                 insertFlag:false,
                 errors:{
                     buki:[],
                     udemae:[],
-                    xp:[]
+                    xp:[],
+                    win:[],
+                    lose:[],
+                    comment:[]
                 },
                 error:false
             }
@@ -52,6 +69,9 @@
                 this.buki_id=this.editData.buki_id;
                 this.udemae_id=this.editData.udemae_id;
                 this.xp=this.editData.xp;
+                this.win=this.editData.win;
+                this.lose=this.editData.lose;
+                this.comment=this.editData.comment;
             }else{
                 this.insertFlag = true;
             }
@@ -77,7 +97,10 @@
                         'gachi_id':this.gachi_id,
                         'buki_id':this.buki_id,
                         'udemae_id':this.udemae_id,
-                        'xp':this.xp
+                        'xp':this.xp,
+                        'win':this.win,
+                        'lose':this.lose,
+                        'commnet':this.comment,
                     }
                     const func = async ()=>{
                         try{
@@ -101,7 +124,10 @@
                         'input_data_id':this.input_data_id,
                         'buki_id':this.buki_id,
                         'udemae_id':this.udemae_id,
-                        'xp':this.xp
+                        'xp':this.xp,
+                        'win':this.win,
+                        'lose':this.lose,
+                        'comment':this.comment,
                     }
                     const func = async ()=>{
                         try{
@@ -122,6 +148,9 @@
                 let buki = [];
                 let udemae = [];
                 let xp = [];
+                let win = [];
+                let lose = [];
+                let comment = [];
                 let message = '';
                 this.error = false;
                 if(!this.buki_id){
@@ -146,9 +175,43 @@
                         this.error = true;
                     }
                 }
+                if(this.win){
+                    if(!(this.win>=0 && this.win<=50)){
+                        message = 'WINは0～50の半角数字で入力してください。';
+                        win.push(message);
+                        this.error = true;
+                    }
+                    if(!this.lose){
+                        message = 'LOSEを入力してください。';
+                        lose.push(message);
+                        this.error = true;
+                    }
+                }
+                if(this.lose){
+                    if(!(this.lose>=0 && this.lose<=50)){
+                        message = 'LOSEは0～50の半角数字で入力してください。';
+                        lose.push(message);
+                        this.error = true;
+                    }
+                    if(!this.win){
+                        message = 'WINを入力してください。';
+                        win.push(message);
+                        this.error = true;
+                    }
+                }
+                if(this.comment){
+                    if(this.comment.length>100){
+                        message = 'コメントは100文字以内で入力してください。';
+                        comment.push(message);
+                        this.error = true; 
+                    }
+                }
                 this.errors.buki = buki;
                 this.errors.udemae = udemae;
                 this.errors.xp = xp;
+                this.errors.win = win;
+                this.errors.lose = lose;
+                this.errors.comment = comment;
             },
         }
     }
