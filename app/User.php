@@ -7,6 +7,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\builder;
+use App\Notifications\VerifyEmailCustom;
+use App\Notifications\ResetPasswordJP;
+
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -30,11 +33,14 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $hidden = ['password', 'remember_token'];
     protected $casts = ['email_verified_at' => 'datetime'];
 
-    /*
+
     public function sendEmailVerificationNotification(){
-        $this->notify(new \App\Notifications\VerifyEmailJapanese);
+        $this->notify(new VerifyEmailCustom);
     }
-*/
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new ResetPasswordJP($token));
+    }
 
 }
 
