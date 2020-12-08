@@ -222,4 +222,33 @@ class AjaxController extends Controller
         $input_data = Input_data::with('user','gachi.rule','gachi.stage1','gachi.stage2','buki','udemae')->get()->find(request('input_data_id'));
         return ['input_data' => $input_data];
     }
+    public function getOsusumeBukis(){
+        $loginUserId = Auth::user()->id;
+        $gachis = Gachi::with('rule','stage1','stage2');
+        $nowTimeStamp = Carbon::now();
+        $currentGachi = $gachis->where('start_t', '<=', $nowTimeStamp)->where('end_t', '>=', $nowTimeStamp)->first();
+        $currentGachiId = null;
+        $osusumeBukis = null;
+        if($currentGachi!=null){
+            $targetGachiId  = $currentGachi->gachi_id; 
+            $ruleId = $currentGachi->rule_id;
+            $stage1Id = $currentGachi->stage1_id;
+            $stage2Id = $currentGachi->stage2_id;
+
+            $targetGachiIds = Gachi::with('rule','stage1','stage2')->where(function($items) use ($loginUserId,$ruleId){
+                $items->where('rule_id',$ruleId);
+            })->where(function($items)use($stage1Id,$stage2Id){
+                $items->orwhereIn('stage1_id',[$stage1Id,$stage2Id])
+                    ->orWhereIn('stage2_id',[$stage1Id,$stage2Id]);
+            })->pluck('gachi_id');
+            $osusumeBukis = Input_data::leftJoin('bukis','input_datas.buki_id','=','bukis.buki_id')
+            ->whereIn('gachi_id',$targetGachiIds)
+            ->select('bukis.buki_id','bukis.buki_name', DB::raw('avg(input_datas.xp) as total'))
+            ->groupBy('bukis.buki_id','bukis.buki_name')
+            ->orderBy('total','desc')
+            ->get();
+        }
+        return ['osusumeBukis' => compact('osusumeBukis','targetGachiId')];
+        //return ['osusumeBukis' => $osusumeBukis];
+    }
 }

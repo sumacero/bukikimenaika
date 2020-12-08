@@ -2321,8 +2321,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ["gachi", "input_data", "rules", "stages", "bukis", "udemaes", "active"],
+  props: ["gachi", "input_data", "rules", "stages", "bukis", "udemaes", "osusume_bukis", "active"],
   data: function data() {
     return {
       showEditRecord: false,
@@ -2448,7 +2454,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ["input_datas", "bukis", "udemaes", "gachis", "insert_record_data"],
+  props: ["input_datas", "bukis", "udemaes", "gachis", "insert_record_data", "osusume_bukis"],
   data: function data() {
     return {
       showEditRecord: false,
@@ -40489,6 +40495,34 @@ var render = function() {
                   ])
             ]
           )
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.gachi.gachi_id == _vm.osusume_bukis.targetGachiId
+        ? _c(
+            "fieldset",
+            { staticStyle: { border: "1px solid #000000", padding: "10px" } },
+            [
+              _c("legend", [_vm._v("あなたへオススメするブキ")]),
+              _vm._v(" "),
+              _vm._l(_vm.osusume_bukis.osusumeBukis, function(
+                osusumeBuki,
+                index
+              ) {
+                return _c("div", { key: osusumeBuki.buki_id }, [
+                  _vm._v(
+                    "\n        " +
+                      _vm._s(index + 1) +
+                      "位　" +
+                      _vm._s(osusumeBuki.buki_name) +
+                      "　[平均XP：" +
+                      _vm._s(osusumeBuki.total) +
+                      "]\n        "
+                  )
+                ])
+              })
+            ],
+            2
+          )
         : _vm._e()
     ]
   )
@@ -40533,6 +40567,7 @@ var render = function() {
                   })[0],
                   bukis: _vm.bukis,
                   udemaes: _vm.udemaes,
+                  osusume_bukis: _vm.osusume_bukis,
                   active: gachi.gachi_id == _vm.gachi_id
                 },
                 on: {

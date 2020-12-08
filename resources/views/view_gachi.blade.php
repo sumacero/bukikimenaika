@@ -14,7 +14,7 @@
             <div class="col-md-10">
                 <pagination v-bind:pagination-data="paginationData" v-on:click-page-number="movePage"></pagination>
                 <div>@{{ paginationData.total }}件</div>
-                <gachi-list v-bind:input_datas="input_datas" v-bind:gachis="gachis" v-bind:rules="rules" v-bind:stages="stages" v-bind:bukis="bukis" v-bind:udemaes="udemaes" v-on:click-insert-btn="insertRecord" v-on:click-update-btn="updateRecord" v-on:click-delete-btn="deleteRecord">
+                <gachi-list v-bind:input_datas="input_datas" v-bind:gachis="gachis" v-bind:rules="rules" v-bind:stages="stages" v-bind:bukis="bukis" v-bind:udemaes="udemaes" v-bind:osusume_bukis="osusumeBukis" v-on:click-insert-btn="insertRecord" v-on:click-update-btn="updateRecord" v-on:click-delete-btn="deleteRecord">
                 </gachi-list>
                 <pagination v-bind:pagination-data="paginationData" v-on:click-page-number="movePage"></pagination>
             </div>
@@ -35,6 +35,10 @@ new Vue({
         stages:null,
         bukis:null,
         udemaes:null,
+        osusumeBukis:{
+            targetGachiId:null,
+            osusumeBukis:[],
+        },
         showInsertRecord: false,
         paginationData:{
             current_page: null,
@@ -63,6 +67,7 @@ new Vue({
     mounted(){
         this.getParentTables();
         this.getGachis(1);
+        this.getOsusumeBukis();
     },
     methods:{
         getParentTables:function(){
@@ -147,6 +152,22 @@ new Vue({
             }
             func();
         },
+        getOsusumeBukis(){
+            const func = async ()=>{
+                try{                    
+                    let res = await axios.get('get_osusume_bukis');
+                    console.log("オススメブキ↓");
+                    console.log(res);
+                    this.osusumeBukis.targetGachiId = res.data.osusumeBukis.targetGachiId;
+                    this.osusumeBukis.osusumeBukis = res.data.osusumeBukis.osusumeBukis;
+                }
+                catch (error){
+                    console.log(error.response.data);
+                    alert("サーバーエラーが発生しました。");
+                }
+            }
+            func();
+        },
         movePage: function(pageNumber){
             this.getGachis(pageNumber);
         },
@@ -155,6 +176,7 @@ new Vue({
         },
         insertRecord: function(insertRecordData){
             this.input_datas.push(insertRecordData);
+            this.getOsusumeBukis();
         },
         updateRecord: function(updateRecordData){
             for(let i = 0; i<this.input_datas.length; i++){
@@ -162,9 +184,11 @@ new Vue({
                     this.input_datas.splice(i, 1, updateRecordData); // i番目から１つ削除し、データを追加
                 }       
             }    
+            this.getOsusumeBukis();
         },
         deleteRecord: function(deleteRecordDataId){
             this.input_datas = this.input_datas.filter(data => data.input_data_id !== deleteRecordDataId);
+            this.getOsusumeBukis();
         },
         filterRecord: function(){
             this.initFlag = false;

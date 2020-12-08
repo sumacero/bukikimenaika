@@ -2,7 +2,7 @@
     <div>
         <ul>
             <li v-for="gachi in gachis" :key="gachi.gachi_id" style="list-style: none;">
-                <gachi-list-child v-on:click-show-edit-btn="switchEditRecord" v-on:click-delete-btn="deleteRecord" v-bind:gachi="gachi" v-bind:input_data="input_datas.filter(e=>e.gachi_id == gachi.gachi_id)[0]"  v-bind:bukis="bukis" v-bind:udemaes="udemaes" v-bind:active="gachi.gachi_id==gachi_id">
+                <gachi-list-child v-on:click-show-edit-btn="switchEditRecord" v-on:click-delete-btn="deleteRecord" v-bind:gachi="gachi" v-bind:input_data="input_datas.filter(e=>e.gachi_id == gachi.gachi_id)[0]"  v-bind:bukis="bukis" v-bind:udemaes="udemaes" v-bind:osusume_bukis="osusume_bukis" v-bind:active="gachi.gachi_id==gachi_id">
                 </gachi-list-child><br>
             </li>
         </ul>
@@ -13,7 +13,7 @@
 
 <script>
     export default {
-        props:["input_datas", "bukis", "udemaes", "gachis", "insert_record_data"],
+        props:["input_datas", "bukis", "udemaes", "gachis", "insert_record_data","osusume_bukis"],
         data: function(){
             return{
                 showEditRecord: false,

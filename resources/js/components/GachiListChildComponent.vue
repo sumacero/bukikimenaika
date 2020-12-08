@@ -36,12 +36,18 @@
                 <button type="button" class="editBtn btn btn-info" @click.prevent="switchEditRecord(input_data)">戦績を入力</button>
             </div>
         </fieldset>
+        <fieldset v-if="gachi.gachi_id==osusume_bukis.targetGachiId" style="border: 1px solid #000000; padding: 10px;">
+            <legend>あなたへオススメするブキ</legend>
+            <div v-for="(osusumeBuki,index) in osusume_bukis.osusumeBukis" :key="osusumeBuki.buki_id">
+            {{index + 1}}位　{{osusumeBuki.buki_name}}　[平均XP：{{osusumeBuki.total}}]
+            </div>
+        </fieldset>
     </fieldset>
 </template>
 
 <script>
     export default {
-        props:["gachi", "input_data", "rules", "stages", "bukis", "udemaes", "active"],
+        props:["gachi", "input_data", "rules", "stages", "bukis", "udemaes", "osusume_bukis", "active"],
         data: function(){
             return{
                 showEditRecord: false,
