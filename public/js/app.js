@@ -2224,6 +2224,20 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.errors.win = win;
       this.errors.lose = lose;
       this.errors.comment = comment;
+    },
+    adjustHeight: function adjustHeight() {
+      var textarea = this.$refs.adjust_textarea;
+      var resetHeight = new Promise(function (resolve) {
+        resolve(textarea.style.height = 'auto');
+      });
+      resetHeight.then(function () {
+        textarea.style.height = textarea.scrollHeight + 'px';
+      });
+    }
+  },
+  watch: {
+    comment: function comment() {
+      this.adjustHeight();
     }
   }
 });
@@ -2327,8 +2341,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ["gachi", "input_data", "rules", "stages", "bukis", "udemaes", "osusume_bukis", "active"],
+  props: ["gachi", "input_data", "rules", "stages", "bukis", "udemaes", "active"],
   data: function data() {
     return {
       showEditRecord: false,
@@ -2454,18 +2473,38 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ["input_datas", "bukis", "udemaes", "gachis", "insert_record_data", "osusume_bukis"],
+  props: ["input_datas", "bukis", "udemaes", "gachis", "insert_record_data", "osusume_buki_info"],
   data: function data() {
     return {
       showEditRecord: false,
       editData: null,
-      gachi_id: null
+      gachi_id: null,
+      gachis_temp: null
     };
+  },
+  computed: {
+    copyGachis: function copyGachis() {
+      var gachis = Vue.util.extend({}, this.gachis);
+
+      for (var i = 0; i < Object.keys(gachis).length; i++) {
+        for (var j = 0; j < this.osusume_buki_info.targetGachiIds.length; j++) {
+          if (gachis[i].gachi_id == this.osusume_buki_info.targetGachiIds[j]) {
+            //オススメ上位3つを抽出
+            var osusumeBukis = this.osusume_buki_info.osusumeBukisArray[j].slice(0, 5); //オブジェクトにプロパティ「osusumeBukis」を追加し、値を設定。
+            //↓の書き方だと、変更が検知されない。
+            //gachis[i]["osusumeBukis"] = osusumeBukis
+
+            Vue.set(gachis[i], 'osusumeBukis', osusumeBukis);
+            break;
+          }
+        }
+      }
+
+      return gachis;
+    }
   },
   methods: {
     switchEditRecord: function switchEditRecord(input_data, gachi_id) {
-      if (this.showEditRecord) {}
-
       this.showEditRecord = !this.showEditRecord;
       this.editData = input_data;
       this.gachi_id = gachi_id;
@@ -40143,7 +40182,7 @@ var render = function() {
           _c(
             "div",
             [
-              _c("label", { attrs: { for: "win" } }, [_vm._v("WIN")]),
+              _c("label", { attrs: { for: "win" } }, [_vm._v("勝利数")]),
               _vm._v(" "),
               _c("input", {
                 directives: [
@@ -40166,7 +40205,7 @@ var render = function() {
                 }
               }),
               _vm._v(" "),
-              _c("label", { attrs: { for: "lose" } }, [_vm._v("LOSE")]),
+              _c("label", { attrs: { for: "lose" } }, [_vm._v("敗北数")]),
               _vm._v(" "),
               _c("input", {
                 directives: [
@@ -40215,7 +40254,8 @@ var render = function() {
                 expression: "comment"
               }
             ],
-            attrs: { name: "comment" },
+            ref: "adjust_textarea",
+            attrs: { name: "comment", cols: "40" },
             domProps: { value: _vm.comment },
             on: {
               input: function($event) {
@@ -40422,19 +40462,19 @@ var render = function() {
                           )
                         ]),
                         _vm._v(" "),
-                        _c("div", [_vm._v("XP：" + _vm._s(_vm.input_data.xp))])
+                        _c("div", [_vm._v("XP：" + _vm._s(_vm.input_data.xp))]),
+                        _vm._v(" "),
+                        _c("div", [
+                          _vm._v(
+                            "勝利数：" +
+                              _vm._s(_vm.input_data.win) +
+                              " 敗北数：" +
+                              _vm._s(_vm.input_data.lose)
+                          )
+                        ])
                       ]),
                       _vm._v(" "),
                       _c("div", { staticClass: "col-md-3" }, [
-                        _c("div", [
-                          _vm._v(
-                            "WIN：" +
-                              _vm._s(_vm.input_data.win) +
-                              " LOSE：" +
-                              _vm._s(_vm.input_data.lose)
-                          )
-                        ]),
-                        _vm._v(" "),
                         _c("div", [
                           _vm._v("コメント：" + _vm._s(_vm.input_data.comment))
                         ])
@@ -40497,31 +40537,38 @@ var render = function() {
           )
         : _vm._e(),
       _vm._v(" "),
-      _vm.gachi.gachi_id == _vm.osusume_bukis.targetGachiId
+      _vm.gachi.osusumeBukis
         ? _c(
             "fieldset",
             { staticStyle: { border: "1px solid #000000", padding: "10px" } },
             [
               _c("legend", [_vm._v("あなたへオススメするブキ")]),
               _vm._v(" "),
-              _vm._l(_vm.osusume_bukis.osusumeBukis, function(
-                osusumeBuki,
-                index
-              ) {
-                return _c("div", { key: osusumeBuki.buki_id }, [
-                  _vm._v(
-                    "\n        " +
-                      _vm._s(index + 1) +
-                      "位　" +
-                      _vm._s(osusumeBuki.buki_name) +
-                      "　[平均XP：" +
-                      _vm._s(osusumeBuki.total) +
-                      "]\n        "
+              _vm.gachi.osusumeBukis.length > 0
+                ? _c(
+                    "span",
+                    _vm._l(_vm.gachi.osusumeBukis, function(
+                      osusumeBuki,
+                      index
+                    ) {
+                      return _c("div", { key: index }, [
+                        _vm._v(
+                          "\n            " +
+                            _vm._s(index + 1) +
+                            "位　" +
+                            _vm._s(osusumeBuki.buki_name) +
+                            "　[平均XP：" +
+                            _vm._s(osusumeBuki.total) +
+                            "]\n            "
+                        )
+                      ])
+                    }),
+                    0
                   )
-                ])
-              })
-            ],
-            2
+                : _c("span", [
+                    _vm._v("\n            戦績が不足しています\n        ")
+                  ])
+            ]
           )
         : _vm._e()
     ]
@@ -40554,7 +40601,7 @@ var render = function() {
     [
       _c(
         "ul",
-        _vm._l(_vm.gachis, function(gachi) {
+        _vm._l(_vm.copyGachis, function(gachi) {
           return _c(
             "li",
             { key: gachi.gachi_id, staticStyle: { "list-style": "none" } },
@@ -40567,7 +40614,6 @@ var render = function() {
                   })[0],
                   bukis: _vm.bukis,
                   udemaes: _vm.udemaes,
-                  osusume_bukis: _vm.osusume_bukis,
                   active: gachi.gachi_id == _vm.gachi_id
                 },
                 on: {

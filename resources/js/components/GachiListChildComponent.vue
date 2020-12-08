@@ -21,9 +21,9 @@
                             <div>ブキ：{{ input_data.buki.buki_name }}</div>
                             <div>ウデマエ：{{ input_data.udemae.udemae_name }}</div>
                             <div>XP：{{ input_data.xp }}</div>
+                            <div>勝利数：{{ input_data.win }} 敗北数：{{ input_data.lose }}</div>
                         </div>
                         <div class="col-md-3">
-                            <div>WIN：{{ input_data.win }} LOSE：{{ input_data.lose }}</div>
                             <div>コメント：{{ input_data.comment }}</div>
                         </div>
                     </span>
@@ -36,18 +36,23 @@
                 <button type="button" class="editBtn btn btn-info" @click.prevent="switchEditRecord(input_data)">戦績を入力</button>
             </div>
         </fieldset>
-        <fieldset v-if="gachi.gachi_id==osusume_bukis.targetGachiId" style="border: 1px solid #000000; padding: 10px;">
+        <fieldset v-if="gachi.osusumeBukis" style="border: 1px solid #000000; padding: 10px;">
             <legend>あなたへオススメするブキ</legend>
-            <div v-for="(osusumeBuki,index) in osusume_bukis.osusumeBukis" :key="osusumeBuki.buki_id">
-            {{index + 1}}位　{{osusumeBuki.buki_name}}　[平均XP：{{osusumeBuki.total}}]
-            </div>
+            <span v-if="gachi.osusumeBukis.length>0">
+                <div v-for="(osusumeBuki,index) in gachi.osusumeBukis" v-bind:key="index">
+                {{index + 1}}位　{{osusumeBuki.buki_name}}　[平均XP：{{osusumeBuki.total}}]
+                </div>
+            </span>
+            <span v-else>
+                戦績が不足しています
+            </span>
         </fieldset>
     </fieldset>
 </template>
 
 <script>
     export default {
-        props:["gachi", "input_data", "rules", "stages", "bukis", "udemaes", "osusume_bukis", "active"],
+        props:["gachi", "input_data", "rules", "stages", "bukis", "udemaes", "active"],
         data: function(){
             return{
                 showEditRecord: false,

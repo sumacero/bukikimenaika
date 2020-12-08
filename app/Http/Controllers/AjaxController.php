@@ -226,29 +226,30 @@ class AjaxController extends Controller
         $loginUserId = Auth::user()->id;
         $gachis = Gachi::with('rule','stage1','stage2');
         $nowTimeStamp = Carbon::now();
-        $currentGachi = $gachis->where('start_t', '<=', $nowTimeStamp)->where('end_t', '>=', $nowTimeStamp)->first();
-        $currentGachiId = null;
-        $osusumeBukis = null;
-        if($currentGachi!=null){
-            $targetGachiId  = $currentGachi->gachi_id; 
-            $ruleId = $currentGachi->rule_id;
-            $stage1Id = $currentGachi->stage1_id;
-            $stage2Id = $currentGachi->stage2_id;
+        $targetGachis = $gachis->where('end_t', '>=', $nowTimeStamp)->get();
+        $targetGachiIds = array();
+        $osusumeBukisArray = array();
+        foreach( $targetGachis as $targetGachi){
+            $targetGachiId  = $targetGachi->gachi_id;
+            $ruleId = $targetGachi->rule_id;
+            $stage1Id = $targetGachi->stage1_id;
+            $stage2Id = $targetGachi->stage2_id;
 
-            $targetGachiIds = Gachi::with('rule','stage1','stage2')->where(function($items) use ($loginUserId,$ruleId){
+            $sameConditionGachiIds = Gachi::with('rule','stage1','stage2')->where(function($items) use ($loginUserId,$ruleId){
                 $items->where('rule_id',$ruleId);
             })->where(function($items)use($stage1Id,$stage2Id){
                 $items->orwhereIn('stage1_id',[$stage1Id,$stage2Id])
                     ->orWhereIn('stage2_id',[$stage1Id,$stage2Id]);
             })->pluck('gachi_id');
             $osusumeBukis = Input_data::leftJoin('bukis','input_datas.buki_id','=','bukis.buki_id')
-            ->whereIn('gachi_id',$targetGachiIds)
+            ->whereIn('gachi_id',$sameConditionGachiIds)
             ->select('bukis.buki_id','bukis.buki_name', DB::raw('avg(input_datas.xp) as total'))
             ->groupBy('bukis.buki_id','bukis.buki_name')
             ->orderBy('total','desc')
             ->get();
+            $osusumeBukisArray[] = $osusumeBukis;
+            $targetGachiIds[] = $targetGachiId;
         }
-        return ['osusumeBukis' => compact('osusumeBukis','targetGachiId')];
-        //return ['osusumeBukis' => $osusumeBukis];
+        return ['osusumeBukiInfo' => compact('osusumeBukisArray','targetGachiIds')];
     }
 }

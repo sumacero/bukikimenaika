@@ -21,15 +21,15 @@
                     <br>
                 </span>
                 <div>
-                    <label for="win">WIN</label>
+                    <label for="win">勝利数</label>
                     <input v-model="win" type="text" name="win">
-                    <label for="lose">LOSE</label>
+                    <label for="lose">敗北数</label>
                     <input v-model="lose" type="text" name="lose">
                     <p class="errors" v-for="error in errors.win" :key="error.win">{{error}}</p>
                     <p class="errors" v-for="error in errors.lose" :key="error.lose">{{error}}</p>
                 </div>
                 <label for="comment">コメント</label>
-                <textarea v-model="comment" name="comment"></textarea>
+                <textarea v-model="comment" ref="adjust_textarea" name="comment" cols="40"></textarea>
                 <p class="errors" v-for="error in errors.comment" :key="error.comment">{{error}}</p>
             </form>
             <button v-on:click="comitRecord">保存</button>
@@ -213,6 +213,20 @@
                 this.errors.lose = lose;
                 this.errors.comment = comment;
             },
+            adjustHeight(){
+                const textarea = this.$refs.adjust_textarea
+                const resetHeight = new Promise(function(resolve) {
+                    resolve(textarea.style.height = 'auto')
+                });
+                resetHeight.then(function(){
+                    textarea.style.height = textarea.scrollHeight + 'px'
+                });
+            }
+        },
+        watch: {
+            comment() {
+                this.adjustHeight();
+            }
         }
     }
 </script>

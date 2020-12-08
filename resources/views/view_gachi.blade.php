@@ -14,7 +14,7 @@
             <div class="col-md-10">
                 <pagination v-bind:pagination-data="paginationData" v-on:click-page-number="movePage"></pagination>
                 <div>@{{ paginationData.total }}件</div>
-                <gachi-list v-bind:input_datas="input_datas" v-bind:gachis="gachis" v-bind:rules="rules" v-bind:stages="stages" v-bind:bukis="bukis" v-bind:udemaes="udemaes" v-bind:osusume_bukis="osusumeBukis" v-on:click-insert-btn="insertRecord" v-on:click-update-btn="updateRecord" v-on:click-delete-btn="deleteRecord">
+                <gachi-list v-bind:input_datas="input_datas" v-bind:gachis="gachis" v-bind:rules="rules" v-bind:stages="stages" v-bind:bukis="bukis" v-bind:udemaes="udemaes" v-bind:osusume_buki_info="osusumeBukiInfo" v-on:click-insert-btn="insertRecord" v-on:click-update-btn="updateRecord" v-on:click-delete-btn="deleteRecord">
                 </gachi-list>
                 <pagination v-bind:pagination-data="paginationData" v-on:click-page-number="movePage"></pagination>
             </div>
@@ -35,9 +35,9 @@ new Vue({
         stages:null,
         bukis:null,
         udemaes:null,
-        osusumeBukis:{
-            targetGachiId:null,
-            osusumeBukis:[],
+        osusumeBukiInfo:{
+            targetGachiIds:[],
+            osusumeBukisArray:[],
         },
         showInsertRecord: false,
         paginationData:{
@@ -58,7 +58,7 @@ new Vue({
             rules_checkbox:[],
             stages_checkbox:[],
             bukis_checkbox:[],
-            input_data_radio:"all",
+            input_data_radio:"",
             udemaes_pull:null,
             xp_text:null,
             udemae_relation_radio:">=",
@@ -158,8 +158,7 @@ new Vue({
                     let res = await axios.get('get_osusume_bukis');
                     console.log("オススメブキ↓");
                     console.log(res);
-                    this.osusumeBukis.targetGachiId = res.data.osusumeBukis.targetGachiId;
-                    this.osusumeBukis.osusumeBukis = res.data.osusumeBukis.osusumeBukis;
+                    this.osusumeBukiInfo = res.data.osusumeBukiInfo;
                 }
                 catch (error){
                     console.log(error.response.data);
