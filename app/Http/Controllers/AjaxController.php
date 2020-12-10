@@ -242,10 +242,11 @@ class AjaxController extends Controller
                     ->orWhereIn('stage2_id',[$stage1Id,$stage2Id]);
             })->pluck('gachi_id');
             $osusumeBukis = Input_data::leftJoin('bukis','input_datas.buki_id','=','bukis.buki_id')
+            ->where('user_id',$loginUserId)
             ->whereIn('gachi_id',$sameConditionGachiIds)
-            ->select('bukis.buki_id','bukis.buki_name', DB::raw('avg(input_datas.xp) as total'))
+            ->select('bukis.buki_id','bukis.buki_name', DB::raw('avg(input_datas.xp) as avg_xp'), DB::raw('sum(input_datas.win) as total_win'), DB::raw('sum(input_datas.lose) as total_lose'), DB::raw('count(*) as input_data_count'))
             ->groupBy('bukis.buki_id','bukis.buki_name')
-            ->orderBy('total','desc')
+            ->orderBy('avg_xp','desc')
             ->get();
             $osusumeBukisArray[] = $osusumeBukis;
             $targetGachiIds[] = $targetGachiId;

@@ -1,5 +1,7 @@
 @extends('layouts.common_layout')
 
+
+
 @section('title', 'ブキキメナイカ')
 
 @section('h1', 'ガチマッチ情報')
@@ -58,7 +60,7 @@ new Vue({
             rules_checkbox:[],
             stages_checkbox:[],
             bukis_checkbox:[],
-            input_data_radio:"",
+            input_data_radio:"all",
             udemaes_pull:null,
             xp_text:null,
             udemae_relation_radio:">=",
@@ -125,10 +127,12 @@ new Vue({
                             udemae_relation_radio:this.filterOptions.udemae_relation_radio,
                         }
                     });
-                    console.log("送信データ↓");
+                    /*
+                    console.log("送信データ(filterData)↓");
                     console.log(this.filterOptions);
-                    console.log("返答↓");
+                    console.log("返答(gachis)↓");
                     console.log(res);
+                    */
                     let gachis = res.data.db_data
                     this.gachis = gachis.data;
                     this.paginationData.current_page = gachis.current_page;
@@ -191,7 +195,6 @@ new Vue({
         },
         filterRecord: function(){
             this.initFlag = false;
-            console.log(this.filterOptions);
             this.getGachis(1);
         }
     }

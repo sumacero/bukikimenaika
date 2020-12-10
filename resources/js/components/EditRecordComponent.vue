@@ -22,9 +22,9 @@
                 </span>
                 <div>
                     <label for="win">勝利数</label>
-                    <input v-model="win" type="text" name="win">
+                    <input v-model="win" type="text" name="win" size="10">
                     <label for="lose">敗北数</label>
-                    <input v-model="lose" type="text" name="lose">
+                    <input v-model="lose" type="text" name="lose" size="10">
                     <p class="errors" v-for="error in errors.win" :key="error.win">{{error}}</p>
                     <p class="errors" v-for="error in errors.lose" :key="error.lose">{{error}}</p>
                 </div>
@@ -32,8 +32,8 @@
                 <textarea v-model="comment" ref="adjust_textarea" name="comment" cols="40"></textarea>
                 <p class="errors" v-for="error in errors.comment" :key="error.comment">{{error}}</p>
             </form>
-            <button v-on:click="comitRecord">保存</button>
-            <button v-on:click="cancelEditEvent">キャンセル</button>
+            <button v-on:click="comitRecord" class="btn btn-outline-primary btn-sm">保存</button>
+            <button v-on:click="cancelEditEvent" class="btn btn-outline-primary btn-sm">キャンセル</button>
         </div>
     </div>
 </template>
@@ -92,6 +92,7 @@
             },
             insertRecord: function(){
                 this.validator();
+                this.xp = Number(this.xp).toFixed(1);
                 if(!this.error){
                     let postData = {
                         'gachi_id':this.gachi_id,
@@ -100,7 +101,7 @@
                         'xp':this.xp,
                         'win':this.win,
                         'lose':this.lose,
-                        'commnet':this.comment,
+                        'comment':this.comment,
                     }
                     const func = async ()=>{
                         try{
@@ -118,8 +119,10 @@
                 }
             },
             updateRecord: function(){
-                this.validator();
+                this.validator();         
                 if(!this.error){
+                    this.validator();
+                    this.xp = Number(this.xp).toFixed(1);
                     let postData = {
                         'input_data_id':this.input_data_id,
                         'buki_id':this.buki_id,
@@ -176,8 +179,8 @@
                     }
                 }
                 if(this.win){
-                    if(!(this.win>=0 && this.win<=50)){
-                        message = 'WINは0～50の半角数字で入力してください。';
+                    if(this.win<0 || !Number.isInteger(Number(this.win))){
+                        message = 'WINは0以上の半角整数で入力してください。';
                         win.push(message);
                         this.error = true;
                     }
@@ -188,14 +191,18 @@
                     }
                 }
                 if(this.lose){
-                    if(!(this.lose>=0 && this.lose<=50)){
-                        message = 'LOSEは0～50の半角数字で入力してください。';
+                    if(this.lose<0 || !Number.isInteger(Number(this.lose))){
+                        message = 'LOSEは0以上の半角整数で入力してください。';
                         lose.push(message);
                         this.error = true;
                     }
                     if(!this.win){
                         message = 'WINを入力してください。';
                         win.push(message);
+                        this.error = true;
+                    }else if(Number(this.win) + Number(this.lose) > 50){
+                        message = 'WINとLOSEの合計が50以下になるように入力してください。';
+                        lose.push(message);
                         this.error = true;
                     }
                 }

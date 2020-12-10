@@ -9,37 +9,15 @@ use App\User;
 use App\Input_data;
 use Illuminate\Http\Request;
 use Validator;
+use Illuminate\Support\Facades\Auth;
 
 class MainController extends Controller
 {
-    /*
-    public function login(){
-        return view('login');
-    }
-    */
-    public function create_account(){
-        return view('create_account');
-    }
-    
-    public function home(){
-        return view('home');
-    }
-    
-    public function edit_data(){
-        return view('edit_data');
-    }
-    
-    public function view_gachi(){
-        return view('view_gachi');
-    }
 
-    public function search_buki(){
-        $rules = Rule::all();
-        $stages = Stage::all();
-        if(empty($items)){
-            $items = null;
-        }
-        return view('search_buki',['rules'=>$rules,'stages'=>$stages]);
+    public function view_gachi(){
+        $user = Auth::user();
+        $param = ['user' => $user];
+        return view('view_gachi', $param);
     }
     public function analysis_buki(Request $request){
         $rules = [

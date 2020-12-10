@@ -2024,6 +2024,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _this = this;
 
       this.validator();
+      this.xp = Number(this.xp).toFixed(1);
 
       if (!this.error) {
         var postData = {
@@ -2033,7 +2034,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           'xp': this.xp,
           'win': this.win,
           'lose': this.lose,
-          'commnet': this.comment
+          'comment': this.comment
         };
 
         var func = /*#__PURE__*/function () {
@@ -2091,6 +2092,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.validator();
 
       if (!this.error) {
+        this.validator();
+        this.xp = Number(this.xp).toFixed(1);
         var postData = {
           'input_data_id': this.input_data_id,
           'buki_id': this.buki_id,
@@ -2183,8 +2186,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }
 
       if (this.win) {
-        if (!(this.win >= 0 && this.win <= 50)) {
-          message = 'WINは0～50の半角数字で入力してください。';
+        if (this.win < 0 || !Number.isInteger(Number(this.win))) {
+          message = 'WINは0以上の半角整数で入力してください。';
           win.push(message);
           this.error = true;
         }
@@ -2197,8 +2200,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }
 
       if (this.lose) {
-        if (!(this.lose >= 0 && this.lose <= 50)) {
-          message = 'LOSEは0～50の半角数字で入力してください。';
+        if (this.lose < 0 || !Number.isInteger(Number(this.lose))) {
+          message = 'LOSEは0以上の半角整数で入力してください。';
           lose.push(message);
           this.error = true;
         }
@@ -2206,6 +2209,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         if (!this.win) {
           message = 'WINを入力してください。';
           win.push(message);
+          this.error = true;
+        } else if (Number(this.win) + Number(this.lose) > 50) {
+          message = 'WINとLOSEの合計が50以下になるように入力してください。';
+          lose.push(message);
           this.error = true;
         }
       }
@@ -2346,6 +2353,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["gachi", "input_data", "rules", "stages", "bukis", "udemaes", "active"],
   data: function data() {
@@ -2377,6 +2387,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.gachiStateMsg = "開催予定";
     }
   },
+  computed: {
+    winRate: function winRate() {
+      return function (win, lose) {
+        var totalWin = Number(win);
+        var totalLose = Number(lose);
+        var winRate = totalWin / (totalWin + totalLose) * 100;
+        return winRate.toFixed(1);
+      };
+    }
+  },
   methods: {
     switchEditRecord: function switchEditRecord(input_data) {
       this.$emit('click-show-edit-btn', input_data, this.gachi_id);
@@ -2384,49 +2404,54 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     deleteRecord: function deleteRecord(delete_input_data_id) {
       var _this = this;
 
-      var postData = {
-        'input_data_id': delete_input_data_id
-      };
+      var res = window.confirm('戦績を削除します。よろしいですか。');
 
-      var func = /*#__PURE__*/function () {
-        var _ref = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
-          var res;
-          return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
-            while (1) {
-              switch (_context.prev = _context.next) {
-                case 0:
-                  _context.prev = 0;
-                  _context.next = 3;
-                  return axios.post('delete_record', postData);
-
-                case 3:
-                  res = _context.sent;
-
-                  _this.$emit('click-delete-btn', res.data.input_data_id);
-
-                  _context.next = 11;
-                  break;
-
-                case 7:
-                  _context.prev = 7;
-                  _context.t0 = _context["catch"](0);
-                  console.log(_context.t0.response.data);
-                  alert("サーバーエラーが発生しました。");
-
-                case 11:
-                case "end":
-                  return _context.stop();
-              }
-            }
-          }, _callee, null, [[0, 7]]);
-        }));
-
-        return function func() {
-          return _ref.apply(this, arguments);
+      if (res) {
+        var postData = {
+          'input_data_id': delete_input_data_id
         };
-      }();
 
-      func();
+        var func = /*#__PURE__*/function () {
+          var _ref = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+            var _res;
+
+            return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+              while (1) {
+                switch (_context.prev = _context.next) {
+                  case 0:
+                    _context.prev = 0;
+                    _context.next = 3;
+                    return axios.post('delete_record', postData);
+
+                  case 3:
+                    _res = _context.sent;
+
+                    _this.$emit('click-delete-btn', _res.data.input_data_id);
+
+                    _context.next = 11;
+                    break;
+
+                  case 7:
+                    _context.prev = 7;
+                    _context.t0 = _context["catch"](0);
+                    console.log(_context.t0.response.data);
+                    alert("サーバーエラーが発生しました。");
+
+                  case 11:
+                  case "end":
+                    return _context.stop();
+                }
+              }
+            }, _callee, null, [[0, 7]]);
+          }));
+
+          return function func() {
+            return _ref.apply(this, arguments);
+          };
+        }();
+
+        func();
+      }
     },
     formatTimeStamp: function formatTimeStamp(timeStamp) {
       var tmpTimeStamp = timeStamp;
@@ -40193,7 +40218,7 @@ var render = function() {
                     expression: "win"
                   }
                 ],
-                attrs: { type: "text", name: "win" },
+                attrs: { type: "text", name: "win", size: "10" },
                 domProps: { value: _vm.win },
                 on: {
                   input: function($event) {
@@ -40216,7 +40241,7 @@ var render = function() {
                     expression: "lose"
                   }
                 ],
-                attrs: { type: "text", name: "lose" },
+                attrs: { type: "text", name: "lose", size: "10" },
                 domProps: { value: _vm.lose },
                 on: {
                   input: function($event) {
@@ -40276,11 +40301,23 @@ var render = function() {
         2
       ),
       _vm._v(" "),
-      _c("button", { on: { click: _vm.comitRecord } }, [_vm._v("保存")]),
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-outline-primary btn-sm",
+          on: { click: _vm.comitRecord }
+        },
+        [_vm._v("保存")]
+      ),
       _vm._v(" "),
-      _c("button", { on: { click: _vm.cancelEditEvent } }, [
-        _vm._v("キャンセル")
-      ])
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-outline-primary btn-sm",
+          on: { click: _vm.cancelEditEvent }
+        },
+        [_vm._v("キャンセル")]
+      )
     ])
   ])
 }
@@ -40466,10 +40503,10 @@ var render = function() {
                         _vm._v(" "),
                         _c("div", [
                           _vm._v(
-                            "勝利数：" +
-                              _vm._s(_vm.input_data.win) +
-                              " 敗北数：" +
-                              _vm._s(_vm.input_data.lose)
+                            _vm._s(_vm.input_data.win) +
+                              "勝／" +
+                              _vm._s(_vm.input_data.lose) +
+                              "負"
                           )
                         ])
                       ]),
@@ -40488,7 +40525,7 @@ var render = function() {
                     _c(
                       "button",
                       {
-                        staticClass: "editBtn btn btn-info",
+                        staticClass: "editBtn btn btn-outline-primary btn-sm",
                         attrs: { type: "button" },
                         on: {
                           click: function($event) {
@@ -40503,7 +40540,7 @@ var render = function() {
                     _c(
                       "button",
                       {
-                        staticClass: "deleteBtn btn btn-info",
+                        staticClass: "deleteBtn btn btn-outline-primary btn-sm",
                         attrs: { type: "button" },
                         on: {
                           click: function($event) {
@@ -40521,7 +40558,7 @@ var render = function() {
                     _c(
                       "button",
                       {
-                        staticClass: "editBtn btn btn-info",
+                        staticClass: "editBtn btn btn-outline-primary btn-sm",
                         attrs: { type: "button" },
                         on: {
                           click: function($event) {
@@ -40553,21 +40590,39 @@ var render = function() {
                     ) {
                       return _c("div", { key: index }, [
                         _vm._v(
-                          "\n            " +
+                          "\n                " +
                             _vm._s(index + 1) +
                             "位　" +
                             _vm._s(osusumeBuki.buki_name) +
                             "　[平均XP：" +
-                            _vm._s(osusumeBuki.total) +
-                            "]\n            "
-                        )
+                            _vm._s(Number(osusumeBuki.avg_xp).toFixed(1)) +
+                            "　戦績数：" +
+                            _vm._s(osusumeBuki.input_data_count) +
+                            "]\n                "
+                        ),
+                        osusumeBuki.total_win && osusumeBuki.total_lose
+                          ? _c("span", [
+                              _vm._v(
+                                "\n                    　勝率：" +
+                                  _vm._s(
+                                    _vm.winRate(
+                                      osusumeBuki.total_win,
+                                      osusumeBuki.total_lose
+                                    )
+                                  ) +
+                                  "％（" +
+                                  _vm._s(osusumeBuki.total_win) +
+                                  "勝/" +
+                                  _vm._s(osusumeBuki.total_lose) +
+                                  "負）\n                "
+                              )
+                            ])
+                          : _vm._e()
                       ])
                     }),
                     0
                   )
-                : _c("span", [
-                    _vm._v("\n            戦績が不足しています\n        ")
-                  ])
+                : _c("span", [_vm._v("\n            なし\n        ")])
             ]
           )
         : _vm._e()
