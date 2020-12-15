@@ -7,6 +7,7 @@
     <title>@yield('title')</title>
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <link rel="shortcut icon" href="{{ asset('/favicon.ico') }}">
 </head>
 <body>
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
@@ -48,9 +49,16 @@
                                                      document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>
+                                    <a class="dropdown-item" href="email_reset"
+                                       onclick="event.preventDefault();
+                                                     document.getElementById('reset-email-form').submit();">
+                                        メールアドレス変更
+                                    </a>
 
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                         @csrf
+                                    </form>
+                                    <form id="reset-email-form" action="email_reset" method="GET" style="display: none;">
                                     </form>
                                 </div>
                             </li>
@@ -62,7 +70,7 @@
     <header>
     @yield('content')
     <div class="footer">
-    copyright 2020 suto.
+    <a href="about">当サイトについて</a>
     </div>
     <script src=" {{ asset('js/app.js') }} "></script>
     @yield('vue')

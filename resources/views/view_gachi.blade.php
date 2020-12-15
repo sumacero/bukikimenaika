@@ -10,6 +10,11 @@
     <div id="app1">
         <span style="display: flex">
             <div class="col-md-2">
+                <div v-on:click="switchShowHowToUse">
+                    使い方[Click]
+                    <how-to-use v-if="showHowToUse">
+                    </how-to-use>
+                </div>
                 <search-menu v-bind:rules="rules" v-bind:stages="stages" v-bind:bukis="bukis" v-bind:udemaes="udemaes" v-bind:filter-options="filterOptions" v-on:click-filter-btn="filterRecord">
                 </search-menu>
             </div>
@@ -42,6 +47,7 @@ new Vue({
             osusumeBukisArray:[],
         },
         showInsertRecord: false,
+        showHowToUse: false,
         paginationData:{
             current_page: null,
             first_page_url: null,
@@ -176,6 +182,9 @@ new Vue({
         },
         switchInsertRecord: function() {
             this.showInsertRecord = !this.showInsertRecord;
+        },
+        switchShowHowToUse: function() {
+            this.showHowToUse = !this.showHowToUse;
         },
         insertRecord: function(insertRecordData){
             this.input_datas.push(insertRecordData);

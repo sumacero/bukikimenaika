@@ -29,6 +29,16 @@ class HomeController extends Controller
         return view('home');
     }
 
+    public function emailReset()
+    {
+        return view('email_reset');
+    }
+
+    public function emailChanged()
+    {
+        return view('email_changed');
+    }
+
     protected function loggedOut(Request $request)
     {
         return redirect(route('home'));

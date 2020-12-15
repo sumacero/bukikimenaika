@@ -1,7 +1,3 @@
-@php
-    $title = __('You\'ve verified your email address.');
-@endphp
-
 @extends('layouts.common_layout')
 
 @section('content')
@@ -9,9 +5,9 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('You\'ve verified your email address.') }}</div>
+                <div class="card-header">メールを確認してください。</div>
                 <div class="card-body" >
-                    <a href="/view_gachi">{{ __('Let\'s get started.') }}</a>
+                    メールのリンクをクリックすることでメールアドレスが変更されます。
                 </div>
             </div>
         </div>
