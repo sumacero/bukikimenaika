@@ -70,7 +70,7 @@
     <header>
     @yield('content')
     <div class="footer">
-    <a href="about">当サイトについて</a>
+    <a href="{{ env('APP_URL') }}/about">当サイトについて</a>
     </div>
     <script src=" {{ asset('js/app.js') }} "></script>
     @yield('vue')
