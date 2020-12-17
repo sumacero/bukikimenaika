@@ -15,6 +15,10 @@ class ChangeEmailController extends Controller
     public function sendChangeEmailLink(Request $request)
     {
         $new_email = $request->new_email;
+        // メールアドレスがすでに登録されている場合は中断する。
+        if(User::where('email', $new_email)->exists()){
+            return redirect('/email_reset')->with('flash_message', '入力されたメールアドレスは既に使用されています。');
+        }
 
         // トークン生成
         $token = hash_hmac(
