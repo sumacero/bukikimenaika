@@ -8,24 +8,19 @@
 
 @section('content')
     <div id="app1">
-        <span style="display: flex">
-            <div class="col-md-2">
-                <div v-on:click="switchShowHowToUse">
-                    使い方[Click]
-                    <how-to-use v-if="showHowToUse">
-                    </how-to-use>
-                </div>
-                <search-menu v-bind:rules="rules" v-bind:stages="stages" v-bind:bukis="bukis" v-bind:udemaes="udemaes" v-bind:filter-options="filterOptions" v-on:click-filter-btn="filterRecord">
-                </search-menu>
-            </div>
-            <div class="col-md-10">
-                <pagination v-bind:pagination-data="paginationData" v-on:click-page-number="movePage"></pagination>
-                <div>@{{ paginationData.total }}件</div>
-                <gachi-list v-bind:input_datas="input_datas" v-bind:gachis="gachis" v-bind:rules="rules" v-bind:stages="stages" v-bind:bukis="bukis" v-bind:udemaes="udemaes" v-bind:osusume_buki_info="osusumeBukiInfo" v-on:click-insert-btn="insertRecord" v-on:click-update-btn="updateRecord" v-on:click-delete-btn="deleteRecord">
-                </gachi-list>
-                <pagination v-bind:pagination-data="paginationData" v-on:click-page-number="movePage"></pagination>
-            </div>
-        </span>
+        <div v-on:click="switchShowHowToUse">
+            使い方[Click]
+            <how-to-use v-if="showHowToUse">
+            </how-to-use>
+        </div>
+        <button v-on:click=switchShowSearchMenu class="btn btn-outline-primary btn-sm">絞り込み</button>
+        <search-menu v-show="showSearchMenu" v-bind:rules="rules" v-bind:stages="stages" v-bind:bukis="bukis" v-bind:udemaes="udemaes" v-bind:filter-options="filterOptions" v-on:click-filter-btn="filterRecord" v-on:close-search-menu="showSearchMenu = false">
+        </search-menu>    
+        <pagination v-bind:pagination-data="paginationData" v-on:click-page-number="movePage"></pagination>
+        <div>@{{ paginationData.total }}件</div>
+        <gachi-list v-bind:input_datas="input_datas" v-bind:gachis="gachis" v-bind:rules="rules" v-bind:stages="stages" v-bind:bukis="bukis" v-bind:udemaes="udemaes" v-bind:osusume_buki_info="osusumeBukiInfo" v-on:click-insert-btn="insertRecord" v-on:click-update-btn="updateRecord" v-on:click-delete-btn="deleteRecord">
+        </gachi-list>
+        <pagination v-bind:pagination-data="paginationData" v-on:click-page-number="movePage"></pagination>
     </div>
 @endsection
 
@@ -48,6 +43,7 @@ new Vue({
         },
         showInsertRecord: false,
         showHowToUse: false,
+        showSearchMenu: false,
         paginationData:{
             current_page: null,
             first_page_url: null,
@@ -185,6 +181,9 @@ new Vue({
         },
         switchShowHowToUse: function() {
             this.showHowToUse = !this.showHowToUse;
+        },
+        switchShowSearchMenu: function() {
+            this.showSearchMenu = true;
         },
         insertRecord: function(insertRecordData){
             this.input_datas.push(insertRecordData);

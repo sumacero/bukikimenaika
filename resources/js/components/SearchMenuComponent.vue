@@ -1,141 +1,145 @@
 <template>
-    <div class="filter-option">
-        <form>
-            <button type="button" class="btn btn-info" v-on:click="filterClick">絞り込み</button><br>
-            <div class="border rounded">
-                <span v-on:click="switchShowDateCheckbox">
-                    <span style="display: flex">
-                        <plus-minus v-bind:iconPlus="iconPlus.dateCheckbox"></plus-minus>
-                    日付
+    <div id="overlay">
+        <div id="content">
+            <form id="scrollArea">
+                <button type="button" class="btn btn-info" v-on:click="filterClick">絞り込み</button>
+                <button type="button" class="btn btn-info" v-on:click="closeSearchMenu">キャンセル</button>
+                <div class="border rounded">
+                    <span v-on:click="switchShowDateCheckbox">
+                        <span style="display: flex">
+                            <plus-minus v-bind:iconPlus="iconPlus.dateCheckbox"></plus-minus>
+                        日付
+                        </span>
                     </span>
-                </span>
-                <span v-show="showDateCheckbox">
-                    <label>
-                        <input type="checkbox" value="future" v-model="filterOptions.date_checkbox">
-                        未来のガチマッチ
-                    </label>
-                    <label>
-                        <input type="checkbox" value="current" v-model="filterOptions.date_checkbox">
-                        現在のガチマッチ
-                    </label>
-                    <label>
-                        <input type="checkbox" value="past" v-model="filterOptions.date_checkbox">
-                        過去のガチマッチ
-                    </label>
-                    <p class="errors" v-for="error in errors.date" :key="error.date">{{error}}</p>
-                    <br>
-                </span>
-            </div>
-            <div class="border rounded">
-                <div v-on:click="switchShowRulesCheckbox">
-                    <span style="display: flex">
-                        <plus-minus v-bind:iconPlus="iconPlus.rulesCheckbox"></plus-minus>
-                        ルール
-                    </span>
-                </div>
-                <span v-show="showRulesCheckbox">
-                    <span v-for="rule in rules" :key="rule.id">
+                    <span v-show="showDateCheckbox">
                         <label>
-                            <input type="checkbox" v-bind:id=rule.rule_id v-bind:value=rule.rule_id v-model="filterOptions.rules_checkbox">
-                            {{rule.rule_name}}
+                            <input type="checkbox" value="future" v-model="filterOptions.date_checkbox">
+                            未来のガチマッチ
                         </label>
-                    </span>
-                    <p class="errors" v-for="error in errors.rules" :key="error.rules">{{error}}</p>
-                    <br>
-                </span>
-            </div>
-            <div class="border rounded">
-                <div v-on:click="switchShowStagesCheckbox">
-                    <span style="display: flex">
-                        <plus-minus v-bind:iconPlus="iconPlus.stagesCheckbox"></plus-minus>
-                        ステージ
-                    </span>
-                </div>
-                <span v-show="showStagesCheckbox">
-                    <button type="button" class="btn btn-outline-primary btn-sm" v-on:click="allCheckStages">ALL ON/OFF</button><br>
-                    <p class="errors" v-for="error in errors.stages" :key="error.stages">{{error}}</p>
-                    <span v-for="stage in stages" :key="stage.id">
                         <label>
-                            <input type="checkbox" v-bind:id=stage.stage_id v-bind:value=stage.stage_id v-model="filterOptions.stages_checkbox">
-                            {{stage.stage_name}}
+                            <input type="checkbox" value="current" v-model="filterOptions.date_checkbox">
+                            現在のガチマッチ
                         </label>
-                    </span>
-                    <button type="button" class="btn btn-outline-primary btn-sm" v-on:click="allCheckStages">ALL ON/OFF</button><br>
-                    <p class="errors" v-for="error in errors.stages" :key="error.stages">{{error}}</p>
-                    <br>
-                </span>
-            </div>
-            <div class="border rounded">
-                <div v-on:click="switchShowInputDataArea">
-                    <span style="display: flex">
-                        <plus-minus v-bind:iconPlus="iconPlus.inputDataArea"></plus-minus>
-                        戦績
+                        <label>
+                            <input type="checkbox" value="past" v-model="filterOptions.date_checkbox">
+                            過去のガチマッチ
+                        </label>
+                        <p class="errors" v-for="error in errors.date" :key="error.date">{{error}}</p>
+                        <br>
                     </span>
                 </div>
-                <span v-show="showInputDataArea">
-                    <label>
-                        <input type="radio" value="all" v-model="filterOptions.input_data_radio">
-                        入力済/未入力
-                    </label>
-                    <label>
-                        <input type="radio" value="inserted" v-model="filterOptions.input_data_radio">
-                        入力済
-                    </label>
-                    <label>
-                        <input type="radio" value="uninserted" v-model="filterOptions.input_data_radio">
-                        未入力
-                    </label>
-                    <div class="container">
-                        <div v-show="filterOptions.input_data_radio=='inserted'" class="border rounded col-md-offset-1">
-                            <div v-on:click="switchShowBukisCheckbox">
-                                <span style="display: flex">
-                                    <plus-minus v-bind:iconPlus="iconPlus.bukisCheckbox"></plus-minus>
-                                    ブキ
+                <div class="border rounded">
+                    <div v-on:click="switchShowRulesCheckbox">
+                        <span style="display: flex">
+                            <plus-minus v-bind:iconPlus="iconPlus.rulesCheckbox"></plus-minus>
+                            ルール
+                        </span>
+                    </div>
+                    <span v-show="showRulesCheckbox">
+                        <span v-for="rule in rules" :key="rule.id">
+                            <label>
+                                <input type="checkbox" v-bind:id=rule.rule_id v-bind:value=rule.rule_id v-model="filterOptions.rules_checkbox">
+                                {{rule.rule_name}}
+                            </label>
+                        </span>
+                        <p class="errors" v-for="error in errors.rules" :key="error.rules">{{error}}</p>
+                        <br>
+                    </span>
+                </div>
+                <div class="border rounded">
+                    <div v-on:click="switchShowStagesCheckbox">
+                        <span style="display: flex">
+                            <plus-minus v-bind:iconPlus="iconPlus.stagesCheckbox"></plus-minus>
+                            ステージ
+                        </span>
+                    </div>
+                    <span v-show="showStagesCheckbox">
+                        <button type="button" class="btn btn-outline-primary btn-sm" v-on:click="allCheckStages">ALL ON/OFF</button><br>
+                        <p class="errors" v-for="error in errors.stages" :key="error.stages">{{error}}</p>
+                        <span v-for="stage in stages" :key="stage.id">
+                            <label>
+                                <input type="checkbox" v-bind:id=stage.stage_id v-bind:value=stage.stage_id v-model="filterOptions.stages_checkbox">
+                                {{stage.stage_name}}
+                            </label>
+                        </span>
+                        <button type="button" class="btn btn-outline-primary btn-sm" v-on:click="allCheckStages">ALL ON/OFF</button><br>
+                        <p class="errors" v-for="error in errors.stages" :key="error.stages">{{error}}</p>
+                        <br>
+                    </span>
+                </div>
+                <div class="border rounded">
+                    <div v-on:click="switchShowInputDataArea">
+                        <span style="display: flex">
+                            <plus-minus v-bind:iconPlus="iconPlus.inputDataArea"></plus-minus>
+                            戦績
+                        </span>
+                    </div>
+                    <span v-show="showInputDataArea">
+                        <label>
+                            <input type="radio" value="all" v-model="filterOptions.input_data_radio">
+                            入力済/未入力
+                        </label>
+                        <label>
+                            <input type="radio" value="inserted" v-model="filterOptions.input_data_radio">
+                            入力済
+                        </label>
+                        <label>
+                            <input type="radio" value="uninserted" v-model="filterOptions.input_data_radio">
+                            未入力
+                        </label>
+                        <div class="container">
+                            <div v-show="filterOptions.input_data_radio=='inserted'" class="border rounded col-md-offset-1">
+                                <div v-on:click="switchShowBukisCheckbox">
+                                    <span style="display: flex">
+                                        <plus-minus v-bind:iconPlus="iconPlus.bukisCheckbox"></plus-minus>
+                                        ブキ
+                                    </span>
+                                </div>
+                                <span v-show="showBukisCheckbox">
+                                    <p class="errors" v-for="error in errors.bukis" :key="error.bukis">{{error}}</p>
+                                    <button type="button" class="btn btn-outline-primary btn-sm" v-on:click="allCheckBukis">ALL ON/OFF</button><br>
+                                    <span v-for="buki in bukis" :key="buki.id">
+                                        <label>
+                                            <input type="checkbox" v-bind:id=buki.buki_id v-bind:value=buki.buki_id v-model="filterOptions.bukis_checkbox">
+                                            {{buki.buki_name}}
+                                        </label>
+                                    </span>
+                                    <button type="button" class="btn btn-outline-primary btn-sm" v-on:click="allCheckBukis">ALL ON/OFF</button><br>
+                                    <p class="errors" v-for="error in errors.bukis" :key="error.bukis">{{error}}</p>
                                 </span>
                             </div>
-                            <span v-show="showBukisCheckbox">
-                                <p class="errors" v-for="error in errors.bukis" :key="error.bukis">{{error}}</p>
-                                <button type="button" class="btn btn-outline-primary btn-sm" v-on:click="allCheckBukis">ALL ON/OFF</button><br>
-                                <span v-for="buki in bukis" :key="buki.id">
-                                    <label>
-                                        <input type="checkbox" v-bind:id=buki.buki_id v-bind:value=buki.buki_id v-model="filterOptions.bukis_checkbox">
-                                        {{buki.buki_name}}
-                                    </label>
-                                </span>
-                                <button type="button" class="btn btn-outline-primary btn-sm" v-on:click="allCheckBukis">ALL ON/OFF</button><br>
-                                <p class="errors" v-for="error in errors.bukis" :key="error.bukis">{{error}}</p>
-                            </span>
-                        </div>
-                        <div v-show="filterOptions.input_data_radio=='inserted'" class="border rounded">
-                            <div v-on:click="switchShowUdemaesPull">
-                                <span style="display: flex">
-                                    <plus-minus v-bind:iconPlus="iconPlus.udemaesPull"></plus-minus>
-                                    ウデマエ
-                                </span>
-                            </div>
-                            <div v-show="showUdemaesPull">
-                                <select v-model="filterOptions.udemaes_pull" name="udemae_id">
-                                    <option v-for="udemae in udemaes" :key="udemae.id" v-bind:value="udemae.udemae_id" >{{ udemae.udemae_name }}</option>
-                                </select>
-                                <div><label v-show="filterOptions.udemaes_pull=='21'">XP<input v-model="filterOptions.xp_text" type="text"></label></div>
-                                <p class="errors" v-for="error in errors.xp" :key="error.xp">{{error}}</p>
-                                <div>
-                                    <label>
-                                        <input type="radio" value=">=" v-model="filterOptions.udemae_relation_radio">
-                                        以上
-                                    </label>
-                                    <label>
-                                        <input type="radio" value="<=" v-model="filterOptions.udemae_relation_radio">
-                                        以下
-                                    </label>
+                            <div v-show="filterOptions.input_data_radio=='inserted'" class="border rounded">
+                                <div v-on:click="switchShowUdemaesPull">
+                                    <span style="display: flex">
+                                        <plus-minus v-bind:iconPlus="iconPlus.udemaesPull"></plus-minus>
+                                        ウデマエ
+                                    </span>
+                                </div>
+                                <div v-show="showUdemaesPull">
+                                    <select v-model="filterOptions.udemaes_pull" name="udemae_id">
+                                        <option v-for="udemae in udemaes" :key="udemae.id" v-bind:value="udemae.udemae_id" >{{ udemae.udemae_name }}</option>
+                                    </select>
+                                    <div><label v-show="filterOptions.udemaes_pull=='21'">XP<input v-model="filterOptions.xp_text" type="text"></label></div>
+                                    <p class="errors" v-for="error in errors.xp" :key="error.xp">{{error}}</p>
+                                    <div>
+                                        <label>
+                                            <input type="radio" value=">=" v-model="filterOptions.udemae_relation_radio">
+                                            以上
+                                        </label>
+                                        <label>
+                                            <input type="radio" value="<=" v-model="filterOptions.udemae_relation_radio">
+                                            以下
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </span>
-            </div>
-            <button type="button" class="btn btn-info" v-on:click="filterClick">絞り込み</button>
-        </form>
+                    </span>
+                </div>
+                <button type="button" class="btn btn-info" v-on:click="filterClick">絞り込み</button>
+                <button type="button" class="btn btn-info" v-on:click="closeSearchMenu">キャンセル</button>
+            </form>
+        </div>
     </div>
 </template>
 
@@ -175,7 +179,11 @@
                 this.validator();
                 if(!this.error){
                     this.$emit('click-filter-btn');
+                    this.closeSearchMenu();
                 }
+            },
+            closeSearchMenu:function(){
+                this.$emit('close-search-menu');
             },
             switchShowDateCheckbox:function(){
                 this.showDateCheckbox = !this.showDateCheckbox;
@@ -283,16 +291,33 @@
         },
     }   
 </script>
+
 <style>
-    legend {
-        display: initial;
-        width: initial;
-        max-width: initial;
-        padding: initial;
-        margin-bottom: initial;
-        font-size: initial;
-        line-height: initial;
-        color: initial;
-        white-space: initial;
-    }
+#overlay{
+    /*要素を重ねた時の順番*/
+    z-index:1;
+
+    /*画面全体を覆う設定*/
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background-color:rgba(0,0,0,0.5);
+
+    /*　画面の中央に要素を表示させる設定　*/
+    display: flex;
+    align-items: center;
+    justify-content: center;    
+}
+#content{
+    z-index:2;
+    width:50%;
+    padding: 1em;
+    background:#fff;
+    overflow: scroll;
+}
+#scrollArea{
+    height: 50vh;
+}
 </style>

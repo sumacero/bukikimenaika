@@ -2,17 +2,14 @@
     <fieldset v-bind:class="customizedClass" style="border: 1px solid #000000; padding: 10px;">
         <legend>{{ formatTimeStamp(gachi.start_t) }}～{{ formatTimeStamp(gachi.end_t) }}　◆{{gachiStateMsg}}</legend>
         <fieldset style="border: 1px solid #000000; padding: 10px;">
-            <div class="col-md-3">ルール：{{ gachi.rule.rule_name }}</div>
-            <span style="display: flex">
-                <div class="col-md-3">ステージ1：{{ gachi.stage1.stage_name }}<br>
-                    <img v-bind:src="'images/'+gachi.stage1.stage_name+'.png'" v-bind:alt="gachi.stage1.stage_name+'.png'" width="200" height="100">
-                </div>
-                <div class="col-md-3">ステージ2：{{ gachi.stage2.stage_name }}<br>
-                    <img v-bind:src="'images/'+gachi.stage2.stage_name+'.png'" v-bind:alt="gachi.stage2.stage_name+'.png'" width="200" height="100">
-                </div>
-            </span>
+            <div>ルール：{{ gachi.rule.rule_name }}</div>
+            <div>ステージ1：{{ gachi.stage1.stage_name }}<br>
+                <img v-bind:src="'images/'+gachi.stage1.stage_name+'.png'" v-bind:alt="gachi.stage1.stage_name+'.png'" width="200" height="100">
+            </div>
+            <div>ステージ2：{{ gachi.stage2.stage_name }}<br>
+                <img v-bind:src="'images/'+gachi.stage2.stage_name+'.png'" v-bind:alt="gachi.stage2.stage_name+'.png'" width="200" height="100">
+            </div>
         </fieldset>
-         
         <fieldset v-if="gachiState!='future'" style="border: 1px solid #000000; padding: 10px;">
             <legend>あなたの記録</legend>
                 <div v-if="input_data">

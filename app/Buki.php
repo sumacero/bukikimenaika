@@ -16,11 +16,11 @@ class Buki extends Model
         return $this->hasMany('App\Input_data');
     }
 
-    //idで昇順
+    //buki_nameで昇順
     protected static function boot(){
         parent::boot();
-        static::addGlobalScope('buki_id',function(Builder $builder){
-            $builder->orderBy('buki_id','asc');
+        static::addGlobalScope('buki_name',function(Builder $builder){
+            $builder->orderBy('buki_name','asc');
         });
     }
 
