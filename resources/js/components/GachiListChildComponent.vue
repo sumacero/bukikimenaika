@@ -1,6 +1,6 @@
 <template> 
     <fieldset v-bind:class="customizedClass" style="border: 1px solid #000000; padding: 10px;">
-        <legend>{{ formatTimeStamp(gachi.start_t) }}～{{ formatTimeStamp(gachi.end_t) }}　◆{{gachiStateMsg}}</legend>
+        <legend>{{ formatTimeStamp(gachi.start_t) }}～{{ formatTimeStamp(gachi.end_t) }}　<span v-bind:Class="textStyle">◆{{gachiStateMsg}}</span></legend>
         <fieldset style="border: 1px solid #000000; padding: 10px;">
             <div>ルール：{{ gachi.rule.rule_name }}</div>
             <div>ステージ1：{{ gachi.stage1.stage_name }}<br>
@@ -57,28 +57,41 @@
             return{
                 showEditRecord: false,
                 gachi_id: this.gachi.gachi_id,
-                nowTimeStamp: null,
-                gachiStartTimeStamp: null,
-                gachiEndTimeStamp: null,
                 gachiState: null,
                 gachiStateMsg: null,
                 customizedClass: null,
                 activeMsg: null,
+                textStyle: null,
             }
         },
         mounted(){
-            this.nowTimeStamp = new Date();
-            this.gachiStartTimeStamp = new Date(this.gachi.start_t);
-            this.gachiEndTimeStamp = new Date(this.gachi.end_t);
-            if(this.nowTimeStamp.getTime() > this.gachiEndTimeStamp.getTime()){
+            let nowTimeStamp = new Date();
+            let tmpTimeStamp = new Date();
+            tmpTimeStamp.setHours(tmpTimeStamp.getHours() + 2);
+            let gachiStartTimeStamp = new Date(this.gachi.start_t);
+            let gachiEndTimeStamp = new Date(this.gachi.end_t);
+            //現在時刻>終了時刻
+            if(nowTimeStamp.getTime() > gachiEndTimeStamp.getTime()){
                 this.gachiState = "past";
-                this.gachiStateMsg = "終了";
-            }else if(this.nowTimeStamp.getTime() > this.gachiStartTimeStamp){
+                this.gachiStateMsg = "過去のルール";
+                this.textStyle = "bg-dark text-white";
+            }
+            //開始時刻<=現在時刻<=終了時刻
+            if(gachiStartTimeStamp.getTime() <= nowTimeStamp.getTime() && nowTimeStamp.getTime() <= gachiEndTimeStamp.getTime()){
                 this.gachiState = "currrent";
                 this.gachiStateMsg = "現在のルール";
-            }else{
+                this.textStyle = "bg-success text-white";
+            }
+            //開始時刻>現在時刻
+            if(gachiStartTimeStamp.getTime() > nowTimeStamp.getTime()){
                 this.gachiState = "future";
-                this.gachiStateMsg = "開催予定";
+                this.gachiStateMsg = "未来のルール";
+            }
+            //開始時刻<=現在時刻+2時間<=終了時刻
+            if(gachiStartTimeStamp.getTime() <= tmpTimeStamp.getTime() && tmpTimeStamp.getTime() <= gachiEndTimeStamp.getTime()){
+                this.gachiState = "future";
+                this.gachiStateMsg = "未来のルール(まもなく開催)";
+                this.textStyle = "bg-warning text-dark";
             }
         },
         computed:{

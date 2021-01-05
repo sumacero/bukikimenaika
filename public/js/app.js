@@ -2393,29 +2393,44 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     return {
       showEditRecord: false,
       gachi_id: this.gachi.gachi_id,
-      nowTimeStamp: null,
-      gachiStartTimeStamp: null,
-      gachiEndTimeStamp: null,
       gachiState: null,
       gachiStateMsg: null,
       customizedClass: null,
-      activeMsg: null
+      activeMsg: null,
+      textStyle: null
     };
   },
   mounted: function mounted() {
-    this.nowTimeStamp = new Date();
-    this.gachiStartTimeStamp = new Date(this.gachi.start_t);
-    this.gachiEndTimeStamp = new Date(this.gachi.end_t);
+    var nowTimeStamp = new Date();
+    var tmpTimeStamp = new Date();
+    tmpTimeStamp.setHours(tmpTimeStamp.getHours() + 2);
+    var gachiStartTimeStamp = new Date(this.gachi.start_t);
+    var gachiEndTimeStamp = new Date(this.gachi.end_t); //現在時刻>終了時刻
 
-    if (this.nowTimeStamp.getTime() > this.gachiEndTimeStamp.getTime()) {
+    if (nowTimeStamp.getTime() > gachiEndTimeStamp.getTime()) {
       this.gachiState = "past";
-      this.gachiStateMsg = "終了";
-    } else if (this.nowTimeStamp.getTime() > this.gachiStartTimeStamp) {
+      this.gachiStateMsg = "過去のルール";
+      this.textStyle = "bg-dark text-white";
+    } //開始時刻<=現在時刻<=終了時刻
+
+
+    if (gachiStartTimeStamp.getTime() <= nowTimeStamp.getTime() && nowTimeStamp.getTime() <= gachiEndTimeStamp.getTime()) {
       this.gachiState = "currrent";
       this.gachiStateMsg = "現在のルール";
-    } else {
+      this.textStyle = "bg-success text-white";
+    } //開始時刻>現在時刻
+
+
+    if (gachiStartTimeStamp.getTime() > nowTimeStamp.getTime()) {
       this.gachiState = "future";
-      this.gachiStateMsg = "開催予定";
+      this.gachiStateMsg = "未来のルール";
+    } //開始時刻<=現在時刻+2時間<=終了時刻
+
+
+    if (gachiStartTimeStamp.getTime() <= tmpTimeStamp.getTime() && tmpTimeStamp.getTime() <= gachiEndTimeStamp.getTime()) {
+      this.gachiState = "future";
+      this.gachiStateMsg = "未来のルール(まもなく開催)";
+      this.textStyle = "bg-warning text-dark";
     }
   },
   computed: {
@@ -40553,9 +40568,11 @@ var render = function() {
           _vm._s(_vm.formatTimeStamp(_vm.gachi.start_t)) +
             "～" +
             _vm._s(_vm.formatTimeStamp(_vm.gachi.end_t)) +
-            "　◆" +
-            _vm._s(_vm.gachiStateMsg)
-        )
+            "　"
+        ),
+        _c("span", { attrs: { Class: _vm.textStyle } }, [
+          _vm._v("◆" + _vm._s(_vm.gachiStateMsg))
+        ])
       ]),
       _vm._v(" "),
       _c(
