@@ -34,7 +34,9 @@ class AjaxController extends Controller
         $initFlag = request('init_flag');
         //初回アクセス時
         if($initFlag == "true"){
-            $gachis = Gachi::with('rule','stage1','stage2')->paginate(10);
+            $nowTimeStamp = Carbon::now();
+            //全データ(未来のルールは6時間分=3ルール分のみ)取得
+            $gachis = Gachi::with('rule','stage1','stage2')->where('start_t', '<', $nowTimeStamp->addHour(6))->paginate(10);
         //絞り込み実行時
         }else{
             $dateCheckbox = request('date_checkbox');
@@ -73,12 +75,14 @@ class AjaxController extends Controller
             $pastGachis = clone $gachis;
             //日付フィルタ
             $nowTimeStamp = Carbon::now();
+            $futureTimeStamp = Carbon::now()->addHour(6);
                 $gachisGachiIds=array();
                 if(count($dateCheckbox)>=1){
                     foreach($dateCheckbox As $state){
                         switch($state){
                             case "future":
-                                $futureGachis = $futureGachis->where('start_t', '>', $nowTimeStamp)->pluck('gachi_id');
+                                //未来の6時間分(3ルール分)のみ取得
+                                $futureGachis = $futureGachis->where('start_t', '>', $nowTimeStamp)->where('start_t', '<', $futureTimeStamp)->pluck('gachi_id');
                                 foreach($futureGachis As $gachiId){
                                     $gachisGachiIds[] = $gachiId;
                                 }

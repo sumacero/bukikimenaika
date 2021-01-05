@@ -36,26 +36,27 @@
           <p class="errors" v-for="error in errors.xp" :key="error.xp">
             {{ error }}
           </p>
-          <br />
+          <br>
         </span>
         <div>
-          <label for="win">勝利数</label>
-          <input id="win-text" v-model="win" type="text" name="win" />
-          <label for="lose">敗北数</label>
-          <input id="lose-text" v-model="lose" type="text" name="lose" />
-          <p class="errors" v-for="error in errors.win" :key="error.win">
-            {{ error }}
-          </p>
-          <p class="errors" v-for="error in errors.lose" :key="error.lose">
-            {{ error }}
-          </p>
+            <label for="win">勝利数</label>
+            <input id="win-text" v-model="win" type="text" name="win" />
+            <br>
+            <label for="lose">敗北数</label>
+            <input id="lose-text" v-model="lose" type="text" name="lose" />
+            <p class="errors" v-for="error in errors.win" :key="error.win">
+                {{ error }}
+            </p>
+            <p class="errors" v-for="error in errors.lose" :key="error.lose">
+                {{ error }}
+            </p>
         </div>
         <label for="comment">コメント</label>
         <textarea
-          id="comment-text"
-          v-model="comment"
-          ref="adjust_textarea"
-          name="comment"
+            id="comment-text"
+            v-model="comment"
+            ref="adjust_textarea"
+            name="comment"
         ></textarea>
         <p class="errors" v-for="error in errors.comment" :key="error.comment">
           {{ error }}

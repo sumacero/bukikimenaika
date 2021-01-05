@@ -62,7 +62,6 @@
                                 {{stage.stage_name}}
                             </label>
                         </span>
-                        <button type="button" class="btn btn-outline-primary btn-sm" v-on:click="allCheckStages">ALL ON/OFF</button><br>
                         <p class="errors" v-for="error in errors.stages" :key="error.stages">{{error}}</p>
                         <br>
                     </span>

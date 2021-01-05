@@ -9,7 +9,7 @@
 @section('content')
     <div id="app1">
         <div v-on:click="switchShowHowToUse">
-            使い方[Click]
+            <div align="right">使い方[Click]</div>
             <how-to-use v-if="showHowToUse">
             </how-to-use>
         </div>

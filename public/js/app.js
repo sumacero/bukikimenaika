@@ -2004,6 +2004,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["bukis", "udemaes", "editData", "gachi_id"],
   data: function data() {
@@ -2698,7 +2699,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-//
 //
 //
 //
@@ -40351,6 +40351,8 @@ var render = function() {
                 }
               }),
               _vm._v(" "),
+              _c("br"),
+              _vm._v(" "),
               _c("label", { attrs: { for: "lose" } }, [_vm._v("敗北数")]),
               _vm._v(" "),
               _c("input", {
@@ -40376,13 +40378,13 @@ var render = function() {
               _vm._v(" "),
               _vm._l(_vm.errors.win, function(error) {
                 return _c("p", { key: error.win, staticClass: "errors" }, [
-                  _vm._v("\n          " + _vm._s(error) + "\n        ")
+                  _vm._v("\n              " + _vm._s(error) + "\n          ")
                 ])
               }),
               _vm._v(" "),
               _vm._l(_vm.errors.lose, function(error) {
                 return _c("p", { key: error.lose, staticClass: "errors" }, [
-                  _vm._v("\n          " + _vm._s(error) + "\n        ")
+                  _vm._v("\n              " + _vm._s(error) + "\n          ")
                 ])
               })
             ],
@@ -41463,17 +41465,6 @@ var render = function() {
                   ])
                 ])
               }),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-outline-primary btn-sm",
-                  attrs: { type: "button" },
-                  on: { click: _vm.allCheckStages }
-                },
-                [_vm._v("ALL ON/OFF")]
-              ),
-              _c("br"),
               _vm._v(" "),
               _vm._l(_vm.errors.stages, function(error) {
                 return _c("p", { key: error.stages, staticClass: "errors" }, [
