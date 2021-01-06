@@ -26,7 +26,7 @@ class VerificationController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/verified';
+    protected $redirectTo = '/view_gachi';
 
     /**
      * Create a new controller instance.
