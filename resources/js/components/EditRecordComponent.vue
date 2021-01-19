@@ -2,8 +2,8 @@
   <div id="overlay">
     <div id="content">
       <form name="update-record-form">
-        <label for="buki_id">ブキ<span class="badge">必須</span></label>
-        <select v-model="buki_id" name="buki_id">
+        <label for="buki_id">ブキ<span class="badge">必須</span></label><br>
+        <select id="buki-pull" v-model="buki_id" name="buki_id">
           <option
             v-for="buki in bukis"
             :key="buki.id"
@@ -15,8 +15,9 @@
         <p class="errors" v-for="error in errors.buki" :key="error.buki">
           {{ error }}
         </p>
-        <br />
-        <label for="udemae_id">ウデマエ<span class="badge">必須</span></label>
+        <br>
+        <br>
+        <label for="udemae_id">ウデマエ<span class="badge">必須</span></label><br>
         <select v-model="udemae_id" name="udemae_id">
           <option
             v-for="udemae in udemaes"
@@ -29,21 +30,74 @@
         <p class="errors" v-for="error in errors.udemae" :key="error.udemae_id">
           {{ error }}
         </p>
-        <br />
+        <br>
+        <br>
         <span v-if="udemae_id == '21'">
-          <label for="xp">XP<span class="badge">必須</span></label>
-          <input v-model="xp" type="text" name="xp" />
+            <label for="xp">XP<span class="badge">必須</span></label><br>
+            <input v-model="xp" type="text" name="xp" />
+            <br>
+            <button  type="button"
+                v-on:click="countDownXp(100)"
+                class="btn btn-outline-primary btn-sm"
+            >-100
+            </button>
+            <button  type="button"
+                v-on:click="countDownXp(10)"
+                class="btn btn-outline-primary btn-sm"
+            >-10
+            </button>
+            <button  type="button"
+                v-on:click="countDownXp(1)"
+                class="btn btn-outline-primary btn-sm"
+            >-1
+            </button>
+            <button  type="button"
+                v-on:click="countUpXp(1)"
+                class="btn btn-outline-primary btn-sm"
+            >+1
+            </button>
+            <button  type="button"
+                v-on:click="countUpXp(10)"
+                class="btn btn-outline-primary btn-sm"
+            >+10
+            </button>
+            <button  type="button"
+                v-on:click="countUpXp(100)"
+                class="btn btn-outline-primary btn-sm"
+            >+100
+            </button>
+            <br>
           <p class="errors" v-for="error in errors.xp" :key="error.xp">
             {{ error }}
           </p>
           <br>
         </span>
         <div>
-            <label for="win">勝利数</label>
+            <label for="win">WIN&nbsp;</label>
             <input id="win-text" v-model="win" type="text" name="win" />
+            <button  type="button"
+                v-on:click="countDown('win')"
+                class="btn btn-outline-primary btn-sm"
+            >-1
+            </button>
+            <button  type="button"
+                v-on:click="countUp('win')"
+                class="btn btn-outline-primary btn-sm"
+            >+1
+            </button>
             <br>
-            <label for="lose">敗北数</label>
+            <label for="lose">LOSE</label>
             <input id="lose-text" v-model="lose" type="text" name="lose" />
+            <button  type="button"
+                v-on:click="countDown('lose')"
+                class="btn btn-outline-primary btn-sm"
+            >-1
+            </button>
+            <button  type="button"
+                v-on:click="countUp('lose')"
+                class="btn btn-outline-primary btn-sm"
+            >+1
+            </button>
             <p class="errors" v-for="error in errors.win" :key="error.win">
                 {{ error }}
             </p>
@@ -51,6 +105,7 @@
                 {{ error }}
             </p>
         </div>
+        <br>
         <label for="comment">コメント</label>
         <textarea
             id="comment-text"
@@ -117,6 +172,53 @@ export default {
     }
   },
   methods: {
+    countUp:function(result){
+        if(result == "win"){
+            if((this.win + this.lose)<50){
+                this.win++;
+            }
+        }else if(result == "lose"){
+            if((this.win + this.lose)<50){
+                this.lose++;
+            }
+        }
+    },
+    countDown:function(result){
+        if(result == "win"){
+            if((this.win)>0){
+                this.win--;
+            }
+        }else if(result == "lose"){
+            if((this.lose)>0){
+                this.lose--;
+            }
+        }
+    },
+    countUpXp:function(n){
+        if(this.xp == ""){
+            this.xp = 2000;
+        }
+        let tempN = Number(n);
+        let tempXp = Number(this.xp);
+        if((tempN != NaN) && (tempXp != NaN)){
+            if(tempXp + tempN <= 4000){
+                this.xp = tempXp + tempN;
+            }
+        }
+    },
+    countDownXp:function(n){
+        if(this.xp == ""){
+            this.xp = 2000;
+        }
+        let tempN = Number(n);
+        let tempXp = Number(this.xp);
+        if((tempN != NaN) && (tempXp != NaN)){
+            if(tempXp - tempN >= 1900){
+                this.xp = tempXp - tempN;
+            }
+        }
+    },
+
     cancelEditEvent: function () {
       this.$emit("click-cancel-comit-btn");
     },
@@ -213,25 +315,25 @@ export default {
           this.error = true;
         }
       }
-      if (this.win) {
+      if (this.win !== undefined) {
         if (this.win < 0 || !Number.isInteger(Number(this.win))) {
           message = "WINは0以上の半角整数で入力してください。";
           win.push(message);
           this.error = true;
         }
-        if (!this.lose) {
+        if (this.lose == undefined) {
           message = "LOSEを入力してください。";
           lose.push(message);
           this.error = true;
         }
       }
-      if (this.lose) {
+      if (this.lose !== undefined) {
         if (this.lose < 0 || !Number.isInteger(Number(this.lose))) {
           message = "LOSEは0以上の半角整数で入力してください。";
           lose.push(message);
           this.error = true;
         }
-        if (!this.win) {
+        if (this.win == undefined) {
           message = "WINを入力してください。";
           win.push(message);
           this.error = true;
@@ -291,6 +393,11 @@ export default {
   align-items: center;
   justify-content: center;
 }
+
+#buki-pull {
+    width: 45vw;
+}
+
 #content {
   z-index: 2;
   width: 50%;
@@ -300,7 +407,7 @@ export default {
 
 #win-text,
 #lose-text {
-  width: 20vw;
+  width: 10vw;
 }
 
 #comment-text {

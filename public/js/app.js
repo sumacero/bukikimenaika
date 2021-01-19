@@ -2005,6 +2005,61 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["bukis", "udemaes", "editData", "gachi_id"],
   data: function data() {
@@ -2047,6 +2102,56 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     }
   },
   methods: {
+    countUp: function countUp(result) {
+      if (result == "win") {
+        if (this.win + this.lose < 50) {
+          this.win++;
+        }
+      } else if (result == "lose") {
+        if (this.win + this.lose < 50) {
+          this.lose++;
+        }
+      }
+    },
+    countDown: function countDown(result) {
+      if (result == "win") {
+        if (this.win > 0) {
+          this.win--;
+        }
+      } else if (result == "lose") {
+        if (this.lose > 0) {
+          this.lose--;
+        }
+      }
+    },
+    countUpXp: function countUpXp(n) {
+      if (this.xp == "") {
+        this.xp = 2000;
+      }
+
+      var tempN = Number(n);
+      var tempXp = Number(this.xp);
+
+      if (tempN != NaN && tempXp != NaN) {
+        if (tempXp + tempN <= 4000) {
+          this.xp = tempXp + tempN;
+        }
+      }
+    },
+    countDownXp: function countDownXp(n) {
+      if (this.xp == "") {
+        this.xp = 2000;
+      }
+
+      var tempN = Number(n);
+      var tempXp = Number(this.xp);
+
+      if (tempN != NaN && tempXp != NaN) {
+        if (tempXp - tempN >= 1900) {
+          this.xp = tempXp - tempN;
+        }
+      }
+    },
     cancelEditEvent: function cancelEditEvent() {
       this.$emit("click-cancel-comit-btn");
     },
@@ -2219,28 +2324,28 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }
       }
 
-      if (this.win) {
+      if (this.win !== undefined) {
         if (this.win < 0 || !Number.isInteger(Number(this.win))) {
           message = "WINは0以上の半角整数で入力してください。";
           win.push(message);
           this.error = true;
         }
 
-        if (!this.lose) {
+        if (this.lose == undefined) {
           message = "LOSEを入力してください。";
           lose.push(message);
           this.error = true;
         }
       }
 
-      if (this.lose) {
+      if (this.lose !== undefined) {
         if (this.lose < 0 || !Number.isInteger(Number(this.lose))) {
           message = "LOSEは0以上の半角整数で入力してください。";
           lose.push(message);
           this.error = true;
         }
 
-        if (!this.win) {
+        if (this.win == undefined) {
           message = "WINを入力してください。";
           win.push(message);
           this.error = true;
@@ -7502,7 +7607,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n#overlay {\r\n  /*要素を重ねた時の順番*/\r\n  z-index: 1;\r\n\r\n  /*画面全体を覆う設定*/\r\n  position: fixed;\r\n  top: 0;\r\n  left: 0;\r\n  width: 100%;\r\n  height: 100%;\r\n  background-color: rgba(0, 0, 0, 0.5);\r\n\r\n  /*　画面の中央に要素を表示させる設定　*/\r\n  display: flex;\r\n  align-items: center;\r\n  justify-content: center;\n}\n#content {\r\n  z-index: 2;\r\n  width: 50%;\r\n  padding: 1em;\r\n  background: #fff;\n}\n#win-text,\r\n#lose-text {\r\n  width: 20vw;\n}\n#comment-text {\r\n  width: 45vw;\n}\r\n", ""]);
+exports.push([module.i, "\n#overlay {\r\n  /*要素を重ねた時の順番*/\r\n  z-index: 1;\r\n\r\n  /*画面全体を覆う設定*/\r\n  position: fixed;\r\n  top: 0;\r\n  left: 0;\r\n  width: 100%;\r\n  height: 100%;\r\n  background-color: rgba(0, 0, 0, 0.5);\r\n\r\n  /*　画面の中央に要素を表示させる設定　*/\r\n  display: flex;\r\n  align-items: center;\r\n  justify-content: center;\n}\n#buki-pull {\r\n    width: 45vw;\n}\n#content {\r\n  z-index: 2;\r\n  width: 50%;\r\n  padding: 1em;\r\n  background: #fff;\n}\n#win-text,\r\n#lose-text {\r\n  width: 10vw;\n}\n#comment-text {\r\n  width: 45vw;\n}\r\n", ""]);
 
 // exports
 
@@ -40202,6 +40307,7 @@ var render = function() {
         { attrs: { name: "update-record-form" } },
         [
           _vm._m(0),
+          _c("br"),
           _vm._v(" "),
           _c(
             "select",
@@ -40214,7 +40320,7 @@ var render = function() {
                   expression: "buki_id"
                 }
               ],
-              attrs: { name: "buki_id" },
+              attrs: { id: "buki-pull", name: "buki_id" },
               on: {
                 change: function($event) {
                   var $$selectedVal = Array.prototype.filter
@@ -40249,7 +40355,10 @@ var render = function() {
           _vm._v(" "),
           _c("br"),
           _vm._v(" "),
+          _c("br"),
+          _vm._v(" "),
           _vm._m(1),
+          _c("br"),
           _vm._v(" "),
           _c(
             "select",
@@ -40301,11 +40410,14 @@ var render = function() {
           _vm._v(" "),
           _c("br"),
           _vm._v(" "),
+          _c("br"),
+          _vm._v(" "),
           _vm.udemae_id == "21"
             ? _c(
                 "span",
                 [
                   _vm._m(2),
+                  _c("br"),
                   _vm._v(" "),
                   _c("input", {
                     directives: [
@@ -40328,6 +40440,94 @@ var render = function() {
                     }
                   }),
                   _vm._v(" "),
+                  _c("br"),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-outline-primary btn-sm",
+                      attrs: { type: "button" },
+                      on: {
+                        click: function($event) {
+                          return _vm.countDownXp(100)
+                        }
+                      }
+                    },
+                    [_vm._v("-100\n          ")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-outline-primary btn-sm",
+                      attrs: { type: "button" },
+                      on: {
+                        click: function($event) {
+                          return _vm.countDownXp(10)
+                        }
+                      }
+                    },
+                    [_vm._v("-10\n          ")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-outline-primary btn-sm",
+                      attrs: { type: "button" },
+                      on: {
+                        click: function($event) {
+                          return _vm.countDownXp(1)
+                        }
+                      }
+                    },
+                    [_vm._v("-1\n          ")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-outline-primary btn-sm",
+                      attrs: { type: "button" },
+                      on: {
+                        click: function($event) {
+                          return _vm.countUpXp(1)
+                        }
+                      }
+                    },
+                    [_vm._v("+1\n          ")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-outline-primary btn-sm",
+                      attrs: { type: "button" },
+                      on: {
+                        click: function($event) {
+                          return _vm.countUpXp(10)
+                        }
+                      }
+                    },
+                    [_vm._v("+10\n          ")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-outline-primary btn-sm",
+                      attrs: { type: "button" },
+                      on: {
+                        click: function($event) {
+                          return _vm.countUpXp(100)
+                        }
+                      }
+                    },
+                    [_vm._v("+100\n          ")]
+                  ),
+                  _vm._v(" "),
+                  _c("br"),
+                  _vm._v(" "),
                   _vm._l(_vm.errors.xp, function(error) {
                     return _c("p", { key: error.xp, staticClass: "errors" }, [
                       _vm._v("\n          " + _vm._s(error) + "\n        ")
@@ -40343,7 +40543,7 @@ var render = function() {
           _c(
             "div",
             [
-              _c("label", { attrs: { for: "win" } }, [_vm._v("勝利数")]),
+              _c("label", { attrs: { for: "win" } }, [_vm._v("WIN ")]),
               _vm._v(" "),
               _c("input", {
                 directives: [
@@ -40366,9 +40566,37 @@ var render = function() {
                 }
               }),
               _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-outline-primary btn-sm",
+                  attrs: { type: "button" },
+                  on: {
+                    click: function($event) {
+                      return _vm.countDown("win")
+                    }
+                  }
+                },
+                [_vm._v("-1\n          ")]
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-outline-primary btn-sm",
+                  attrs: { type: "button" },
+                  on: {
+                    click: function($event) {
+                      return _vm.countUp("win")
+                    }
+                  }
+                },
+                [_vm._v("+1\n          ")]
+              ),
+              _vm._v(" "),
               _c("br"),
               _vm._v(" "),
-              _c("label", { attrs: { for: "lose" } }, [_vm._v("敗北数")]),
+              _c("label", { attrs: { for: "lose" } }, [_vm._v("LOSE")]),
               _vm._v(" "),
               _c("input", {
                 directives: [
@@ -40391,6 +40619,34 @@ var render = function() {
                 }
               }),
               _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-outline-primary btn-sm",
+                  attrs: { type: "button" },
+                  on: {
+                    click: function($event) {
+                      return _vm.countDown("lose")
+                    }
+                  }
+                },
+                [_vm._v("-1\n          ")]
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-outline-primary btn-sm",
+                  attrs: { type: "button" },
+                  on: {
+                    click: function($event) {
+                      return _vm.countUp("lose")
+                    }
+                  }
+                },
+                [_vm._v("+1\n          ")]
+              ),
+              _vm._v(" "),
               _vm._l(_vm.errors.win, function(error) {
                 return _c("p", { key: error.win, staticClass: "errors" }, [
                   _vm._v("\n              " + _vm._s(error) + "\n          ")
@@ -40405,6 +40661,8 @@ var render = function() {
             ],
             2
           ),
+          _vm._v(" "),
+          _c("br"),
           _vm._v(" "),
           _c("label", { attrs: { for: "comment" } }, [_vm._v("コメント")]),
           _vm._v(" "),
@@ -54947,8 +55205,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\za100\Desktop\bukikime_project\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Users\za100\Desktop\bukikime_project\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\Users\za100\Desktop\プログラム\bukikime_project\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\Users\za100\Desktop\プログラム\bukikime_project\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
