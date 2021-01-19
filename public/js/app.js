@@ -2353,6 +2353,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           message = "WINとLOSEの合計が50以下になるように入力してください。";
           lose.push(message);
           this.error = true;
+        } else if (Number(this.win) + Number(this.lose) < 1) {
+          message = "WINとLOSEの合計が1以上になるように入力してください。";
+          lose.push(message);
+          this.error = true;
         }
       }
 

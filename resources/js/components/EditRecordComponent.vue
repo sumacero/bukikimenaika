@@ -285,77 +285,81 @@ export default {
       }
     },
     validator: function () {
-      let buki = [];
-      let udemae = [];
-      let xp = [];
-      let win = [];
-      let lose = [];
-      let comment = [];
-      let message = "";
-      this.error = false;
-      if (!this.buki_id) {
-        message = "ブキを選択してください。";
-        buki.push(message);
-        this.error = true;
-      }
-      if (!this.udemae_id) {
-        message = "ウデマエを選択してください。";
-        udemae.push(message);
-        this.error = true;
-      }
-      //ウデマエXの場合
-      if (this.udemae_id == "21") {
-        if (!this.xp) {
-          message = "XPを入力してください。";
-          xp.push(message);
-          this.error = true;
-        } else if (!(this.xp >= 1900 && this.xp <= 4000)) {
-          message = "XPは1900～4000の半角数字で入力してください。";
-          xp.push(message);
-          this.error = true;
+        let buki = [];
+        let udemae = [];
+        let xp = [];
+        let win = [];
+        let lose = [];
+        let comment = [];
+        let message = "";
+        this.error = false;
+        if (!this.buki_id) {
+            message = "ブキを選択してください。";
+            buki.push(message);
+            this.error = true;
         }
-      }
-      if (this.win !== undefined) {
-        if (this.win < 0 || !Number.isInteger(Number(this.win))) {
-          message = "WINは0以上の半角整数で入力してください。";
-          win.push(message);
-          this.error = true;
+        if (!this.udemae_id) {
+            message = "ウデマエを選択してください。";
+            udemae.push(message);
+            this.error = true;
         }
-        if (this.lose == undefined) {
-          message = "LOSEを入力してください。";
-          lose.push(message);
-          this.error = true;
+        //ウデマエXの場合
+        if (this.udemae_id == "21") {
+            if (!this.xp) {
+                message = "XPを入力してください。";
+                xp.push(message);
+                this.error = true;
+            } else if (!(this.xp >= 1900 && this.xp <= 4000)) {
+                message = "XPは1900～4000の半角数字で入力してください。";
+                xp.push(message);
+                this.error = true;
+            }
         }
-      }
-      if (this.lose !== undefined) {
-        if (this.lose < 0 || !Number.isInteger(Number(this.lose))) {
-          message = "LOSEは0以上の半角整数で入力してください。";
-          lose.push(message);
-          this.error = true;
+        if (this.win !== undefined) {
+            if (this.win < 0 || !Number.isInteger(Number(this.win))) {
+                message = "WINは0以上の半角整数で入力してください。";
+                win.push(message);
+                this.error = true;
+            }
+            if (this.lose == undefined) {
+                message = "LOSEを入力してください。";
+                lose.push(message);
+                this.error = true;
+            }
         }
-        if (this.win == undefined) {
-          message = "WINを入力してください。";
-          win.push(message);
-          this.error = true;
-        } else if (Number(this.win) + Number(this.lose) > 50) {
-          message = "WINとLOSEの合計が50以下になるように入力してください。";
-          lose.push(message);
-          this.error = true;
+        if (this.lose !== undefined) {
+            if (this.lose < 0 || !Number.isInteger(Number(this.lose))) {
+                message = "LOSEは0以上の半角整数で入力してください。";
+                lose.push(message);
+                this.error = true;
+            }
+            if (this.win == undefined) {
+                message = "WINを入力してください。";
+                win.push(message);
+                this.error = true;
+            }else if (Number(this.win) + Number(this.lose) > 50) {
+                message = "WINとLOSEの合計が50以下になるように入力してください。";
+                lose.push(message);
+                this.error = true;
+            }else if (Number(this.win) + Number(this.lose) < 1){
+                message = "WINとLOSEの合計が1以上になるように入力してください。";
+                lose.push(message);
+                this.error = true;
+            }
         }
-      }
-      if (this.comment) {
-        if (this.comment.length > 100) {
-          message = "コメントは100文字以内で入力してください。";
-          comment.push(message);
-          this.error = true;
+        if (this.comment) {
+            if (this.comment.length > 100) {
+            message = "コメントは100文字以内で入力してください。";
+            comment.push(message);
+            this.error = true;
+            }
         }
-      }
-      this.errors.buki = buki;
-      this.errors.udemae = udemae;
-      this.errors.xp = xp;
-      this.errors.win = win;
-      this.errors.lose = lose;
-      this.errors.comment = comment;
+        this.errors.buki = buki;
+        this.errors.udemae = udemae;
+        this.errors.xp = xp;
+        this.errors.win = win;
+        this.errors.lose = lose;
+        this.errors.comment = comment;
     },
     adjustHeight() {
       const textarea = this.$refs.adjust_textarea;
