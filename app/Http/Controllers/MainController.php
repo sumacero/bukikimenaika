@@ -14,6 +14,26 @@ use Illuminate\Support\Facades\Auth;
 class MainController extends Controller
 {
 
+   public function index()
+    {
+        return view('home');
+    }
+
+    public function emailReset()
+    {
+        return view('email_reset');
+    }
+
+    public function emailChanged()
+    {
+        return view('email_changed');
+    }
+
+    protected function loggedOut(Request $request)
+    {
+        return redirect(route('home'));
+    }
+
     public function view_gachi(){
         $user = Auth::user();
         $param = ['user' => $user];

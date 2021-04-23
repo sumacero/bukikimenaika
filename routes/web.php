@@ -11,10 +11,10 @@
 |
 */
 Route::get('/', 'MainController@view_gachi')->name('home')->middleware('verified');
-Route::get('email_reset','HomeController@emailReset')->middleware('verified');
+Route::get('email_reset','MainController@emailReset')->middleware('verified');
 Route::get("reset/{token}", "ChangeEmailController@reset");
 Route::post('email', 'ChangeEmailController@sendChangeEmailLink');
-Route::get('email_changed', 'HomeController@emailChanged')->middleware('verified');
+Route::get('email_changed', 'MainController@emailChanged')->middleware('verified');
 Route::get('view_gachi','MainController@view_gachi')->middleware('verified');
 Route::get('get_parent_tables','AjaxController@getParentTables');
 Route::get('get_input_datas','AjaxController@getInputDatas');
@@ -26,9 +26,8 @@ Route::get('get_stage_info','AjaxController@getStageInfo');
 Route::get('get_osusume_bukis','AjaxController@getOsusumeBukis');
 Route::get('about', 'MainController@about');
 
-//Route::get('/hello','HelloController@index');
 Auth::routes(['verify' => true]);
-Route::get('/home', 'HomeController@index')->name('home')->middleware('verified');
+Route::get('/main', 'MainController@index')->name('main')->middleware('verified');
 Route::get('/verified', function(){
     return view('verified');
 })->middleware('verified');
