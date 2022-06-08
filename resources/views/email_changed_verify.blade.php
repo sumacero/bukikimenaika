@@ -7,7 +7,7 @@
             <div class="card">
                 <div class="card-header">メールアドレスを変更しました。</div>
                 <div class="card-body" >
-                    <a href="{{ env('APP_URL') }}/view_gachi">ブキキメナイカをスタート</a>
+                    <a href="{{ url('/') }}/view_gachi">ブキキメナイカをスタート</a>
                 </div>
             </div>
         </div>

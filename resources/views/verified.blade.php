@@ -11,7 +11,7 @@
             <div class="card">
                 <div class="card-header">{{ __('You\'ve verified your email address.') }}</div>
                 <div class="card-body" >
-                    <a href="{{ env('APP_URL') }}/view_gachi">{{ __('Let\'s get started.') }}</a>
+                    <a href="{{ url('/') }}/view_gachi">{{ __('Let\'s get started.') }}</a>
                 </div>
             </div>
         </div>
